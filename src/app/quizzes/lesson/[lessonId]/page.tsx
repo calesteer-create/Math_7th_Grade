@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { db } from "@/db";
-import { lessons, units } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { lessons, units } from "@/lib/curriculum";
 import QuizPlayer from "@/components/QuizPlayer";
 import { ArrowRight } from "lucide-react";
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() { return lessons.map(item => ({ lessonId: String(item.id) })); }
 
 export default async function LessonQuizPage({
   params,
@@ -17,14 +15,10 @@ export default async function LessonQuizPage({
   const id = Number(lessonId);
   if (!Number.isInteger(id)) notFound();
 
-  const rows = await db
-    .select({ lesson: lessons, unit: units })
-    .from(lessons)
-    .innerJoin(units, eq(lessons.unitId, units.id))
-    .where(eq(lessons.id, id))
-    .limit(1);
-  const row = rows[0];
-  if (!row) notFound();
+  const lesson = lessons.find(item => item.id === id);
+  const unit = lesson && units.find(item => item.id === lesson.unitId);
+  if (!lesson || !unit) notFound();
+  const row = { lesson, unit };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">

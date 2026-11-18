@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Cairo } from "next/font/google";
+import "@fontsource/cairo/400.css";
+import "@fontsource/cairo/600.css";
+import "@fontsource/cairo/700.css";
+import "@fontsource/cairo/800.css";
+import "@fontsource/cairo/900.css";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SITE } from "@/lib/site";
-
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "600", "700", "800", "900"],
-  variable: "--font-cairo",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ar" dir="rtl" className={cairo.variable}>
+    <html lang="ar" dir="rtl">
       <body className="flex min-h-screen flex-col bg-paper font-sans text-ink antialiased">
         <Header />
         <main className="flex-1">{children}</main>

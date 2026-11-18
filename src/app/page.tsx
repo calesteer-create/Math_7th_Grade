@@ -1,17 +1,15 @@
 import Link from "next/link";
 import { ArrowLeft, BookOpen, CheckCircle2, Compass, FlaskConical, Layers3, NotebookPen, Sparkles } from "lucide-react";
-import { db } from "@/db";
-import { lessons, units } from "@/db/schema";
+import { lessons, units } from "@/lib/curriculum";
 import { SITE, STAGES } from "@/lib/site";
 import UnitIcon from "@/components/UnitIcon";
 import MathMotif from "@/components/MathMotif";
 import MathText from "@/components/MathText";
 
-export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const allUnits = await db.select().from(units).orderBy(units.order);
-  const allLessons = await db.select().from(lessons).orderBy(lessons.order);
+  const allUnits = units;
+  const allLessons = lessons;
   const available = allLessons.filter(lesson => lesson.status === "published");
   const first = available[0];
   return <div className="mx-auto max-w-7xl px-4 pb-8 pt-8">

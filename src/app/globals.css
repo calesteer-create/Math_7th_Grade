@@ -2,7 +2,7 @@
 @import "./learning-activities.css";
 
 @theme {
-  --font-sans: var(--font-cairo), "Segoe UI", Tahoma, Arial, sans-serif;
+  --font-sans: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif;
   --color-ink: #252746;
   --color-paper: #faf9fe;
   --color-brand-50: #f4f0ff;

@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CheckCircle2, ClipboardCheck, Loader2, RotateCcw, ShieldCheck, Sparkles, XCircle } from "lucide-react";
-import { LESSON_ASSESSMENT_NOTICE } from "@/lib/assessment";
+import bank from "@/content/assessments/natural-numbers.json";
+import { readLocal, writeLocal, quizKey, type QuizAttempt } from "@/lib/local-progress";
+import { isCorrect, displayAnswer, LESSON_ASSESSMENT_NOTICE } from "@/lib/assessment";
 import { LESSON_PUBLICATION_NOTICE } from "@/lib/lesson-publication";
 import MathText from "@/components/MathText";
 
@@ -12,63 +14,29 @@ const DIFFICULTY: Record<string, string> = { easy: "انطلاقة", medium: "ت
 const LETTERS = ["أ", "ب", "ج", "د", "هـ"];
 
 export default function QuizPlayer({ scope, id, title }: { scope: "lesson" | "unit"; id: number; title?: string }) {
-  const [questions, setQuestions] = useState<PublicQuestion[]>([]);
-  const [version, setVersion] = useState("");
+  const source = scope === "lesson" && id === 1 ? bank.questions : [];
+  const questions: PublicQuestion[] = source.map((q, index) => ({ id: index + 1, type: q.type as PublicQuestion["type"], question: q.question, options: q.options ?? null, difficulty: q.difficulty }));
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [result, setResult] = useState<{ score: number; total: number; results: GradeResult[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [stale, setStale] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [reload, setReload] = useState(0);
+  const stale = false;
+  const submitting = false;
   const top = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    async function load() {
-      try {
-        const response = await fetch(`/api/quiz?${scope}=${id}`, { cache: "no-store", signal: controller.signal });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "تعذر تحميل الاختبار.");
-        if (!controller.signal.aborted) {
-          setQuestions(data.questions);
-          setVersion(data.version);
-          setError(null);
-        }
-      } catch (e) {
-        if (!controller.signal.aborted) setError(e instanceof Error ? e.message : "تعذر تحميل الاختبار.");
-      } finally {
-        if (!controller.signal.aborted) setLoading(false);
-      }
-    }
-    void load();
-    return () => controller.abort();
-  }, [scope, id, reload]);
 
   const answeredCount = questions.filter(q => (answers[q.id] ?? "").trim()).length;
   const allAnswered = questions.length > 0 && answeredCount === questions.length;
-  function reloadQuiz() {
-    setLoading(true); setAnswers({}); setResult(null); setStale(false); setError(null); setReload(n => n + 1);
-  }
-  async function submit() {
-    if (!allAnswered || submitting || !version) return;
-    setSubmitting(true); setError(null);
-    try {
-      const response = await fetch("/api/quiz", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scope, id, version, answers }) });
-      const data = await response.json();
-      if (!response.ok) {
-        setStale(data.code === "STALE_QUIZ");
-        throw new Error(data.error || "تعذر تصحيح الاختبار.");
-      }
-      setResult({ score: data.score, total: data.total, results: data.results });
-      top.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "تعذر الاتصال. بقيت إجاباتك محفوظة في هذه الصفحة؛ أعد الإرسال.");
-    } finally { setSubmitting(false); }
+  function reloadQuiz() { setAnswers({}); setResult(null); setError(null); }
+  function submit() {
+    if (!allAnswered) return;
+    const results = source.map((q, index) => ({ id: index + 1, correct: isCorrect(q.answer, answers[index + 1], q.type), answer: displayAnswer(q), explanation: q.explanation }));
+    const score = results.filter(item => item.correct).length;
+    setResult({ score, total: results.length, results });
+    const attempts = readLocal<QuizAttempt[]>(quizKey, []);
+    if (!writeLocal(quizKey, [{ title: title ?? "اختبار", score, total: results.length, date: new Date().toISOString() }, ...attempts].slice(0, 50))) setError("تعذر حفظ النتيجة في المتصفح، لكنها ظاهرة هنا.");
+    top.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   function retry() { setAnswers({}); setResult(null); setError(null); top.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }
 
-  if (loading) return <div className="flex items-center justify-center gap-3 rounded-2xl bg-slate-50 py-20 text-slate-500"><Loader2 size={22} className="animate-spin"/><span className="text-sm font-bold">نجهّز تحدّيك الجديد…</span></div>;
   if (!questions.length) return <div className="rounded-2xl border border-dashed border-slate-200 p-9 text-center"><ClipboardCheck className="mx-auto text-slate-300" size={36}/><h3 className="mt-3 font-bold">{error ? "تعذر تحميل الاختبار" : "لا يوجد اختبار متاح بعد"}</h3><p className="mt-2 text-sm leading-7 text-slate-500">{error ?? (scope === "lesson" ? LESSON_PUBLICATION_NOTICE : "اختبار الوحدة ينتظر تأكيد اكتمالها من المالك.")}</p>{error && <button onClick={reloadQuiz} className="btn btn-ghost mt-4 text-xs"><RotateCcw size={14}/> أعد المحاولة</button>}</div>;
 
   return <div ref={top} className="scroll-mt-32 space-y-5" data-quiz-player="true">
@@ -77,7 +45,7 @@ export default function QuizPlayer({ scope, id, title }: { scope: "lesson" | "un
       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-indigo-100 bg-white/70 px-5 py-3 text-[11px] font-semibold text-slate-500"><span>{questions.length} أسئلة متنوعة · دون مؤقّت</span><span className="flex items-center gap-1.5"><ShieldCheck size={13} className="text-emerald-600"/> التصحيح والتفسير بعد التسليم فقط</span></div>
     </header>
 
-    {result && <div className={`flex flex-wrap items-center justify-between gap-4 rounded-2xl border p-5 ${result.score === result.total ? "border-emerald-200 bg-emerald-50" : "border-indigo-200 bg-indigo-50"}`} role="status"><div><p className="text-xs font-bold text-slate-500">حُفظت محاولتك في منطقة الطالب</p><p className="mt-1 text-xl font-extrabold text-ink">{result.score === result.total ? "ممتاز! نقلت فهمك إلى مواقف جديدة." : "خطوة جميلة! راجع تفسير كل إجابة أدناه."}</p></div><div className="flex items-center gap-4"><span className="text-3xl font-black text-indigo-700" dir="ltr" data-testid="quiz-score">{result.score} / {result.total}</span><button type="button" onClick={retry} className="btn btn-ghost text-xs"><RotateCcw size={14}/> إعادة المحاولة</button></div></div>}
+    {result && <div className={`flex flex-wrap items-center justify-between gap-4 rounded-2xl border p-5 ${result.score === result.total ? "border-emerald-200 bg-emerald-50" : "border-indigo-200 bg-indigo-50"}`} role="status"><div><p className="text-xs font-bold text-slate-500">نتيجتك على هذا الجهاز</p><p className="mt-1 text-xl font-extrabold text-ink">{result.score === result.total ? "ممتاز! نقلت فهمك إلى مواقف جديدة." : "خطوة جميلة! راجع تفسير كل إجابة أدناه."}</p></div><div className="flex items-center gap-4"><span className="text-3xl font-black text-indigo-700" dir="ltr" data-testid="quiz-score">{result.score} / {result.total}</span><button type="button" onClick={retry} className="btn btn-ghost text-xs"><RotateCcw size={14}/> إعادة المحاولة</button></div></div>}
 
     {questions.map((q, qi) => {
       const grade = result?.results.find(r => r.id === q.id);

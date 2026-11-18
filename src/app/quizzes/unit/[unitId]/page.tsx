@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { db } from "@/db";
-import { units } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { units } from "@/lib/curriculum";
 import QuizPlayer from "@/components/QuizPlayer";
 import { ArrowRight } from "lucide-react";
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() { return units.map(item => ({ unitId: String(item.id) })); }
 
 export default async function UnitQuizPage({
   params,
@@ -17,8 +15,7 @@ export default async function UnitQuizPage({
   const id = Number(unitId);
   if (!Number.isInteger(id)) notFound();
 
-  const rows = await db.select().from(units).where(eq(units.id, id)).limit(1);
-  const unit = rows[0];
+  const unit = units.find(item => item.id === id);
   if (!unit) notFound();
 
   return (

@@ -7,7 +7,7 @@ const LINKS = [
   { href: "/quizzes", label: "منطقة الاختبارات" },
   { href: "/lab", label: "المختبر التفاعلي" },
   { href: "/student", label: "منطقة الطالب" },
-  { href: "/teacher", label: "منطقة المعلم" },
+  { href: "/teacher", label: "الحلول التعليمية" },
 ];
 
 export default function Footer() {

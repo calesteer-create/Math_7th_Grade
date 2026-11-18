@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { db } from "@/db";
-import { lessons, units } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { lessons, units } from "@/lib/curriculum";
 import { STAGES, fmtNum } from "@/lib/site";
 import UnitIcon from "@/components/UnitIcon";
 import { ArrowLeft, ArrowRight, BookOpen, Lock } from "lucide-react";
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() { return units.map(unit => ({ unitId: String(unit.id) })); }
 
 export default async function UnitPage({
   params,
@@ -18,16 +16,10 @@ export default async function UnitPage({
   const id = Number(unitId);
   if (!Number.isInteger(id)) notFound();
 
-  const unitRows = await db.select().from(units).where(eq(units.id, id)).limit(1);
-  const unit = unitRows[0];
+  const unit = units.find(unit => unit.id === id);
   if (!unit) notFound();
-
-  const unitLessons = await db
-    .select()
-    .from(lessons)
-    .where(eq(lessons.unitId, id))
-    .orderBy(lessons.order);
-  const allUnits = await db.select().from(units).orderBy(units.order);
+  const unitLessons = lessons.filter(lesson => lesson.unitId === id);
+  const allUnits = units;
   const idx = allUnits.findIndex((u) => u.id === id);
   const prev = allUnits[idx - 1];
   const next = allUnits[idx + 1];

@@ -1,27 +1,9 @@
-import "dotenv/config";
 import { readFileSync } from "node:fs";
-import { createHash, createHmac, randomUUID } from "node:crypto";
-import { test, expect, request as playwrightRequest, type Page } from "@playwright/test";
-import { and, eq, like } from "drizzle-orm";
-import { db, pool } from "../../src/db";
-import { students, settings } from "../../src/db/schema";
-import { displayAnswer, type OriginalAssessment } from "../../src/lib/assessment";
+import { test, expect, type Page } from "@playwright/test";
+import { type OriginalAssessment } from "../../src/lib/assessment";
 import { lineX } from "../../src/lib/natural-numbers";
 import { hasSourcePage } from "../../src/lib/math-text";
-
 const bank = JSON.parse(readFileSync("src/content/assessments/natural-numbers.json", "utf8")) as OriginalAssessment;
-const sessions = new WeakMap<Page, number>();
-test.beforeEach(async ({ page }) => {
-  const response = await page.request.post("/api/student", { data: { name: `qa-option-b-${randomUUID()}` } });
-  expect(response.ok()).toBeTruthy();
-  const data = await response.json();
-  sessions.set(page, data.student.id);
-});
-test.afterEach(async ({ page }) => {
-  const id = sessions.get(page);
-  if (id) await db.delete(students).where(and(eq(students.id, id), like(students.name, "qa-option-b-%")));
-});
-test.afterAll(async () => { await pool.end(); });
 
 async function stage(page: Page, title: string) {
   await page.getByRole("navigation", { name: "مراحل الدرس" }).getByRole("button", { name: new RegExp(title) }).click();
@@ -35,7 +17,7 @@ async function noPageOverflow(page: Page) {
 test("source figures preserve labels, counts, direction and spacing", async ({ page }, info) => {
   const runtimeErrors: string[] = [];
   page.on("pageerror", error => runtimeErrors.push(error.message));
-  await page.goto("/lessons/1");
+  await page.goto("/Math_7th_Grade/lessons/1");
   const counting = page.locator('[data-book-figure="counting"]');
   await expect(counting).toBeVisible();
   for (let n = 0; n <= 4; n++) await expect(counting.locator(`[data-count="${n}"] [data-dot]`)).toHaveCount(n);
@@ -59,7 +41,7 @@ test("source figures preserve labels, counts, direction and spacing", async ({ p
 });
 
 test("place-value source figure zooms, closes by Escape and preserves all zeros", async ({ page }, info) => {
-  await page.goto("/lessons/1");
+  await page.goto("/Math_7th_Grade/lessons/1");
   await stage(page, "الشرح التفصيلي");
   await page.getByRole("tab", { name: /الأعداد الكبيرة/ }).click();
   const figure = page.locator('[data-book-figure="placeValue"]');
@@ -81,7 +63,7 @@ test("place-value source figure zooms, closes by Escape and preserves all zeros"
 });
 
 test("interactive figures respond accurately without changing source values", async ({ page }, info) => {
-  await page.goto("/lessons/1");
+  await page.goto("/Math_7th_Grade/lessons/1");
   await stage(page, "المختبر التفاعلي");
   await page.getByRole("button", { name: "اختر المجموعة B" }).click();
   await expect(page.getByRole("status")).toContainText("حاول مرة أخرى");
@@ -114,17 +96,14 @@ test("interactive figures respond accurately without changing source values", as
 });
 
 test("fresh final quiz grades correctly and keeps results after refresh", async ({ page }, info) => {
-  await page.goto("/quizzes/lesson/1");
+  await page.goto("/Math_7th_Grade/quizzes/lesson/1");
   await expect(page.getByText("تحدٍّ جديد · نفس المهارات")).toBeVisible();
-  const response = await page.request.get("/api/quiz?lesson=1");
-  const payload = await response.json();
-  expect(payload.questions).toHaveLength(8);
+  const payload = { questions: bank.questions.map((q, i) => ({ ...q, id: i + 1 })) };
   const submit = page.getByRole("button", { name: "تسليم الاختبار وإظهار النتيجة" });
   await expect(submit).toBeDisabled();
   for (let i = 0; i < payload.questions.length; i++) {
     const q = payload.questions[i];
     expect(q.question).toBe(bank.questions[i].question);
-    expect(q).not.toHaveProperty("answer"); expect(q).not.toHaveProperty("explanation");
     const section = page.locator(`[data-quiz-question="${q.id}"]`);
     const answer = bank.questions[i].answer;
     if (q.type === "mcq") await section.getByRole("button").nth(Number(answer)).click();
@@ -133,48 +112,15 @@ test("fresh final quiz grades correctly and keeps results after refresh", async 
   }
   await expect(submit).toBeEnabled(); await submit.click();
   await expect(page.getByTestId("quiz-score")).toHaveText("8 / 8");
-  await expect(page.getByText("حُفظت محاولتك في منطقة الطالب")).toBeVisible();
+  await expect(page.getByText("نتيجتك على هذا الجهاز")).toBeVisible();
   await page.screenshot({ path: info.outputPath("quiz-result.png") });
   await page.reload();
-  const overview = await (await page.request.get("/api/student")).json();
-  expect(overview.attempts).toHaveLength(1);
-  expect(overview.attempts[0]).toMatchObject({ score: 8, total: 8 });
-});
-
-test("API does not reveal keys early, mix scopes or accept stale submissions", async ({ page }) => {
-  const payload = await (await page.request.get("/api/quiz?lesson=1")).json();
-  expect((await page.request.get("/api/teacher/overview")).status()).toBe(401);
-  expect((await page.request.get("/api/quiz?lesson=1&unit=1")).status()).toBe(400);
-  expect((await (await page.request.get("/api/quiz?unit=1")).json()).questions).toEqual([]);
-  expect((await (await page.request.get("/api/quiz?lesson=2")).json()).questions).toEqual([]);
-  const incomplete = await page.request.post("/api/quiz", { data: { scope: "lesson", id: 1, version: payload.version, answers: {} } });
-  expect(incomplete.status()).toBe(400); expect(await incomplete.json()).not.toHaveProperty("results");
-  const stale = await page.request.post("/api/quiz", { data: { scope: "lesson", id: 1, version: "old-version", answers: {} } });
-  expect(stale.status()).toBe(409); expect(await stale.json()).not.toHaveProperty("results");
-  const invalid = await page.request.post("/api/quiz", { data: { scope: "anything", id: 1 } });
-  expect(invalid.status()).toBe(400);
-  const [credential] = await db.select().from(settings).where(eq(settings.key, "teacher_pw_hash")).limit(1);
-  expect(credential).toBeTruthy();
-  // جلسة اختبار موقعة من سر الخادم؛ لا كلمات مرور صريحة في الاختبار أو الواجهة.
-  const exp = Date.now() + 60000;
-  const secret = createHash("sha256").update(`${credential.value}::teacher-session`).digest("hex");
-  const signature = createHmac("sha256", secret).update(String(exp)).digest("hex");
-  await page.context().addCookies([{ name: "teacher_session", value: `${exp}.${signature}`, url: "http://127.0.0.1:3000", httpOnly: true, sameSite: "Lax" }]);
-  const privateResponse = await page.request.get("/api/teacher/overview");
-  expect(privateResponse.status()).toBe(200);
-  const overview = await privateResponse.json();
-  const keys = overview.quizKeys.find((q: { id: string }) => q.id === "lesson:1").questions;
-  expect(keys).toHaveLength(8);
-  expect(overview.solutions).toHaveLength(7);
-  for (let i = 0; i < keys.length; i++) {
-    expect(keys[i].answer).toBe(displayAnswer(bank.questions[i]));
-    expect(keys[i].explanation).toBe(bank.questions[i].explanation);
-    expect(keys[i].source).toContain(bank.revision);
-  }
+  await page.goto("/Math_7th_Grade/student");
+  await expect(page.locator("body")).toContainText("8 / 8");
 });
 
 test("lesson navigation, notebook and print preserve the shared figures", async ({ page }, info) => {
-  await page.goto("/lessons/1");
+  await page.goto("/Math_7th_Grade/lessons/1");
   const navigation = page.getByRole("navigation", { name: "مراحل الدرس" });
   await expect(navigation.getByRole("button")).toHaveCount(9);
   await expect(navigation.getByRole("button").last()).toContainText("دفتر الطالب");
@@ -182,8 +128,7 @@ test("lesson navigation, notebook and print preserve the shared figures", async 
   await expect(page.locator("#lesson-content h2")).toHaveText("اكتشف المفهوم");
   await page.getByRole("button", { name: "السابق", exact: true }).click();
   await expect(page.locator("#lesson-content h2")).toHaveText("التهيئة والاستكشاف");
-  const saved = page.waitForResponse(r => r.url().endsWith("/api/progress") && r.request().method() === "POST");
-  await stage(page, "دفتر الطالب"); await saved;
+  await stage(page, "دفتر الطالب");
   await page.reload();
   await expect(page.locator("#lesson-content h2")).toHaveText("دفتر الطالب");
   await expect(page.locator('[data-book-figure="numberLine"]')).toHaveCount(1);
@@ -218,7 +163,7 @@ async function assertExerciseOnlyCitations(page: Page) {
 }
 
 test("colorful shared design preserves clear desktop navigation", async ({ page }, info) => {
-  await page.goto("/");
+  await page.goto("/Math_7th_Grade/");
   await page.evaluate(() => document.fonts.ready);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("الرياضيات للسابع");
   await noPageOverflow(page);
@@ -233,7 +178,7 @@ test("colorful shared design preserves clear desktop navigation", async ({ page 
 });
 
 test("all six expanded explanation steps use isolated KaTeX and supplemental labels", async ({ page }, info) => {
-  await page.goto("/lessons/1");
+  await page.goto("/Math_7th_Grade/lessons/1");
   await stage(page, "الشرح التفصيلي");
   const tabs = page.getByRole("tablist", { name: "أفكار الشرح الموسّع" }).getByRole("tab");
   await expect(tabs).toHaveCount(6);
@@ -266,7 +211,7 @@ test("all six expanded explanation steps use isolated KaTeX and supplemental lab
 });
 
 test("laboratory fractions and relations render with KaTeX, not flipped plain text", async ({ page }, info) => {
-  await page.goto("/lab");
+  await page.goto("/Math_7th_Grade/lab");
   expect(await page.locator(".katex .mfrac").count()).toBeGreaterThan(2);
   await assertMathDirection(page);
   await noPageOverflow(page);
@@ -275,7 +220,7 @@ test("laboratory fractions and relations render with KaTeX, not flipped plain te
 
 
 async function openPractice(page: Page) {
-  await page.goto("/lessons/1?stage=apply");
+  await page.goto("/Math_7th_Grade/lessons/1?stage=apply");
   await expect(page.locator("#lesson-content h2")).toHaveText("طبّق");
   await expect(page.locator('[data-practice-key="count-five"]')).toBeVisible();
 }
@@ -330,24 +275,11 @@ test("all six textbook missions are interactive and keep their progress", async 
   await assertMathDirection(page);await noPageOverflow(page);
   await page.reload();
   await expect(page.locator(".practice-trail-counter bdi")).toContainText("6 / 6");
-  const practice=await (await page.request.get("/api/practice?lesson=1")).json();
-  expect(practice.exercises.filter((entry:{state:{solved:boolean}})=>entry.state.solved)).toHaveLength(6);
-  const student=await (await page.request.get("/api/student")).json();
-  expect(student.attempts).toHaveLength(0);
+
 });
 
 test("hints and failed attempts lead to a detailed solution without bypassing the gate", async ({ page }, info) => {
   await openPractice(page);
-  const data=await (await page.request.get("/api/practice?lesson=1")).json();
-  const entry=data.exercises.find((e:{key:string})=>e.key==="place-7430");
-  expect(entry).not.toHaveProperty("solution");
-  expect(entry).not.toHaveProperty("expected");
-  expect(entry.state.hints).toEqual([]);
-  const base={lessonId:1,exerciseKey:entry.key,version:entry.version};
-  const forged=await page.request.post("/api/practice",{data:{...base,action:"solution",attempts:99,solved:true}});
-  expect(forged.status()).toBe(403);
-  const incomplete=await page.request.post("/api/practice",{data:{...base,action:"check",response:{position:"2"}}});
-  expect(incomplete.status()).toBe(400);
   let card=await selectPractice(page,/محقّق المنازل/,"place-7430");
   await expect(card.getByRole("button",{name:"الحل خطوة بخطوة",exact:true})).toBeDisabled();
   await card.getByRole("button",{name:/تلميح صغير/}).click();
@@ -367,13 +299,11 @@ test("hints and failed attempts lead to a detailed solution without bypassing th
   await page.reload();
   card=await selectPractice(page,/محقّق المنازل/,"place-7430");
   await expect(card.locator("[data-practice-solution]")).toBeVisible();
-  const restored=await (await page.request.get("/api/practice?lesson=1")).json();
-  const state=restored.exercises.find((e:{key:string})=>e.key===entry.key).state;
-  expect(state.attempts).toBe(1);expect(state.solved).toBe(false);expect(state.hints).toHaveLength(1);
+  await expect(card.locator(".practice-hints")).toBeVisible();
 });
 
 test("copybook contains writing sheets, saves personal notes locally, and prints every sheet", async ({ page }, info) => {
-  await page.goto("/lessons/1?stage=notebook");
+  await page.goto("/Math_7th_Grade/lessons/1?stage=notebook");
   await expect(page.locator("#lesson-content h2")).toHaveText("دفتر الطالب");
   await expect(page.getByRole("heading",{name:"ما أكتبه في دفتري",exact:true})).toBeVisible();
   await expect(page.getByRole("tablist",{name:"أوراق دفتر الطالب"}).getByRole("tab")).toHaveCount(4);
@@ -401,29 +331,4 @@ test("copybook contains writing sheets, saves personal notes locally, and prints
   expect(pdf.length).toBeGreaterThan(10000);
   await page.emulateMedia({media:"screen"});
   await assertMathDirection(page);await noPageOverflow(page);await assertExerciseOnlyCitations(page);
-});
-
-test("practice rejects stale or invalid requests and isolates each learner's progress", async ({ page }) => {
-  const data=await (await page.request.get("/api/practice?lesson=1")).json();
-  expect(data.exercises).toHaveLength(6);
-  expect(JSON.stringify(data)).not.toContain('"expected"');
-  expect(JSON.stringify(data)).not.toContain('"mistakes"');
-  expect(JSON.stringify(data)).not.toContain('"sourceOrder"');
-  const entry=data.exercises.find((e:{key:string})=>e.key==="count-five");
-  const base={lessonId:1,exerciseKey:entry.key,version:entry.version};
-  expect((await page.request.post("/api/practice",{data:{...base,version:"00000000-0000-4000-8000-000000000000",action:"check",response:{group:"A"}}})).status()).toBe(409);
-  expect((await page.request.post("/api/practice",{data:{...base,action:"check",response:{group:"A",extra:"bad"}}})).status()).toBe(400);
-  expect((await page.request.get("/api/practice?lesson=2")).status()).toBe(404);
-  expect((await page.request.post("/api/practice",{data:{...base,action:"check",response:{group:"A"}}})).ok()).toBeTruthy();
-  const peer=await playwrightRequest.newContext({baseURL:process.env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1:3000"});
-  let peerId:number | undefined;
-  try {
-    const identity=await (await peer.post("/api/student",{data:{name:`qa-practice-peer-${randomUUID()}`}})).json();peerId=identity.student.id;
-    const peerData=await (await peer.get("/api/practice?lesson=1")).json();
-    expect(peerData.exercises.every((e:{state:{attempts:number;solved:boolean}})=>e.state.attempts===0 && !e.state.solved)).toBeTruthy();
-    expect((await peer.post("/api/practice",{data:{...base,action:"solution",studentId:sessions.get(page)}})).status()).toBe(403);
-  } finally {
-    if(peerId) await db.delete(students).where(and(eq(students.id,peerId),like(students.name,"qa-practice-peer-%")));
-    await peer.dispose();
-  }
 });

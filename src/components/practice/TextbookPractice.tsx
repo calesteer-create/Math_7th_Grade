@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEv
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Eye, Lightbulb, Loader2, Lock, RefreshCw, Rocket, Sparkles, XCircle } from "lucide-react";
 import type { Block } from "@/lib/lesson-content";
 import type { PracticeEntry } from "@/lib/practice-types";
+import { loadPractice, actPractice } from "@/lib/local-practice";
 import MathText from "@/components/MathText";
 import NaturalBookFigure from "@/components/figures/NaturalNumberFigures";
 import PracticeWidgets from "@/components/practice/PracticeWidgets";
@@ -18,13 +19,12 @@ function usePractice(lessonId: number) {
   const [error, setError] = useState("");
   const [reload, setReload] = useState(0);
   useEffect(() => {
-    const controller = new AbortController();
-    fetch(`/api/practice?lesson=${lessonId}`, {cache:"no-store",signal:controller.signal}).then(async response => {
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "تعذر تحميل المهمات.");
-      setEntries(data.exercises); setError("");
-    }).catch(e => {if (!controller.signal.aborted) setError(e instanceof Error ? e.message : "تعذر التحميل.");}).finally(() => {if (!controller.signal.aborted) setLoading(false);});
-    return () => controller.abort();
+    const timer = window.setTimeout(() => {
+      try { setEntries(loadPractice(lessonId)); setError(""); }
+      catch { setError("تعذر تحميل المهمات."); }
+      setLoading(false);
+    }, 0);
+    return () => window.clearTimeout(timer);
   },[lessonId,reload]);
   return {entries,loading,error,retry:()=>{setLoading(true);setError("");setReload(n=>n+1);},update:(next:PracticeEntry)=>setEntries(prev=>prev.map(e=>e.key===next.key?next:e))};
 }
@@ -38,7 +38,7 @@ function PracticeSurface({ lessonId, block, entry, onUpdate, reload }: {lessonId
   const [feedback,setFeedback] = useState(entry.state.feedback);
   const [busy,setBusy] = useState<string | null>(null);
   const [error,setError] = useState("");
-  const [stale,setStale] = useState(false);
+  const stale = false;
   const [showSolution,setShowSolution] = useState(!!entry.solution);
   const colors = COLORS[entry.view.kind] ?? COLORS.sets;
   const complete = entry.view.fields.every(field => (response[field.key] ?? "").trim());
@@ -48,10 +48,8 @@ function PracticeSurface({ lessonId, block, entry, onUpdate, reload }: {lessonId
     if (action === "solution" && entry.solution) {setShowSolution(open=>!open);return;}
     setBusy(action);setError("");
     try {
-      const result = await fetch("/api/practice", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({lessonId,exerciseKey:entry.key,version:entry.version,action,response:action==="check"?response:undefined})});
-      const data = await result.json();
-      if (!result.ok) {setStale(result.status===409);throw new Error(data.error || "تعذر حفظ المحاولة.");}
-      const next = data.exercise as PracticeEntry;
+      const { entry: next, saved } = actPractice(lessonId, entry.key, action, response);
+      if (!saved) setError("تعذر الحفظ في المتصفح؛ يمكنك إكمال النشاط لكن المحاولة مؤقتة وقد تضيع عند إغلاق الصفحة.");
       onUpdate(next);
       if (action === "check") {setResponse(next.state.response);setFeedback(next.state.feedback);}
       if (action === "solution") setShowSolution(true);

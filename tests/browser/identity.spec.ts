@@ -1,12 +1,11 @@
 import { test, expect } from "@playwright/test";
 
-// Branding is server-rendered. Disable page scripts so this visual check is read-only:
-// it must not create student progress or change saved notebook data.
-test.use({ javaScriptEnabled: false });
+// Branding and the public solutions page are rendered in the static export.
 
-test("name-only SR identity is consistent in header, footer and teacher login", async ({ page }, info) => {
+
+test("name-only SR identity is consistent in header, footer and public solutions", async ({ page }, info) => {
   for (const route of ["/", "/units", "/quizzes", "/teacher"]) {
-    await page.goto(route);
+    await page.goto(`/Math_7th_Grade${route}`);
     await expect(page.locator(".engineer-topbar")).toContainText("المهندس سومر شاهين");
     await expect(page.locator(".engineer-topbar [data-engineer-mark='SR'] svg text")).toHaveText("SR");
     await expect(page.locator("footer [data-engineer-mark='SR'] svg text")).toHaveText("SR");
@@ -35,13 +34,13 @@ test("name-only SR identity is consistent in header, footer and teacher login", 
       await expect(link).toHaveAttribute("target", "_blank");
     }
   }
-  await page.goto("/");
+  await page.goto("/Math_7th_Grade/");
   await page.locator("header.no-print").screenshot({ path: info.outputPath("sr-header.png") });
   await page.locator("footer").screenshot({ path: info.outputPath("sr-footer.png"), style: "header.sticky { visibility:hidden !important; }" });
 });
 
 test("lesson notebook signature keeps the same SR mark and name without credit prefix", async ({ page }, info) => {
-  await page.goto("/lessons/1?stage=notebook");
+  await page.goto("/Math_7th_Grade/lessons/1?stage=notebook");
   await expect(page.locator("[data-student-copybook]")).toBeVisible();
   const mark = page.locator("[data-student-copybook] [data-engineer-mark='SR']");
   await expect(mark.locator("svg text")).toHaveText("SR");

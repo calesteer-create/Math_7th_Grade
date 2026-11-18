@@ -1,15 +1,13 @@
 import Link from "next/link";
-import { db } from "@/db";
-import { lessons, units } from "@/db/schema";
+import { lessons, units } from "@/lib/curriculum";
 import { fmtNum } from "@/lib/site";
 import UnitIcon from "@/components/UnitIcon";
 import { ArrowLeft, BookOpen, Layers3, Sparkles } from "lucide-react";
 
-export const dynamic = "force-dynamic";
 
 export default async function UnitsPage() {
-  const allUnits = await db.select().from(units).orderBy(units.order);
-  const allLessons = await db.select().from(lessons);
+  const allUnits = units;
+  const allLessons = lessons;
   const published = allLessons.filter(l => l.status === "published").length;
 
   return <div className="mx-auto max-w-7xl px-4 py-10">
