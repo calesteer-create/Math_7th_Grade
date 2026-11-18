@@ -27,7 +27,7 @@ npm run preview       # معاينة out على http://localhost:3000/Math_7th_G
 
 ## النشر
 
-ملف `.github/workflows/pages.yml` يبني ويفحص المشروع عند فتح أو تحديث طلب دمج إلى `main`، وينشر `out` تلقائيًا عند الدفع إلى `main` فقط، باستخدام GitHub Actions وGitHub Pages. لا تمتلك مهمة فحص طلب الدمج صلاحيات النشر. قبل أول نشر يجب اختيار **Settings → Pages → Build and deployment → Source: GitHub Actions** وتفعيل Pages/Actions بحسب إعدادات المستودع. لا حاجة لأسرار إضافية. لا يُنشَر فرع المراجعة تلقائيًا. المسار `/Math_7th_Grade` ثابت في `next.config.ts`؛ إذا تغير اسم المستودع يجب تحديثه وفحص المعاينة والروابط.
+ملف `.github/workflows/pages.yml` يبني ويفحص المشروع عند فتح أو تحديث طلب دمج إلى `main`، وينشر `out` تلقائيًا عند الدفع إلى `main` فقط بعد التحقق من أن الالتزام ناتج من طلب دمج مدمج، باستخدام GitHub Actions وGitHub Pages. لا تمتلك مهمة فحص طلب الدمج صلاحيات النشر. قبل أول نشر يجب اختيار **Settings → Pages → Build and deployment → Source: GitHub Actions** وتفعيل Pages/Actions بحسب إعدادات المستودع. لا حاجة لأسرار إضافية. لا يُنشَر فرع المراجعة تلقائيًا. المسار `/Math_7th_Grade` ثابت في `next.config.ts`؛ إذا تغير اسم المستودع يجب تحديثه وفحص المعاينة والروابط.
 
 ## الخصوصية والقيود
 
