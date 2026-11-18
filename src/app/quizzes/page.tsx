@@ -1,16 +1,15 @@
 import Link from "next/link";
-import { db } from "@/db";
-import { lessons, quizQuestions, units } from "@/db/schema";
+import { lessons, units } from "@/lib/curriculum";
+import assessment from "@/content/assessments/natural-numbers.json";
 import { fmtNum } from "@/lib/site";
 import { LESSON_PUBLICATION_NOTICE } from "@/lib/lesson-publication";
 import { ClipboardCheck, Hourglass, Info, Lock } from "lucide-react";
 
-export const dynamic = "force-dynamic";
 
 export default async function QuizzesPage() {
-  const allUnits = await db.select().from(units).orderBy(units.order);
-  const allLessons = await db.select().from(lessons);
-  const allQuestions = await db.select().from(quizQuestions);
+  const allUnits = units;
+  const allLessons = lessons;
+  const allQuestions = assessment.questions.map(() => ({ scope: "lesson", lessonId: 1, unitId: null as number | null }));
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
@@ -25,7 +24,7 @@ export default async function QuizzesPage() {
       <div className="mb-8 flex items-start gap-3 rounded-2xl border border-sky-200 bg-sky-50 p-5 text-sm font-bold leading-relaxed text-sky-900">
         <Info className="mt-0.5 h-5 w-5 shrink-0" />
         أسئلة نهاية الدرس جديدة وليست من أمثلته أو تمارين الكتاب، لكنها تقيس مهاراته نفسها.
-        تبقى مفاتيح الإجابة في الخادم قبل تسليم الاختبار؛ بعدها تظهر التغذية الراجعة للطالب.
+        يُصحّح الاختبار داخل متصفحك وتظهر التغذية الراجعة بعد التسليم. مفاتيح الإجابة جزء من ملفات الموقع العامة.
       </div>
 
       {/* اختبارات الدروس */}

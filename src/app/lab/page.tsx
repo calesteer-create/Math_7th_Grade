@@ -1,7 +1,6 @@
 import MathLab from "@/components/lab/MathLab";
 import { FlaskConical } from "lucide-react";
 
-export const dynamic = "force-dynamic";
 
 const TOOLS = [
   { id: "fraction", name: "مستكشف الكسر", desc: "تصوّر أي كسر دائرةً وشريطًا، وقارن قيمته العشرية والمبسّطة." },

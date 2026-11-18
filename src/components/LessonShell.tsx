@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, BookOpen, Check, CheckCircle2, ClipboardCheck, Compass, FileText, FlaskConical, Lightbulb, Loader2, NotebookPen, PenLine, Sparkles } from "lucide-react";
+import { readLocal, writeLocal, stageKey, visitedKey } from "@/lib/local-progress";
 import { STAGES, type StageKey } from "@/lib/site";
 import ContentRenderer, { type Block, type NotebookSection } from "@/components/ContentRenderer";
 import QuizPlayer from "@/components/QuizPlayer";
@@ -26,13 +27,26 @@ export default function LessonShell({ lessonId, unitTitle, title, goals, content
   const stage = STAGES[stageIdx];
   const percent = Math.round((stageIdx + 1) / STAGES.length * 100);
   useEffect(() => {
-    fetch("/api/progress", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lessonId, stage: stageIdx, completed: stageIdx === STAGES.length - 1 }) })
-      .then(r => { if (!r.ok) throw new Error("save"); }).catch(() => setSaveError(true)).finally(() => setSaving(false));
-  }, [lessonId, stageIdx]);
+    const timer = window.setTimeout(() => {
+      const requested = new URLSearchParams(window.location.search).get("stage");
+      const requestedIndex = STAGES.findIndex(stage => stage.key === requested);
+      const saved = readLocal<number>(stageKey(lessonId), initialStage);
+      const next = requestedIndex >= 0 ? requestedIndex : Number.isInteger(saved) && saved >= 0 && saved < STAGES.length ? saved : initialStage;
+      const previous = readLocal<number[]>(visitedKey(lessonId), []);
+      const stages = Array.isArray(previous) ? previous.filter(value => Number.isInteger(value) && value >= 0 && value < STAGES.length) : [];
+      const allVisited = Array.from(new Set([...stages, next]));
+      setStageIdx(next); setVisited(allVisited);
+      if (!writeLocal(stageKey(lessonId), next) || !writeLocal(visitedKey(lessonId), allVisited)) setSaveError(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [lessonId, initialStage]);
   function goTo(index: number) {
     const next = Math.max(0, Math.min(STAGES.length - 1, index));
     if (next === stageIdx) return;
-    setSaving(true); setSaveError(false); setVisited(previous => previous.includes(next) ? previous : [...previous, next]); setStageIdx(next);
+    const allVisited = visited.includes(next) ? visited : [...visited, next];
+    const stageSaved = writeLocal(stageKey(lessonId), next);
+    const visitedSaved = writeLocal(visitedKey(lessonId), allVisited);
+    setSaving(false); setSaveError(!stageSaved || !visitedSaved); setVisited(allVisited); setStageIdx(next);
     contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   return <div className="lesson-shell space-y-7">
@@ -54,7 +68,7 @@ export default function LessonShell({ lessonId, unitTitle, title, goals, content
         <div className="lesson-workspace">
           {stage.key === "quiz" ? <QuizPlayer scope="lesson" id={lessonId} title={`اختبار درس: ${title}`}/> : stage.key === "notebook" ? <StudentNotebook lessonId={lessonId} title={title} sections={notebook ?? []}/> : content?.[stage.key]?.length ? <ContentRenderer blocks={content[stage.key]} lessonId={lessonId} groupExercises={stage.key === "apply"}/> : <p className="text-slate-500">المحتوى بانتظار اعتماد صور الكتاب.</p>}
         </div>
-        <div className="lesson-navigation no-print"><button type="button" onClick={() => goTo(stageIdx-1)} disabled={stageIdx===0} className="btn btn-ghost disabled:cursor-not-allowed disabled:opacity-35"><ArrowRight size={16}/> السابق</button><span className="text-[11px] font-semibold text-slate-400">{saving ? <span className="flex items-center gap-1"><Loader2 size={13} className="animate-spin"/> جارٍ الحفظ</span> : saveError ? "تعذر حفظ التقدم؛ حاول التنقل مجددًا" : <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-teal-500"/> يُحفظ تقدّمك تلقائيًا</span>}</span><button type="button" onClick={() => goTo(stageIdx+1)} disabled={stageIdx===STAGES.length-1} className="btn btn-primary disabled:cursor-not-allowed disabled:opacity-35">{stageIdx===7 ? "إلى دفتر الطالب" : "المحطة التالية"}<ArrowLeft size={16}/></button></div>
+        <div className="lesson-navigation no-print"><button type="button" onClick={() => goTo(stageIdx-1)} disabled={stageIdx===0} className="btn btn-ghost disabled:cursor-not-allowed disabled:opacity-35"><ArrowRight size={16}/> السابق</button><span className="text-[11px] font-semibold text-slate-400">{saving ? <span className="flex items-center gap-1"><Loader2 size={13} className="animate-spin"/> جارٍ الحفظ</span> : saveError ? "تعذر حفظ التقدم؛ حاول التنقل مجددًا" : <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-teal-500"/> يُحفظ تقدّمك على هذا الجهاز</span>}</span><button type="button" onClick={() => goTo(stageIdx+1)} disabled={stageIdx===STAGES.length-1} className="btn btn-primary disabled:cursor-not-allowed disabled:opacity-35">{stageIdx===7 ? "إلى دفتر الطالب" : "المحطة التالية"}<ArrowLeft size={16}/></button></div>
       </div>
     </div>
   </div>;

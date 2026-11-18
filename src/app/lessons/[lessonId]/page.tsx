@@ -1,9 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { db } from "@/db";
-import { lessonProgress, lessons, units } from "@/db/schema";
-import { and, eq } from "drizzle-orm";
-import { getStudentId } from "@/lib/student";
+import { lessons, units } from "@/lib/curriculum";
 import { STAGES, fmtNum } from "@/lib/site";
 import LessonShell from "@/components/LessonShell";
 import ContentRenderer, {
@@ -20,41 +17,26 @@ import {
   Map,
 } from "lucide-react";
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() { return lessons.map(lesson => ({ lessonId: String(lesson.id) })); }
 
 export default async function LessonPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ lessonId: string }>;
-  searchParams: Promise<{ stage?: string }>;
 }) {
   const { lessonId } = await params;
-  const requestedStage = (await searchParams).stage;
   const id = Number(lessonId);
   if (!Number.isInteger(id)) notFound();
 
-  const rows = await db
-    .select({ lesson: lessons, unit: units })
-    .from(lessons)
-    .innerJoin(units, eq(lessons.unitId, units.id))
-    .where(eq(lessons.id, id))
-    .limit(1);
-  const row = rows[0];
-  if (!row) notFound();
-  const { lesson, unit } = row;
-
-  const siblings = await db
-    .select()
-    .from(lessons)
-    .where(eq(lessons.unitId, unit.id))
-    .orderBy(lessons.order);
-  const idx = siblings.findIndex((l) => l.id === id);
+  const lesson = lessons.find(lesson => lesson.id === id);
+  if (!lesson) notFound();
+  const unit = units.find(unit => unit.id === lesson.unitId);
+  if (!unit) notFound();
+  const siblings = lessons.filter(item => item.unitId === unit.id);
+  const idx = siblings.findIndex(item => item.id === id);
   const prev = siblings[idx - 1];
   const next = siblings[idx + 1];
   const isPublished = lesson.status === "published" && !!lesson.content;
-  const studentId = await getStudentId();
-  const saved = studentId && isPublished ? await db.select({ stage: lessonProgress.stage }).from(lessonProgress).where(and(eq(lessonProgress.studentId, studentId), eq(lessonProgress.lessonId, lesson.id))).limit(1) : [];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
@@ -73,9 +55,9 @@ export default async function LessonPage({
           unitTitle={unit.title}
           title={lesson.title}
           goals={lesson.goals}
-          content={lesson.content as Record<string, Block[]> | null}
-          notebook={(lesson.notebook as NotebookSection[] | null) ?? null}
-          initialStage={STAGES.some(s => s.key === requestedStage) ? STAGES.findIndex(s => s.key === requestedStage) : saved[0]?.stage ?? 0}
+          content={lesson.content as unknown as Record<string, Block[]> | null}
+          notebook={(lesson.notebook as unknown as NotebookSection[] | null) ?? null}
+          initialStage={0}
           unitOrder={unit.order}
         />
       ) : (
