@@ -1,6 +1,6 @@
+import type { ElementType } from "react";
 import Link from "next/link";
-import { lessons, units } from "@/lib/curriculum";
-import assessment from "@/content/assessments/natural-numbers.json";
+import { lessons, lessonPackage, units } from "@/lib/curriculum";
 import { fmtNum } from "@/lib/site";
 import { LESSON_PUBLICATION_NOTICE } from "@/lib/lesson-publication";
 import { ClipboardCheck, Hourglass, Info, Lock } from "lucide-react";
@@ -8,8 +8,12 @@ import { ClipboardCheck, Hourglass, Info, Lock } from "lucide-react";
 
 export default async function QuizzesPage() {
   const allUnits = units;
-  const allLessons = lessons;
-  const allQuestions = assessment.questions.map(() => ({ scope: "lesson", lessonId: 1, unitId: null as number | null }));
+  // عدد الأسئلة يُقرأ من حزمة كل درس منشور، لا من بنك واحد مفترض.
+  const allLessons = lessons.map(lesson => ({
+    ...lesson,
+    qCount: lesson.status === "published" ? lessonPackage(lesson.id)?.assessment.questions.length ?? 0 : 0,
+  }));
+  const unitQuestionCount = 0; // لا يوجد بنك اختبار وحدة بعد؛ يبقى السلوك الحالي كما هو.
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
@@ -40,15 +44,17 @@ export default async function QuizzesPage() {
               <h3 className="mb-3 text-sm font-black text-slate-400">{unit.title}</h3>
               <div className="grid gap-3 md:grid-cols-2">
                 {unitLessons.map((lesson) => {
-                  const qCount = allQuestions.filter(
-                    (q) => q.scope === "lesson" && q.lessonId === lesson.id
-                  ).length;
+                  const qCount = lesson.qCount;
                   const isPublished = lesson.status === "published" && qCount > 0;
+                  // الدرس غير المنشور لا يُصدَّر له مسار؛ تبقى البطاقة نفسها دون رابط ميت.
+                  const Card = (isPublished ? Link : "div") as ElementType;
                   return (
-                    <Link
+                    <Card
                       key={lesson.id}
-                      href={`/quizzes/lesson/${lesson.id}`}
-                      className="card group flex items-center gap-4 p-4 transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-lg"
+                      {...(isPublished ? { href: `/quizzes/lesson/${lesson.id}` } : {})}
+                      className={isPublished
+                        ? "card group flex items-center gap-4 p-4 transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-lg"
+                        : "card flex items-center gap-4 p-4"}
                     >
                       <span
                         className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${
@@ -76,7 +82,7 @@ export default async function QuizzesPage() {
                       >
                         {isPublished ? "ابدأ الاختبار" : "قريبًا"}
                       </span>
-                    </Link>
+                    </Card>
                   );
                 })}
               </div>
@@ -92,9 +98,7 @@ export default async function QuizzesPage() {
       </h2>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         {allUnits.map((unit) => {
-          const qCount = allQuestions.filter(
-            (q) => q.scope === "unit" && q.unitId === unit.id
-          ).length;
+          const qCount = unitQuestionCount;
           return (
             <div
               key={unit.id}

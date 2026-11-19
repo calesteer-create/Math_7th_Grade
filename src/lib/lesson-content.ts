@@ -26,3 +26,14 @@ export type Block = Provenance & (
   | { kind: "bookFigure"; figure: NaturalFigureKind }
 );
 export type NotebookSection = { id: string; title: string; writingTask: string; blocks: Block[] };
+
+// أنواع قابلة للفحص في وقت التشغيل: أي نوع كتلة أو رسم أو أداة غير مدرج هنا يُرفض
+// أثناء التحقق من المحتوى بدل أن يُعرض فراغًا أو يُتجاهل بصمت.
+export const CONTENT_BLOCK_KINDS = [
+  "lead", "book", "explain", "def", "law", "example", "steps", "mistake", "note", "math",
+  "check", "summary", "activity", "exercise", "guide", "labtool", "naturalStudio", "bookFigure",
+] as const;
+export type ContentBlockKind = (typeof CONTENT_BLOCK_KINDS)[number];
+export const FIGURE_KINDS = ["warmup", "counting", "numberLine", "placeValue"] as const;
+export const LAB_TOOLS = ["fraction", "numberline", "equation", "triangle", "percent"] as const;
+export const STUDIO_MODES = ["full", "dots", "line", "places"] as const;

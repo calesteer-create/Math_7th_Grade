@@ -2,20 +2,21 @@
 
 import { useRef, useState } from "react";
 import { CheckCircle2, ClipboardCheck, Loader2, RotateCcw, ShieldCheck, Sparkles, XCircle } from "lucide-react";
-import bank from "@/content/assessments/natural-numbers.json";
-import { readLocal, writeLocal, quizKey, type QuizAttempt } from "@/lib/local-progress";
+import { assessmentForLesson } from "@/lib/lesson-banks";
+import { readLocal, writeLocal, writeLocalOnce, quizKey, type QuizAttempt } from "@/lib/local-progress";
 import { isCorrect, displayAnswer, LESSON_ASSESSMENT_NOTICE } from "@/lib/assessment";
 import { LESSON_PUBLICATION_NOTICE } from "@/lib/lesson-publication";
 import MathText from "@/components/MathText";
 
-type PublicQuestion = { id: number; type: "mcq" | "truefalse" | "fill" | "problem"; question: string; options: string[] | null; difficulty: string };
-type GradeResult = { id: number; correct: boolean; answer: string; explanation: string | null };
+type PublicQuestion = { id: number; type: "mcq" | "truefalse" | "fill" | "problem"; question: string; options: string[] | null; difficulty: string; skill: string };
+type GradeResult = { id: number; correct: boolean; answer: string; explanation: string | null; skill: string };
 const DIFFICULTY: Record<string, string> = { easy: "انطلاقة", medium: "تطبيق", hard: "تحدٍّ" };
 const LETTERS = ["أ", "ب", "ج", "د", "هـ"];
 
 export default function QuizPlayer({ scope, id, title }: { scope: "lesson" | "unit"; id: number; title?: string }) {
-  const source = scope === "lesson" && id === 1 ? bank.questions : [];
-  const questions: PublicQuestion[] = source.map((q, index) => ({ id: index + 1, type: q.type as PublicQuestion["type"], question: q.question, options: q.options ?? null, difficulty: q.difficulty }));
+  // بنك الدرس يأتي من السجل والمراجع؛ لا افتراض أن الاختبار يخص الدرس الأول.
+  const source = scope === "lesson" ? assessmentForLesson(id)?.questions ?? [] : [];
+  const questions: PublicQuestion[] = source.map((q, index) => ({ id: index + 1, type: q.type as PublicQuestion["type"], question: q.question, options: q.options ?? null, difficulty: q.difficulty, skill: q.skill }));
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [result, setResult] = useState<{ score: number; total: number; results: GradeResult[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -28,11 +29,22 @@ export default function QuizPlayer({ scope, id, title }: { scope: "lesson" | "un
   function reloadQuiz() { setAnswers({}); setResult(null); setError(null); }
   function submit() {
     if (!allAnswered) return;
-    const results = source.map((q, index) => ({ id: index + 1, correct: isCorrect(q.answer, answers[index + 1], q.type), answer: displayAnswer(q), explanation: q.explanation }));
+    const results = source.map((q, index) => ({ id: index + 1, correct: isCorrect(q.answer, answers[index + 1], q.type), answer: displayAnswer(q), explanation: q.explanation, skill: q.skill }));
     const score = results.filter(item => item.correct).length;
     setResult({ score, total: results.length, results });
-    const attempts = readLocal<QuizAttempt[]>(quizKey, []);
-    if (!writeLocal(quizKey, [{ title: title ?? "اختبار", score, total: results.length, date: new Date().toISOString() }, ...attempts].slice(0, 50))) setError("تعذر حفظ النتيجة في المتصفح، لكنها ظاهرة هنا.");
+    // المحاولة تُنسب إلى درسها عند الحفظ. لا يُحذف أي سجل قديم:
+    // ما هو مصفوفة يُنقل كما هو، وما ليس مصفوفة يُحفظ في نسخة احتياطية قبل الكتابة.
+    const raw = readLocal<unknown>(quizKey, []);
+    const kept = Array.isArray(raw) ? raw : [];
+    // النسخة الاحتياطية تُكتب مرة واحدة فقط: أي نسخة محفوظة سابقًا لا تُستبدل أبدًا.
+    if (!Array.isArray(raw) && raw !== null && raw !== undefined) writeLocalOnce(`${quizKey}-backup`, raw);
+    const attempt: QuizAttempt = { title: title ?? "اختبار", score, total: results.length, date: new Date().toISOString() };
+    if (scope === "lesson") attempt.lessonId = id;
+    // التفصيل المهاري يُحفظ مع المحاولة الجديدة فقط؛ المحاولات القديمة تبقى كما هي.
+    if (results.every(item => typeof item.skill === "string" && item.skill.trim())) {
+      attempt.items = results.map(item => ({ id: item.id, skill: item.skill, correct: item.correct }));
+    }
+    if (!writeLocal(quizKey, [attempt, ...kept].slice(0, 50))) setError("تعذر حفظ النتيجة في المتصفح، لكنها ظاهرة هنا.");
     top.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   function retry() { setAnswers({}); setResult(null); setError(null); top.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }

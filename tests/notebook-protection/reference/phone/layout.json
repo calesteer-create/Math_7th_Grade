@@ -1,0 +1,1396 @@
+[
+  {
+    "id": "natural-foundations",
+    "title": "الأعداد الطبيعية ومستقيم الأعداد",
+    "layout": [
+      {
+        "element": "H3",
+        "text": "الأعداد الطبيعية",
+        "box": [
+          124.59,
+          51,
+          192.41,
+          34.5
+        ],
+        "textBands": [
+          "-5: 19.59..192.41"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "23px",
+          "900",
+          "34.5px"
+        ],
+        "color": "rgb(81, 67, 99)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "أكتب في دفتري\n\nأكتب عنوان الدرس والتعريف والمجموعة",
+        "box": [
+          19,
+          149.5,
+          298,
+          88.08
+        ],
+        "textBands": [
+          "9: 174.77..257",
+          "33: 39.08..257",
+          "53.89: 51.88..257",
+          "59.17: 114.58..126.31"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(177, 147, 69)",
+        "padding": "12px 15px"
+      },
+      {
+        "element": "H4",
+        "text": "الأعداد الطبيعية ومستقيم الأعداد",
+        "box": [
+          32.48,
+          258.58,
+          284.52,
+          36
+        ],
+        "textBands": [
+          "-3: 1..283.52"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "18px",
+          "900",
+          "27px"
+        ],
+        "color": "rgb(90, 108, 144)",
+        "padding": "0px 1px 7px"
+      },
+      {
+        "element": "H3",
+        "text": "الدرس: الأعداد الطبيعية",
+        "box": [
+          19,
+          313.58,
+          298,
+          28
+        ],
+        "textBands": [
+          "-1: 138.67..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "العدد الطبيعي يعبّر عن عدد عناصر مجموعة. إذا كانت ",
+        "box": [
+          19,
+          348.58,
+          298,
+          177
+        ],
+        "textBands": [
+          "2: 17.33..298",
+          "35: 2.73..298",
+          "68: 60.58..298",
+          "113: 1.75..298",
+          "117.34: 43.58..55.5",
+          "146: 130.61..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "أكتب المجموعة بالرموز",
+        "box": [
+          19,
+          545.58,
+          298,
+          28
+        ],
+        "textBands": [
+          "-1: 142.39..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "𝑁\n=\n{\n0\n,\n1\n,\n2\n,\n3\n,\n4\n,\n5\n,\n6\n,\n7\n,\n8\n,\n9\n,\n…\n}",
+        "box": [
+          19,
+          583.58,
+          298,
+          81.94
+        ],
+        "textBands": [
+          "26.59: 22.19..36.48",
+          "28.59: 41.98..292.91"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(63, 49, 95)",
+        "padding": "14px 18px"
+      },
+      {
+        "element": "H3",
+        "text": "التمثيل على مستقيم الأعداد",
+        "box": [
+          19,
+          685.52,
+          298,
+          28
+        ],
+        "textBands": [
+          "-1: 105.52..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "نمثّل كل عدد طبيعي بنقطة على مستقيم مدرّج تدريجًا ",
+        "box": [
+          19,
+          720.52,
+          298,
+          99
+        ],
+        "textBands": [
+          "2: 15.41..298",
+          "35: 1.27..298",
+          "43.84: 144.27..160.28",
+          "68: 132.58..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "FIGURE",
+        "text": "تأمّل الشكل وافهم الفكرة\n\nكل عدد، نقطة على المستقي",
+        "box": [
+          19,
+          839.52,
+          298,
+          354.03
+        ],
+        "textBands": [
+          "15: 109.52..229",
+          "31: 114.64..229",
+          "35.25: 32..55.45",
+          "51: 163.97..229",
+          "174.2: -28.82..-13.86",
+          "218.23: -231.18..240.8",
+          "299.84: 29.81..277",
+          "305.13: 92.27..104",
+          "321.03: 77.36..277"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "كل عدد، نقطة على المستقيم",
+        "box": [
+          116.45,
+          873.52,
+          131.55,
+          40
+        ],
+        "textBands": [
+          "-3: 17.19..131.55",
+          "17: 66.52..131.55"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "14px",
+          "800",
+          "20px"
+        ],
+        "color": "rgb(36, 50, 82)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "أنتبه وأنا أرسم",
+        "box": [
+          122.83,
+          1197.55,
+          194.17,
+          28
+        ],
+        "textBands": [
+          "-1: 97.11..194.17"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "أستعمل مسافات متساوية بين التدريجات، وأكتب الأعداد",
+        "box": [
+          19,
+          1232.55,
+          298,
+          99
+        ],
+        "textBands": [
+          "2: 10.38..298",
+          "35: 3.63..298",
+          "68: 133.47..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "TEXTAREA",
+        "text": "",
+        "box": [
+          19,
+          1418.55,
+          298,
+          112
+        ],
+        "textBands": [],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "13px",
+          "400",
+          "30px"
+        ],
+        "color": "rgb(124, 113, 135)",
+        "padding": "10px 12px"
+      }
+    ]
+  },
+  {
+    "id": "place-values",
+    "title": "المنازل وقاعدة حساب القيمة",
+    "layout": [
+      {
+        "element": "H3",
+        "text": "الأعداد الطبيعية",
+        "box": [
+          124.59,
+          51,
+          192.41,
+          34.5
+        ],
+        "textBands": [
+          "-5: 19.59..192.41"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "23px",
+          "900",
+          "34.5px"
+        ],
+        "color": "rgb(81, 67, 99)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "أكتب في دفتري\n\nأكتب قاعدة قيمة الرقم، ثم أنقل المث",
+        "box": [
+          19,
+          149.5,
+          298,
+          87.78
+        ],
+        "textBands": [
+          "9: 174.77..257",
+          "33: 54.84..257",
+          "53.89: 30.02..257"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(177, 147, 69)",
+        "padding": "12px 15px"
+      },
+      {
+        "element": "H4",
+        "text": "المنازل وقاعدة حساب القيمة",
+        "box": [
+          74.5,
+          258.28,
+          242.5,
+          36
+        ],
+        "textBands": [
+          "-3: 1..241.5"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "18px",
+          "900",
+          "27px"
+        ],
+        "color": "rgb(90, 108, 144)",
+        "padding": "0px 1px 7px"
+      },
+      {
+        "element": "H3",
+        "text": "قيمة الرقم بحسب منزلته",
+        "box": [
+          19,
+          313.28,
+          298,
+          28
+        ],
+        "textBands": [
+          "-1: 130.72..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "تعتمد قيمة الرقم في العدد على المنزلة التي يشغلها.",
+        "box": [
+          19,
+          348.28,
+          298,
+          210
+        ],
+        "textBands": [
+          "2: 33..298",
+          "35: 29.67..298",
+          "68: 33.7..298",
+          "113: 26.3..298",
+          "146: 12.28..298",
+          "179: 202.84..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "قاعدة أكتبها وأستعملها",
+        "box": [
+          122.83,
+          578.28,
+          194.17,
+          28
+        ],
+        "textBands": [
+          "-1: 26.44..194.17"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "𝑉\n=\n𝑑\n×\n𝑝\nV=d×p",
+        "box": [
+          19,
+          616.28,
+          298,
+          79.3
+        ],
+        "textBands": [
+          "28.59: 129.47..174.81",
+          "31.59: 110.42..187.58"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(63, 49, 95)",
+        "padding": "14px 18px"
+      },
+      {
+        "element": "DIV",
+        "text": "نحسب قيمة الرقم بضرب الرقم في قيمة منزلته. نرمز لل",
+        "box": [
+          19,
+          705.58,
+          298,
+          66
+        ],
+        "textBands": [
+          "2: 17.73..298",
+          "35: 1.14..298",
+          "43.84: 6.22..210.73"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "مثال الكتاب بخطوات مكتوبة",
+        "box": [
+          122.83,
+          791.58,
+          194.17,
+          28
+        ],
+        "textBands": [
+          "-1: 0.64..194.17"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "المعطى: العدد 143282. المطلوب: قيمة الرقم 4.",
+        "box": [
+          19,
+          826.58,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 18.28..264",
+          "35: 217.36..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "نسمّي الخانات من اليمين: 2 آحاد، 8 عشرات، 2 مئات، ",
+        "box": [
+          19,
+          901.58,
+          264,
+          99
+        ],
+        "textBands": [
+          "2: 8.23..264",
+          "35: 33.02..264",
+          "68: 194.78..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "منزلة الرقم 4 هي عشرات الألوف، وقيمة هذه المنزلة 1",
+        "box": [
+          19,
+          1009.58,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 19.86..264",
+          "35: 143.38..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "الحساب: \n4\n×\n10000\n=\n40000\n4×10000=40000.",
+        "box": [
+          90.25,
+          1084.58,
+          192.75,
+          33
+        ],
+        "textBands": [
+          "2: 0..192.75",
+          "8.38: 5.08..137.98"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "الجواب: قيمة الرقم 4 هي 40000.",
+        "box": [
+          78.58,
+          1126.58,
+          204.42,
+          33
+        ],
+        "textBands": [
+          "2: 0..204.42"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "خلاصة الحل\nأكتب اسم المنزلة قبل الناتج، لأنه يفسّر",
+        "box": [
+          19,
+          1177.58,
+          298,
+          103
+        ],
+        "textBands": [
+          "7: 224.16..285",
+          "42: 18.08..285",
+          "66: 177.84..285"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "10px 13px"
+      },
+      {
+        "element": "TEXTAREA",
+        "text": "",
+        "box": [
+          19,
+          1367.58,
+          298,
+          112
+        ],
+        "textBands": [],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "13px",
+          "400",
+          "30px"
+        ],
+        "color": "rgb(124, 113, 135)",
+        "padding": "10px 12px"
+      }
+    ]
+  },
+  {
+    "id": "three-forms",
+    "title": "جدول المنازل والصيغ الثلاث",
+    "layout": [
+      {
+        "element": "H3",
+        "text": "الأعداد الطبيعية",
+        "box": [
+          124.59,
+          51,
+          192.41,
+          34.5
+        ],
+        "textBands": [
+          "-5: 19.59..192.41"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "23px",
+          "900",
+          "34.5px"
+        ],
+        "color": "rgb(81, 67, 99)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "أكتب في دفتري\n\nأنقل جدول العدد وصيغه الثلاث، وأحاف",
+        "box": [
+          19,
+          149.5,
+          298,
+          87.78
+        ],
+        "textBands": [
+          "9: 174.77..257",
+          "33: 35.06..257",
+          "53.89: 138.42..257"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(177, 147, 69)",
+        "padding": "12px 15px"
+      },
+      {
+        "element": "H4",
+        "text": "جدول المنازل والصيغ الثلاث",
+        "box": [
+          88.59,
+          258.28,
+          228.41,
+          36
+        ],
+        "textBands": [
+          "-3: 1..227.41"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "18px",
+          "900",
+          "27px"
+        ],
+        "color": "rgb(90, 108, 144)",
+        "padding": "0px 1px 7px"
+      },
+      {
+        "element": "H3",
+        "text": "عدد أكتبه بثلاث صيغ",
+        "box": [
+          19,
+          313.28,
+          298,
+          28
+        ],
+        "textBands": [
+          "-1: 161.38..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "العدد المعروض في الجدول هو 83000050002. عند تنظيم ",
+        "box": [
+          19,
+          348.28,
+          298,
+          99
+        ],
+        "textBands": [
+          "2: 11.08..298",
+          "35: 19.02..298",
+          "68: 12.77..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "FIGURE",
+        "text": "تأمّل الشكل وافهم الفكرة\n\nخريطة منازل العدد\nتكبير\n",
+        "box": [
+          19,
+          467.28,
+          298,
+          347
+        ],
+        "textBands": [
+          "15: 109.52..229",
+          "25.25: 32..55.45",
+          "31: 114.98..229",
+          "109: -301.8..230.36",
+          "158: -307.61..265.34",
+          "205: -300.34..260.8",
+          "294: 31.2..277",
+          "314: 31.47..277"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "خريطة منازل العدد",
+        "box": [
+          128.52,
+          501.28,
+          119.48,
+          20
+        ],
+        "textBands": [
+          "-3: 5.47..119.48"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "14px",
+          "800",
+          "20px"
+        ],
+        "color": "rgb(36, 50, 82)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "الصيغ التي أدوّنها",
+        "box": [
+          19,
+          818.28,
+          298,
+          28
+        ],
+        "textBands": [
+          "-1: 180.56..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "الصيغة العددية (القياسية): 83000050002.\n\nالصيغة ال",
+        "box": [
+          19,
+          853.28,
+          298,
+          156
+        ],
+        "textBands": [
+          "2: 39.86..298",
+          "47: 22.59..298",
+          "80: 234.22..298",
+          "125: 20.83..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "طريقة التحويل التي أكتبها",
+        "box": [
+          122.83,
+          1029.28,
+          194.17,
+          28
+        ],
+        "textBands": [
+          "-1: 15.47..194.17"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "أقسّم العدد من اليمين إلى مجموعات من ثلاث خانات.",
+        "box": [
+          19,
+          1064.28,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 15.52..264",
+          "35: 198.47..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "أسمّي المجموعات: وحدات، آلاف، ملايين، مليارات.",
+        "box": [
+          19,
+          1139.28,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 18.17..264",
+          "35: 217.83..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "عند القراءة أتجاوز المجموعة الصفرية، وعند الكتابة ",
+        "box": [
+          19,
+          1214.28,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 3.92..264",
+          "35: 55.92..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "عند تحويل الكلمات إلى أرقام، أكمل كل مجموعة بعد ال",
+        "box": [
+          19,
+          1289.28,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 30.17..264",
+          "35: 52.17..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "تنبيه أضع تحته خطًا",
+        "box": [
+          122.83,
+          1375.28,
+          194.17,
+          28
+        ],
+        "textBands": [
+          "-1: 65.14..194.17"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "عدم نطق الأصفار لا يعني حذفها من العدد. المجموعة 0",
+        "box": [
+          19,
+          1410.28,
+          298,
+          99
+        ],
+        "textBands": [
+          "2: 39.97..298",
+          "35: 5.48..298",
+          "68: 176.77..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "TEXTAREA",
+        "text": "",
+        "box": [
+          19,
+          1596.28,
+          298,
+          112
+        ],
+        "textBands": [],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "13px",
+          "400",
+          "30px"
+        ],
+        "color": "rgb(124, 113, 135)",
+        "padding": "10px 12px"
+      }
+    ]
+  },
+  {
+    "id": "written-solution",
+    "title": "أرتّب حلّي في الدفتر",
+    "layout": [
+      {
+        "element": "H3",
+        "text": "الأعداد الطبيعية",
+        "box": [
+          124.59,
+          51,
+          192.41,
+          34.5
+        ],
+        "textBands": [
+          "-5: 19.59..192.41"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "23px",
+          "900",
+          "34.5px"
+        ],
+        "color": "rgb(81, 67, 99)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "أكتب في دفتري\n\nأنقل المثال التالي بحلّه المنظّم، ث",
+        "box": [
+          19,
+          149.5,
+          298,
+          87.78
+        ],
+        "textBands": [
+          "9: 174.77..257",
+          "33: 47.27..257",
+          "53.89: 53.83..257"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(177, 147, 69)",
+        "padding": "12px 15px"
+      },
+      {
+        "element": "H4",
+        "text": "أرتّب حلّي في الدفتر",
+        "box": [
+          160.02,
+          258.28,
+          156.98,
+          36
+        ],
+        "textBands": [
+          "-3: 1..155.98"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "18px",
+          "900",
+          "27px"
+        ],
+        "color": "rgb(90, 108, 144)",
+        "padding": "0px 1px 7px"
+      },
+      {
+        "element": "H3",
+        "text": "مثال إضافي للكتابة: قيمة الرقم 8",
+        "box": [
+          122.83,
+          313.28,
+          194.17,
+          56
+        ],
+        "textBands": [
+          "-1: 20.14..194.17",
+          "27: 146.67..194.17"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "المعطى: العدد 284315. المطلوب: قيمة الرقم 8 بحسب م",
+        "box": [
+          19,
+          376.28,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 18.28..264",
+          "35: 136.81..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "أبدأ من اليمين: 5 آحاد، 1 عشرات، 3 مئات، 4 آحاد أل",
+        "box": [
+          19,
+          451.28,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 13.27..264",
+          "35: 20.88..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "إذن الرقم 8 في منزلة عشرات الألوف؛ قيمة المكان 100",
+        "box": [
+          19,
+          526.28,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 8.89..264",
+          "35: 172.83..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "أطبق القاعدة: \n8\n×\n10000\n=\n80000\n8×10000=80000.",
+        "box": [
+          52.47,
+          601.28,
+          230.53,
+          33
+        ],
+        "textBands": [
+          "2: 0..230.53",
+          "8.38: 5.08..137.98"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "P",
+        "text": "أكتب الجواب بجملة واضحة: قيمة الرقم 8 هي 80000، لأ",
+        "box": [
+          19,
+          643.28,
+          264,
+          66
+        ],
+        "textBands": [
+          "2: 18.03..264",
+          "35: 48.03..264"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "خلاصة الحل\nأتحقق بالتفكيك: \n200000\n+\n80000\n+\n4000\n",
+        "box": [
+          19,
+          727.28,
+          298,
+          131.94
+        ],
+        "textBands": [
+          "7: 224.16..285",
+          "42: 166.23..285",
+          "72.88: -85.56..283.09",
+          "94.94: 281.13..285"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "16px",
+          "400",
+          "24px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "10px 13px"
+      },
+      {
+        "element": "H3",
+        "text": "شكل حلّي المنظّم",
+        "box": [
+          122.83,
+          879.22,
+          194.17,
+          28
+        ],
+        "textBands": [
+          "-1: 76.36..194.17"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "أكتب المعطيات، ثم المطلوب، ثم القاعدة أو الفكرة ال",
+        "box": [
+          19,
+          914.22,
+          298,
+          132
+        ],
+        "textBands": [
+          "2: 39.2..298",
+          "35: 20.33..298",
+          "68: 36.95..298",
+          "101: 232.84..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "H3",
+        "text": "تذكير في هامش دفتري",
+        "box": [
+          122.83,
+          1066.22,
+          194.17,
+          28
+        ],
+        "textBands": [
+          "-1: 37.23..194.17"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "800",
+          "28px"
+        ],
+        "color": "rgb(37, 39, 70)",
+        "padding": "0px"
+      },
+      {
+        "element": "DIV",
+        "text": "أميّز بين الرقم واسم المنزلة وقيمة الرقم. لا أعطي ",
+        "box": [
+          19,
+          1101.22,
+          298,
+          99
+        ],
+        "textBands": [
+          "2: 1.5..298",
+          "35: 16.14..298",
+          "68: 233.08..298"
+        ],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "15px",
+          "400",
+          "33px"
+        ],
+        "color": "rgb(102, 98, 118)",
+        "padding": "0px"
+      },
+      {
+        "element": "TEXTAREA",
+        "text": "",
+        "box": [
+          19,
+          1287.22,
+          298,
+          112
+        ],
+        "textBands": [],
+        "font": [
+          "Cairo, \"Segoe UI\", Tahoma, Arial, sans-serif",
+          "13px",
+          "400",
+          "30px"
+        ],
+        "color": "rgb(124, 113, 135)",
+        "padding": "10px 12px"
+      }
+    ]
+  }
+]

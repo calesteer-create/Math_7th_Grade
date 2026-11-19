@@ -1,5 +1,6 @@
 // منطق يستعمله الخادم والاستيراد والاختبارات. لا يُستورد في مكونات المتصفح.
 import { normalizeAnswer } from "@/lib/assessment";
+import { equalExactText, parseExactNumber } from "@/lib/numbers";
 import { assertMathText, assertValidTeX } from "@/lib/math-text";
 import type { Block } from "@/lib/lesson-content";
 import type { LearningSolution, PracticeEntry, PracticeFeedback, PracticeView } from "@/lib/practice-types";
@@ -43,7 +44,7 @@ export function validatePracticeResponse(definition: PracticeDefinition, raw: un
     const normalized = normalizeAnswer(value);
     if (field.type === "choice") {
       if (!field.choices?.includes(normalized)) throw new Error(`اختر قيمة صالحة لـ${field.label}.`);
-    } else if (!/^\d+$/.test(normalized) || !Number.isSafeInteger(Number(normalized)) || Number(normalized) > (field.max ?? 999999999999)) {
+    } else if (!/^\d+$/.test(normalized) || BigInt(normalized) > BigInt(field.max ?? 999999999999)) {
       throw new Error(`اكتب عددًا طبيعيًا صالحًا في ${field.label}.`);
     }
     result[field.key] = normalized;
@@ -55,7 +56,10 @@ export function gradePractice(definition: PracticeDefinition, response: Record<s
   const fields = definition.view.fields.map(field => {
     const value = normalizeAnswer(response[field.key] ?? "");
     const expected = definition.expected[field.key];
-    const correct = field.type === "integer" ? /^\d+$/.test(value) && Number(value) === Number(expected) : value === expected;
+    // الأعداد الصحيحة تُقارن نصًا دقيقًا بعد التطبيع؛ لا Number ولا تقريب.
+    const correct = field.type === "integer"
+      ? /^\d+$/.test(value) && !!parseExactNumber(value) && equalExactText(value, expected)
+      : value === expected;
     return { key: field.key, label: field.label, correct, message: correct ? "هذه الخطوة صحيحة." : definition.mistakes[field.key] ?? "راجع هذه الخطوة ثم جرّب مرة أخرى." };
   });
   return { correct: fields.every(field => field.correct), fields };

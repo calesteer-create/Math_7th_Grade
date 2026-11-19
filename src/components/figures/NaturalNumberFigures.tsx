@@ -63,12 +63,23 @@ export function CountingDiagram() {
 /** الصفر يسارًا؛ المسافات متساوية ولا تتأثر باتجاه الصفحة العربي. */
 export function NumberLineDiagram({ point = BOOK_LINE_POINT }: { point?: number }) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
-  const value = Math.max(0, Math.min(BOOK_LINE_MAX, Math.round(point)));
+  /* لا قصّ صامت: النقطة داخل [0، 12] تُرسم في موضعها الحقيقي، وخارجها لا تُرسم إطلاقًا. */
+  const finite = Number.isFinite(point);
+  const inRange = finite && point >= 0 && point <= BOOK_LINE_MAX;
+  const value = inRange ? point : Math.max(0, Math.min(BOOK_LINE_MAX, finite ? point : BOOK_LINE_POINT));
+  const edgeX = finite && point > BOOK_LINE_MAX ? lineX(BOOK_LINE_MAX) : lineX(0);
+  const direction = finite && point > BOOK_LINE_MAX ? 1 : -1;
   const x = lineX(value);
   const arrowEnd = x - 8;
-  return <svg viewBox={`0 0 ${LINE.width} ${LINE.height}`} className="block w-full min-w-[540px]" role="img" aria-labelledby={`${uid}-title ${uid}-desc`} direction="ltr" data-number-line="true">
-    <title id={`${uid}-title`}>{`مستقيم الأعداد والنقطة M عند ${value}`}</title>
-    <desc id={`${uid}-desc`}>تدريجات متساوية من 0 إلى 12 تتزايد نحو اليمين. تبعد النقطة M عند {value} عن الصفر {value} فترات.</desc>
+  const title = inRange
+    ? `مستقيم الأعداد والنقطة M عند ${value}`
+    : `مستقيم الأعداد من 0 إلى 12 والنقطة M خارج المدى عند ${Number.isFinite(point) ? point : "قيمة غير صالحة"}`;
+  const desc = inRange
+    ? `تدريجات متساوية من 0 إلى 12 تتزايد نحو اليمين. تبعد النقطة M عند ${value} عن الصفر ${value} فترات.`
+    : `تدريجات متساوية من 0 إلى 12. القيمة المطلوبة خارج هذا المدى، لذلك لا تُرسم النقطة M داخل الرسم ويُشار إلى اتجاهها عند الطرف.`;
+  return <svg viewBox={`0 0 ${LINE.width} ${LINE.height}`} className="block w-full min-w-[540px]" role="img" aria-labelledby={`${uid}-title ${uid}-desc`} direction="ltr" data-number-line="true" {...(inRange ? {} : { "data-in-range": "false" })}>
+    <title id={`${uid}-title`}>{title}</title>
+    <desc id={`${uid}-desc`}>{desc}</desc>
     <defs>
       <marker id={`${uid}-axis`} markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M 0 0 L 8 4.5 L 0 9 L 2 4.5 Z" fill="#34416a" /></marker>
       <marker id={`${uid}-arc`} markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M 0 0 L 8 4.5 L 0 9 Z" fill="#34416a" /></marker>
@@ -76,12 +87,19 @@ export function NumberLineDiagram({ point = BOOK_LINE_POINT }: { point?: number 
     <line x1="24" y1={LINE.y} x2="813" y2={LINE.y} stroke="#34416a" strokeWidth="1.8" markerEnd={`url(#${uid}-axis)`} />
     {Array.from({ length: 13 }, (_, i) => <g key={i} data-tick={i}>
       <line x1={lineX(i)} x2={lineX(i)} y1={LINE.y - 8} y2={LINE.y + 8} stroke="#66718a" strokeWidth="1.5" />
-      <DiagramMath tex={String(i)} x={lineX(i)-20} y={LINE.y+12} width={40} height={32} fontSize={19} color={i === value ? "#058063" : "#536078"}/>
+      <DiagramMath tex={String(i)} x={lineX(i)-20} y={LINE.y+12} width={40} height={32} fontSize={19} color={i === value && inRange ? "#058063" : "#536078"}/>
     </g>)}
-    {value > 0 && <path d={`M ${LINE.start} ${LINE.y - 19} Q ${(LINE.start + arrowEnd) / 2} ${Math.max(18, 112 - value * 12)} ${arrowEnd} ${LINE.y - 17}`} fill="none" stroke="#34416a" strokeWidth="1.8" markerEnd={`url(#${uid}-arc)`} />}
-    <circle cx={x} cy={LINE.y} r="15" fill="#10b981" fillOpacity="0.10" />
-    <circle data-point="M" cx={x} cy={LINE.y} r="6" fill="#059669" stroke="white" strokeWidth="2" />
-    <DiagramMath tex="M" x={x+5} y={LINE.y-58} width={36} height={34} fontSize={24} color="#047857"/>
+    {inRange && value > 0 && <path d={`M ${LINE.start} ${LINE.y - 19} Q ${(LINE.start + arrowEnd) / 2} ${Math.max(18, 112 - value * 12)} ${arrowEnd} ${LINE.y - 17}`} fill="none" stroke="#34416a" strokeWidth="1.8" markerEnd={`url(#${uid}-arc)`} />}
+    {inRange && <>
+      <circle cx={x} cy={LINE.y} r="15" fill="#10b981" fillOpacity="0.10" />
+      <circle data-point="M" cx={x} cy={LINE.y} r="6" fill="#059669" stroke="white" strokeWidth="2" />
+      <DiagramMath tex="M" x={x+5} y={LINE.y-58} width={36} height={34} fontSize={24} color="#047857"/>
+    </>}
+    {!inRange && <>
+      <circle data-out-of-range="true" cx={edgeX} cy={LINE.y} r="7" fill="#fff" stroke="#b45309" strokeWidth="2" strokeDasharray="4 3" />
+      <line x1={edgeX + direction * 12} x2={edgeX + direction * 30} y1={LINE.y} y2={LINE.y} stroke="#b45309" strokeWidth="2" markerEnd={`url(#${uid}-arc)`} />
+      <text data-out-of-range-value="true" x={edgeX} y={LINE.y - 26} textAnchor="middle" fontSize="17" fontWeight="700" fill="#b45309" direction="ltr">{Number.isFinite(point) ? point : "?"}</text>
+    </>}
   </svg>;
 }
 

@@ -1,4 +1,5 @@
 // أنواع البيانات العامة فقط؛ لا مفاتيح إجابة أو حلول مضمنة في مكونات العميل.
+import { normalizeDigits } from "@/lib/numbers";
 export type PracticeKind = "sets" | "digit-choice" | "twins" | "number-line" | "digit-value" | "planet";
 export type PracticeField = { key: string; label: string; type: "choice" | "integer"; choices?: string[]; max?: number };
 export type PracticeView = {
@@ -35,6 +36,5 @@ export type PracticeEntry = {
 };
 
 export function latinDigits(value: string) {
-  return value.replace(/[\u0660-\u0669]/g, d => String(d.charCodeAt(0) - 0x660))
-    .replace(/[\u06f0-\u06f9]/g, d => String(d.charCodeAt(0) - 0x6f0));
+  return normalizeDigits(value);
 }

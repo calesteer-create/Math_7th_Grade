@@ -1,0 +1,43 @@
+{
+  "samples": {
+    ".copybook-section-title": [
+      {
+        "name": "Cairo-Black",
+        "webfont": true
+      }
+    ],
+    ".copybook-subject": [
+      {
+        "name": "Cairo-ExtraBold",
+        "webfont": true
+      }
+    ],
+    ".copybook-toolbar": [
+      {
+        "name": "Cairo-Bold",
+        "webfont": true
+      }
+    ],
+    ".katex-html .mord.mathnormal": [
+      {
+        "name": "KaTeX_Math-Italic",
+        "webfont": true
+      }
+    ]
+  },
+  "assets": {
+    "KaTeX_AMS-Regular": "0cdd387c9590a1a9f9794560022dbb59654a7d86f187aa0c81495ad42d3a7308",
+    "KaTeX_Main-Regular": "c2342cd8b869e01752a9321dc17213fc40d4d04c79688c1d43f2cf316abd7866",
+    "KaTeX_Math-Italic": "7af58c5ec8f132a2ddde9027c6d7814decce4d3b822a11192a42a20e2e973264",
+    "cairo-arabic-400-normal": "1b36945f5f6a3d1fed3783999b887d0c56cfd66a41a04212a28aa79abbdff0e1",
+    "cairo-arabic-600-normal": "621909d2e4c8720d3af3a74028556956d343baaa5be48c47a0ad406607fc6515",
+    "cairo-arabic-700-normal": "673212b4908a9a6366ad6beb8a8a58c91bc3cb7e6cc4802b315a240c2dd80eb9",
+    "cairo-arabic-800-normal": "ba5febcd1f64ca49060a110276ea847e43a1d1e9c1ef554edaf65b2c0429194a",
+    "cairo-arabic-900-normal": "0260e5d40766ea0d2cde27055c0056a3fc7b8bbb79e0fc708fdb908d70b952d0",
+    "cairo-latin-400-normal": "1e12ba8a71e04bed2e7d75c3bb3f147b8650888a6a4ccd56c12931601ec3afe6",
+    "cairo-latin-600-normal": "7212d7c4943af5388b90cd38e18343c16782f40988616d0596f769c515b71018",
+    "cairo-latin-700-normal": "c174069a5fe05b9a60a058a4d35553fbba7c5207ae979e8fcde5ebc4dacce5a0",
+    "cairo-latin-800-normal": "6ed8549a606ad21113e05f26a7996f19a4b462a48012f39e5c95e40c458a3b0a",
+    "cairo-latin-900-normal": "3cf51437d7bc8d0d7badc0e72b25074627049156a931a7d414d3f854c95d32a6"
+  }
+}
