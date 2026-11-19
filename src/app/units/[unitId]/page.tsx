@@ -1,3 +1,4 @@
+import type { ElementType } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lessons, units } from "@/lib/curriculum";
@@ -60,11 +61,15 @@ export default async function UnitPage({
       <ol className="space-y-3">
         {unitLessons.map((lesson, i) => {
           const isPublished = lesson.status === "published";
+          // الدرس غير المنشور لا يُصدَّر له مسار؛ تبقى البطاقة نفسها بلا رابط ميت.
+          const Card = (isPublished ? Link : "div") as ElementType;
           return (
             <li key={lesson.id}>
-              <Link
-                href={`/lessons/${lesson.id}`}
-                className="card group flex items-center gap-4 p-4 transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-lg"
+              <Card
+                {...(isPublished ? { href: `/lessons/${lesson.id}` } : {})}
+                className={isPublished
+                  ? "card group flex items-center gap-4 p-4 transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-lg"
+                  : "card flex items-center gap-4 p-4"}
               >
                 <span
                   className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl text-sm font-black ${
@@ -92,7 +97,7 @@ export default async function UnitPage({
                     <Lock className="h-3 w-3" /> قريبًا
                   </span>
                 )}
-              </Link>
+              </Card>
             </li>
           );
         })}

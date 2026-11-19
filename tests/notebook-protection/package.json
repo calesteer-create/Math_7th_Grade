@@ -1,0 +1,19 @@
+{
+  "name": "math7-notebook-protection-tests",
+  "private": true,
+  "type": "module",
+  "description": "Isolated, verify-only tests for the approved lesson 1 copybook",
+  "engines": {
+    "node": ">=22.17 <23"
+  },
+  "scripts": {
+    "test": "node verify.mjs"
+  },
+  "devDependencies": {
+    "@sparticuz/chromium": "153.0.0",
+    "dejavu-fonts-ttf": "2.37.3",
+    "mupdf": "1.28.6",
+    "playwright-core": "1.65.1",
+    "pngjs": "7.0.0"
+  }
+}

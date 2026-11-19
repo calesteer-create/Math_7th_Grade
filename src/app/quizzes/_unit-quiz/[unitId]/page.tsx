@@ -4,17 +4,20 @@ import { units } from "@/lib/curriculum";
 import QuizPlayer from "@/components/QuizPlayer";
 import { ArrowRight } from "lucide-react";
 
-export function generateStaticParams() { return units.map(item => ({ unitId: String(item.id) })); }
+/**
+ * اختبار الوحدة — مُعطَّل مؤقتًا.
+ * لا يوجد بنك اختبار وحدة معتمد بعد، وصفحة فارغة تُضلّل الطالب، لذلك لا يُسجَّل هذا المسار
+ * ولا تُصدَّر صفحات `quizzes/unit/*`. المجلد `_unit-quiz` مجلد خاص لا يُوجَّه في App Router.
+ * لإعادة التفعيل: انقل الملف إلى `src/app/quizzes/unit/[unitId]/page.tsx` بعد اعتماد أول بنك،
+ * وأعِد رقم الوحدة إلى `unitQuizIds` في `scripts/check-export.mjs`.
+ */
+export const dynamicParams = false;
+export function generateStaticParams() { return []; }
 
-export default async function UnitQuizPage({
-  params,
-}: {
-  params: Promise<{ unitId: string }>;
-}) {
+export default async function UnitQuizPage({ params }: { params: Promise<{ unitId: string }> }) {
   const { unitId } = await params;
   const id = Number(unitId);
   if (!Number.isInteger(id)) notFound();
-
   const unit = units.find(item => item.id === id);
   if (!unit) notFound();
 

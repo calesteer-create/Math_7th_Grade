@@ -6,7 +6,33 @@ async function files(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   return (await Promise.all(entries.map(e => e.isDirectory() ? files(resolve(dir, e.name)) : [resolve(dir, e.name)]))).flat();
 }
-for (const path of ["index.html", "lessons/1/index.html", "quizzes/lesson/1/index.html", ...Array.from({length: 8}, (_, i) => `units/${i + 1}/index.html`), ...Array.from({length: 33}, (_, i) => `lessons/${i + 1}/index.html`), ...Array.from({length: 33}, (_, i) => `quizzes/lesson/${i + 1}/index.html`), ...Array.from({length: 8}, (_, i) => `quizzes/unit/${i + 1}/index.html`)]) await stat(resolve(root, path));
+// تتحدد الصفحات المتوقعة من سجل الدروس نفسه، لا من أعداد مثبتة في السكربت.
+const registry = JSON.parse(await readFile(resolve("src/content/lesson-registry.json"), "utf8"));
+const unitIds = registry.units.map(unit => unit.id);
+const publishedIds = registry.lessons.filter(lesson => lesson.status === "published").map(lesson => lesson.id);
+const unpublishedIds = registry.lessons.filter(lesson => lesson.status !== "published").map(lesson => lesson.id);
+const exists = async path => { try { await stat(resolve(root, path)); return true; } catch { return false; } };
+// لا تُصدَّر صفحة اختبار وحدة إلا لبند مدرج في بنوك الوحدات المعتمدة (فارغة الآن).
+const unitQuizIds = [];
+const expected = [
+  "index.html", "quizzes/index.html", "units/index.html", "teacher/index.html",
+  ...publishedIds.flatMap(id => [`lessons/${id}/index.html`, `quizzes/lesson/${id}/index.html`]),
+  ...unitIds.flatMap(id => [`units/${id}/index.html`]),
+  ...unitQuizIds.map(id => `quizzes/unit/${id}/index.html`),
+];
+for (const path of expected) await stat(resolve(root, path));
+// اختبار الوحدة لا يظهر للطالب قبل اعتماد محتواه: لا صفحة مصدّرة ولا رابط.
+for (const id of unitIds.filter(id => !unitQuizIds.includes(id))) {
+  if (await exists(`quizzes/unit/${id}/index.html`)) throw new Error(`Unit quiz page exported without a bank: ${id}`);
+}
+const quizzesIndex = await readFile(resolve(root, "quizzes/index.html"), "utf8");
+if (/quizzes\/unit\//.test(quizzesIndex)) throw new Error("Quizzes index links to an unavailable unit quiz");
+// الدرس غير المكتمل لا يُنشر ولا يُفهرس: لا صفحة درس ولا صفحة اختبار له في التصدير.
+for (const id of unpublishedIds) {
+  for (const path of [`lessons/${id}/index.html`, `quizzes/lesson/${id}/index.html`]) {
+    if (await exists(path)) throw new Error(`Unpublished lesson page exported: ${path}`);
+  }
+}
 const all = await files(root);
 let links = 0;
 for (const file of all.filter(f => f.endsWith(".html"))) {
@@ -37,3 +63,4 @@ for (const file of all.filter(f => f.endsWith(".css"))) {
   }
 }
 console.log(`Static export verified: ${all.filter(f => f.endsWith('.html')).length} HTML pages, ${links} local references and CSS assets.`);
+console.log(`Published lesson pages: ${publishedIds.length}; unpublished lesson pages absent: ${unpublishedIds.length}.`);

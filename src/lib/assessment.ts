@@ -1,4 +1,5 @@
 // لا يحتوي هذا الملف أي مفتاح إجابة. يستعمله المصحّح وفحوص المحتوى فقط.
+import { equalExactText, isInvalidNumericText, normalizeNumericText, parseExactNumber } from "@/lib/numbers";
 export const LESSON_ASSESSMENT_NOTICE = "أسئلة جديدة من خارج أمثلة الدرس وتمارين الكتاب، بأعداد ومواقف مختلفة، وتقيس المهارات نفسها التي تعلمتها.";
 
 export type AssessmentQuestion = {
@@ -19,15 +20,9 @@ export type OriginalAssessment = {
 };
 
 export function normalizeAnswer(input: string): string {
-  let value = input.normalize("NFKC")
-    .replace(/[\u0660-\u0669]/g, digit => String(digit.charCodeAt(0) - 0x0660))
-    .replace(/[\u06f0-\u06f9]/g, digit => String(digit.charCodeAt(0) - 0x06f0))
-    .replace(/[\u064b-\u065f\u0670]/g, "")
-    .replace(/٫/g, ".").replace(/٬/g, ",")
-    .replace(/[\u200e\u200f\u2066-\u2069]/g, "")
-    .trim().replace(/\s+/g, " ");
+  let value = normalizeNumericText(input).trim().replace(/\s+/g, " ");
   // قبول فصل الآلاف الصحيح فقط، لا حذف فاصلة عشرية أو فاصل في مكان عشوائي.
-  if (/^\d{1,3}(?:,\d{3})+(?:\.\d+)?$/.test(value)) value = value.replace(/,/g, "");
+  if (/^-?\d{1,3}(?:,\d{3})+(?:\.\d+)?$/.test(value)) value = value.replace(/,/g, "");
   return value;
 }
 
@@ -35,10 +30,14 @@ export function isCorrect(expected: string, given: string, type: string): boolea
   const a = normalizeAnswer(expected);
   const b = normalizeAnswer(given);
   if (!b) return false;
+  // الكسور غير المعرّفة (1/0، 0/0) والأرقام غير الصالحة لا تصحّ بمجرد تطابق النص،
+  // في أي نوع سؤال: قيمة غير معرّفة ليست إجابة.
+  if (isInvalidNumericText(a) || isInvalidNumericText(b)) return false;
+  // الاختيار من متعدد والصح/الخطأ يبقيان مقارنة نصية صارمة كما هما.
   if (type === "mcq" || type === "truefalse") return a === b;
-  if (/^-?\d+(?:\.\d+)?$/.test(a) && /^-?\d+(?:\.\d+)?$/.test(b)) {
-    return Number(a) === Number(b);
-  }
+  // الأعداد تُقارن ككسور دقيقة (BigInt) لا عبر Number، فلا تقريب يقلب الخطأ صوابًا.
+  if (parseExactNumber(a) && parseExactNumber(b)) return equalExactText(a, b);
+  // الإجابات النصية العادية (مثل «مثلث» أو «180°») تبقى كما كانت.
   return a.toLowerCase() === b.toLowerCase();
 }
 

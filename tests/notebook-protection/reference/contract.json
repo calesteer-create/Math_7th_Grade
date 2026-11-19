@@ -1,0 +1,25 @@
+{
+  "componentSha256": "7cf00c14fc2789f9c3bd7ba0e73c864ec867c3b0e064943c1a22c8998d5f498a",
+  "notebookDataSha256": "62b34b60668a96f09e4c0de317c6630d04dcc72ad14019fca67bbb006af9367d",
+  "orderedSheets": [
+    {
+      "id": "natural-foundations",
+      "title": "الأعداد الطبيعية ومستقيم الأعداد"
+    },
+    {
+      "id": "place-values",
+      "title": "المنازل وقاعدة حساب القيمة"
+    },
+    {
+      "id": "three-forms",
+      "title": "جدول المنازل والصيغ الثلاث"
+    },
+    {
+      "id": "written-solution",
+      "title": "أرتّب حلّي في الدفتر"
+    }
+  ],
+  "chromium": "153.0.8010.0",
+  "cairo": "5.3.0",
+  "katex": "0.19.1"
+}

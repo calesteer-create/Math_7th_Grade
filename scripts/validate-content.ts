@@ -1,11 +1,14 @@
-import lessonJson from "../src/content/lesson-1.json";
-import assessmentJson from "../src/content/assessments/natural-numbers.json";
-import practiceJson from "../src/content/practice/natural-numbers.json";
-import { validateLessonPublication, type LessonDraft } from "../src/lib/lesson-publication";
-import { validatePracticeBank, type PracticeBank } from "../src/lib/practice-grading";
-import type { OriginalAssessment } from "../src/lib/assessment";
+import { LESSON_REGISTRY } from "../src/content/lesson-registry";
+import { LESSON_CONTENT_INDEX } from "../src/content/lesson-index";
+import { ASSESSMENT_INDEX } from "../src/content/assessment-index";
+import { PRACTICE_INDEX } from "../src/content/practice-index";
+import { publishedLessons } from "../src/lib/lesson-registry";
+import { validateLessonPackages } from "../src/lib/lesson-package";
 
-const lesson = lessonJson as unknown as LessonDraft;
-validateLessonPublication(lesson, assessmentJson as OriginalAssessment);
-validatePracticeBank(lesson, practiceJson as unknown as PracticeBank);
-console.log("Lesson, assessment, notebook and practice content validated.");
+const packages = validateLessonPackages(LESSON_REGISTRY, {
+  lessons: LESSON_CONTENT_INDEX, assessments: ASSESSMENT_INDEX, practices: PRACTICE_INDEX,
+});
+const published = publishedLessons(LESSON_REGISTRY);
+const pending = LESSON_REGISTRY.lessons.filter(lesson => lesson.status !== "published");
+console.log(`Lesson registry valid: ${LESSON_REGISTRY.units.length} units, ${LESSON_REGISTRY.lessons.length} lessons, ${published.length} published, ${pending.length} pending.`);
+console.log(`Lesson packages valid: ${packages.map(item => `#${item.entry.id} «${item.entry.key}»`).join(", ") || "none"}.`);

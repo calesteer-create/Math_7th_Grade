@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { lessons, units } from "@/lib/curriculum";
+import { findLesson, findUnit, publishedLessons } from "@/lib/curriculum";
 import QuizPlayer from "@/components/QuizPlayer";
 import { ArrowRight } from "lucide-react";
 
-export function generateStaticParams() { return lessons.map(item => ({ lessonId: String(item.id) })); }
+// اختبارات الدروس المنشورة فقط؛ لا صفحة اختبار لدرس غير مكتمل.
+export function generateStaticParams() { return publishedLessons.map(item => ({ lessonId: String(item.id) })); }
 
 export default async function LessonQuizPage({
   params,
@@ -15,9 +16,9 @@ export default async function LessonQuizPage({
   const id = Number(lessonId);
   if (!Number.isInteger(id)) notFound();
 
-  const lesson = lessons.find(item => item.id === id);
-  const unit = lesson && units.find(item => item.id === lesson.unitId);
-  if (!lesson || !unit) notFound();
+  const lesson = findLesson(id);
+  const unit = lesson && findUnit(lesson.unitId);
+  if (!lesson || !unit || lesson.status !== "published") notFound();
   const row = { lesson, unit };
 
   return (

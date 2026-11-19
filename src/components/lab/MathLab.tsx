@@ -5,6 +5,8 @@ import TeX from "@/components/TeX";
 import MathText from "@/components/MathText";
 import DiagramMath from "@/components/DiagramMath";
 import { fmtNum } from "@/lib/site";
+import { displayRational } from "@/lib/numbers";
+import { lineStatusText, percentOf, projectOnLine, unitRate } from "@/lib/lab-math";
 
 function gcd(a: number, b: number): number {
   a = Math.abs(a);
@@ -93,8 +95,8 @@ function FractionExplorer() {
           </div>
           <div className="rounded-xl bg-white p-3 shadow-sm">
             <div className="text-xs font-bold text-slate-500">بالنص العشري</div>
-            <div className="text-xl font-black text-brand-700" dir="ltr">
-              {(num / den).toFixed(3)}
+            <div className="text-xl font-black text-brand-700" dir="ltr" data-decimal-value={`${num}/${den}`}>
+              {displayRational(num, den, 3)}
             </div>
           </div>
           <div className="rounded-xl bg-emerald-50 p-3">
@@ -110,22 +112,25 @@ function FractionExplorer() {
 }
 
 // 2) خط الأعداد النسبية — ضع العدد النسبي على خط الأعداد
+// القيمة الرياضية n/d هي المرجع الوحيد للرسم والقراءة؛ لا تُقصّ ولا تُقرَّب للرسم.
+const NUMBER_LINE_DOMAIN = { min: -2, max: 2, start: 20, width: 360 } as const;
+
 function NumberLineExplorer() {
   const [n, setN] = useState(3);
   const [d, setD] = useState(2);
-  const v = n / d;
-  const clamped = Math.max(-2, Math.min(2, v));
-  const x = ((clamped + 2) / 4) * 360 + 20;
+  const value = d === 0 ? Number.NaN : n / d;
+  const projection = projectOnLine(value, NUMBER_LINE_DOMAIN);
+  const tickX = (t: number) => ((t - NUMBER_LINE_DOMAIN.min) / (NUMBER_LINE_DOMAIN.max - NUMBER_LINE_DOMAIN.min)) * NUMBER_LINE_DOMAIN.width + NUMBER_LINE_DOMAIN.start;
   return (
     <div className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <Slider label="البسط (يمكن أن يكون سالبًا)" value={n} min={-12} max={12} onChange={setN} />
         <Slider label="المقام" value={d} min={1} max={12} onChange={setD} />
       </div>
-      <svg width="100%" viewBox="0 0 400 110" className="rounded-2xl bg-white" role="img" aria-label="خط الأعداد">
+      <svg width="100%" viewBox="0 0 400 110" className="rounded-2xl bg-white" role="img" aria-label="خط الأعداد" data-domain="[-2,2]" data-value={String(value)} data-in-range={String(projection.inRange)}>
         <line x1="20" y1="60" x2="380" y2="60" stroke="#94a3b8" strokeWidth="2.5" />
         {[-2, -1, 0, 1, 2].map((t) => {
-          const tx = ((t + 2) / 4) * 360 + 20;
+          const tx = tickX(t);
           return (
             <g key={t}>
               <line x1={tx} y1="54" x2={tx} y2="66" stroke="#94a3b8" strokeWidth="2.5" />
@@ -134,23 +139,37 @@ function NumberLineExplorer() {
           );
         })}
         {[-1.5, -0.5, 0.5, 1.5].map((t) => {
-          const tx = ((t + 2) / 4) * 360 + 20;
+          const tx = tickX(t);
           return <line key={t} x1={tx} y1="57" x2={tx} y2="63" stroke="#cbd5e1" strokeWidth="1.5" />;
         })}
-        <circle cx={x} cy="60" r="9" fill="#4f46e5" stroke="#312e81" strokeWidth="2.5" />
-        <foreignObject x={Math.max(0, Math.min(356, x - 22))} y="0" width="44" height="48"><div dir="ltr" className="text-center text-[12px] text-brand-700"><TeX tex={`\\frac{${n}}{${d}}`}/></div></foreignObject>
+        {projection.inRange && projection.x !== null && (
+          <>
+            <circle data-point-value={value} cx={projection.x} cy="60" r="9" fill="#4f46e5" stroke="#312e81" strokeWidth="2.5" />
+            <foreignObject x={Math.max(0, Math.min(356, projection.x - 22))} y="0" width="44" height="48"><div dir="ltr" className="text-center text-[12px] text-brand-700"><TeX tex={`\\frac{${n}}{${d}}`}/></div></foreignObject>
+          </>
+        )}
+        {!projection.inRange && projection.edgeX !== null && (
+          <g data-out-of-range="true" data-edge={projection.direction ?? "none"}>
+            <circle cx={projection.edgeX} cy="60" r="9" fill="#fffbeb" stroke="#b45309" strokeWidth="2.5" strokeDasharray="4 3" />
+            <path d={projection.direction === "right" ? `M ${projection.edgeX + 12} 60 l 10 0 m -4 -4 l 4 4 l -4 4` : `M ${projection.edgeX - 12} 60 l -10 0 m 4 -4 l -4 4 l 4 4`} fill="none" stroke="#b45309" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </g>
+        )}
       </svg>
       <div className="flex flex-wrap justify-center gap-3 text-center">
         <div className="rounded-xl bg-white px-4 py-2 shadow-sm">
           <span className="text-xs font-bold text-slate-500">القيمة العشرية: </span>
-          <span className="font-black text-brand-700" dir="ltr">{v.toFixed(3)}</span>
+          <span className="font-black text-brand-700" dir="ltr" data-value-text={`${n}/${d}`}>{displayRational(n, d, 3)}</span>
         </div>
         <div className="rounded-xl bg-white px-4 py-2 shadow-sm">
           <span className="text-xs font-bold text-slate-500">على خط الأعداد: </span>
-          <span className="font-black text-brand-700" dir="ltr">{clamped.toFixed(2)}</span>
-          {v !== clamped && <span className="mr-1 text-xs font-bold text-amber-600">(خارج المجال الظاهر)</span>}
+          <span className="font-black text-brand-700" dir="ltr">
+            {projection.inRange ? displayRational(n, d, 3) : "خارج المجال المرسوم"}
+          </span>
         </div>
       </div>
+      <p className={`rounded-xl px-4 py-3 text-xs font-bold leading-6 ${projection.inRange ? "bg-indigo-50 text-indigo-800" : "bg-amber-50 text-amber-900"}`} role="status" data-line-status={projection.inRange ? "in-range" : "out-of-range"}>
+        {lineStatusText(value, NUMBER_LINE_DOMAIN)} المجال المرسوم من -2 إلى 2، والقيمة تُحسب من n/d دون تقريب.
+      </p>
     </div>
   );
 }
@@ -254,11 +273,13 @@ function TriangleAngles() {
 }
 
 // 5) النسبة ومعدل الوحدة
+// النسبة المئوية = الجزء ÷ الكل × 100، ومعدل الوحدة = الكل ÷ الجزء.
 function PercentRate() {
   const [part, setPart] = useState(20);
   const [whole, setWhole] = useState(80);
   const p = Math.min(part, whole);
-  const pct = whole ? (p / whole) * 100 : 0;
+  const pct = percentOf(p, whole);
+  const rate = unitRate(whole, p);
   return (
     <div className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
@@ -272,18 +293,32 @@ function PercentRate() {
             <span dir="ltr"><TeX tex={`\\frac{${p}}{${whole}}`}/></span>
           </div>
           <div className="h-8 w-full overflow-hidden rounded-full border border-slate-200 bg-slate-100">
-            <div className="h-full rounded-full bg-gradient-to-l from-brand-500 to-brand-700 transition-all duration-300" style={{ width: `${pct}%` }} />
+            <div className="h-full rounded-full bg-gradient-to-l from-brand-500 to-brand-700 transition-all duration-300" style={{ width: `${pct ?? 0}%` }} />
           </div>
         </div>
-        <div className="text-center">
+        <div className="grid gap-3 text-center sm:grid-cols-2">
           <div className="rounded-xl bg-white p-4 shadow-sm">
             <div className="text-xs font-bold text-slate-500">النسبة المئوية</div>
-            <div className="text-3xl font-black text-brand-700" dir="ltr">
-              {pct.toFixed(1)}%
+            <div className="text-2xl font-black text-brand-700" dir="ltr" data-percent={`${p}/${whole}`}>
+              {pct === null ? "غير معرّفة" : `${displayRational(p * 100, whole, 1)}%`}
             </div>
             <div className="mt-1 text-xs font-bold text-slate-500" dir="ltr">
               <TeX tex={`\\frac{${p}}{${whole}}\\times100`}/>
             </div>
+          </div>
+          <div className="rounded-xl bg-emerald-50 p-4">
+            <div className="text-xs font-bold text-emerald-700">معدل الوحدة</div>
+            <div className="text-2xl font-black text-emerald-800" dir="ltr" data-unit-rate={`${whole}/${p}`}>
+              {rate === null ? "غير معرّف" : displayRational(whole, p, 3)}
+            </div>
+            <div className="mt-1 text-xs font-bold text-emerald-700" dir="ltr">
+              {rate === null
+                ? <TeX tex={`\\frac{${whole}}{0}`}/>
+                : <TeX tex={`\\frac{${whole}}{${p}}${Number.isInteger(rate) ? `=${rate}` : `\\approx ${displayRational(whole, p, 3).replace("≈ ", "")}`}`}/>}
+            </div>
+            <p className="mt-1 text-[10px] font-bold leading-5 text-emerald-700" dir="rtl">
+              {rate === null ? "القسمة على صفر غير معرّفة: لا معدل وحدة عندما يكون الجزء صفرًا." : "الكل ÷ الجزء = مقدار الكل لكل وحدة واحدة من الجزء."}
+            </p>
           </div>
         </div>
       </div>
@@ -314,7 +349,7 @@ const TOOLS: Record<string, { title: string; desc: string; Component: () => Reac
   },
   percent: {
     title: "النسبة ومعدل الوحدة",
-    desc: "استكشف العلاقة بين الجزء والكل والنسبة المئوية بتمثيل بصري مباشر.",
+    desc: "استكشف العلاقة بين الجزء والكل والنسبة المئوية، واحسب معدل الوحدة (الكل ÷ الجزء) بتمثيل بصري مباشر.",
     Component: PercentRate,
   },
 };

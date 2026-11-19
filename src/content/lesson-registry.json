@@ -1,0 +1,347 @@
+{
+  "version": 1,
+  "units": [
+    {
+      "id": 1,
+      "key": "numbers-and-operations",
+      "order": 1,
+      "title": "الأعداد والعمليات",
+      "description": "الأعداد الطبيعية والصحيحة والعادية والعمليات عليها.",
+      "icon": "divide",
+      "color": "brand"
+    },
+    {
+      "id": 2,
+      "key": "algebraic-expressions",
+      "order": 2,
+      "title": "العبارات الجبرية والمعادلات",
+      "description": "العبارات الجبرية وحل المعادلات.",
+      "icon": "variable",
+      "color": "violet"
+    },
+    {
+      "id": 3,
+      "key": "parallelograms",
+      "order": 3,
+      "title": "متوازيات الأضلاع",
+      "description": "متوازي الأضلاع، المساحة، والتوازي في الأشكال الرباعية.",
+      "icon": "shapes",
+      "color": "sky"
+    },
+    {
+      "id": 4,
+      "key": "symmetry",
+      "order": 4,
+      "title": "التناظر",
+      "description": "التناظر المركزي، نظيم النقطة، ومراكز ومحاور التناظر.",
+      "icon": "triangle",
+      "color": "emerald"
+    },
+    {
+      "id": 5,
+      "key": "ratio-proportion",
+      "order": 5,
+      "title": "النسبة والتناسب",
+      "description": "التناسب والنسبة المئوية والقياس ومقياس الرسم والحركة المنتظمة.",
+      "icon": "scale",
+      "color": "amber"
+    },
+    {
+      "id": 6,
+      "key": "triangle-circle",
+      "order": 6,
+      "title": "المثلث والدائرة",
+      "description": "تصنيف المثلث وزواياه ورسمه، ومساحة المثلث والدائرة.",
+      "icon": "triangle",
+      "color": "rose"
+    },
+    {
+      "id": 7,
+      "key": "solids",
+      "order": 7,
+      "title": "المجسمات",
+      "description": "المنشور القائم والأسطوانة الدورانية.",
+      "icon": "box",
+      "color": "cyan"
+    },
+    {
+      "id": 8,
+      "key": "statistics-probability",
+      "order": 8,
+      "title": "الإحصاء والاحتمالات",
+      "description": "التمثيلات البيانية والانتشار والارتباط والأحداث واحتمالاتها.",
+      "icon": "chart",
+      "color": "fuchsia"
+    }
+  ],
+  "lessons": [
+    {
+      "id": 1,
+      "unitId": 1,
+      "order": 1,
+      "title": "الأعداد الطبيعية",
+      "sourcePage": 3,
+      "status": "published",
+      "key": "natural-numbers",
+      "contentRef": "lesson-1.json",
+      "assessmentRef": "assessments/natural-numbers.json",
+      "practiceRef": "practice/natural-numbers.json"
+    },
+    {
+      "id": 2,
+      "unitId": 1,
+      "order": 2,
+      "title": "الأعداد الصحيحة (الجمع والطرح)",
+      "sourcePage": 5,
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "unitId": 1,
+      "order": 3,
+      "title": "الأعداد الصحيحة (الضرب والقسمة)",
+      "sourcePage": 10,
+      "status": "pending"
+    },
+    {
+      "id": 4,
+      "unitId": 1,
+      "order": 4,
+      "title": "الأعداد العادية",
+      "sourcePage": 13,
+      "status": "pending"
+    },
+    {
+      "id": 5,
+      "unitId": 1,
+      "order": 5,
+      "title": "العمليات على الأعداد العادية",
+      "sourcePage": 15,
+      "status": "pending"
+    },
+    {
+      "id": 6,
+      "unitId": 1,
+      "order": 6,
+      "title": "الأعداد العادية ومعلّم المستوي",
+      "sourcePage": 20,
+      "status": "pending"
+    },
+    {
+      "id": 7,
+      "unitId": 2,
+      "order": 1,
+      "title": "العبارات الجبرية",
+      "sourcePage": 25,
+      "status": "pending"
+    },
+    {
+      "id": 8,
+      "unitId": 2,
+      "order": 2,
+      "title": "حل المعادلات",
+      "sourcePage": 28,
+      "status": "pending"
+    },
+    {
+      "id": 9,
+      "unitId": 3,
+      "order": 1,
+      "title": "متوازي الأضلاع ومركز التناظر",
+      "sourcePage": 36,
+      "status": "pending"
+    },
+    {
+      "id": 10,
+      "unitId": 3,
+      "order": 2,
+      "title": "مساحة متوازي الأضلاع",
+      "sourcePage": 42,
+      "status": "pending"
+    },
+    {
+      "id": 11,
+      "unitId": 3,
+      "order": 3,
+      "title": "مستقيمات متوازية والقاطع",
+      "sourcePage": 46,
+      "status": "pending"
+    },
+    {
+      "id": 12,
+      "unitId": 3,
+      "order": 4,
+      "title": "الانتقال من الشكل الرباعي إلى متوازي الأضلاع",
+      "sourcePage": 49,
+      "status": "pending"
+    },
+    {
+      "id": 13,
+      "unitId": 3,
+      "order": 5,
+      "title": "حالات خاصة: مستطيل، معين، مربع",
+      "sourcePage": 55,
+      "status": "pending"
+    },
+    {
+      "id": 14,
+      "unitId": 4,
+      "order": 1,
+      "title": "التناظر المركزي",
+      "sourcePage": 59,
+      "status": "pending"
+    },
+    {
+      "id": 15,
+      "unitId": 4,
+      "order": 2,
+      "title": "إيجاد النظيم بالنسبة إلى نقطة",
+      "sourcePage": 68,
+      "status": "pending"
+    },
+    {
+      "id": 16,
+      "unitId": 4,
+      "order": 3,
+      "title": "مركز ومحور التناظر",
+      "sourcePage": 71,
+      "status": "pending"
+    },
+    {
+      "id": 17,
+      "unitId": 5,
+      "order": 1,
+      "title": "التناسب",
+      "sourcePage": 75,
+      "status": "pending"
+    },
+    {
+      "id": 18,
+      "unitId": 5,
+      "order": 2,
+      "title": "النسبة المئوية",
+      "sourcePage": 84,
+      "status": "pending"
+    },
+    {
+      "id": 19,
+      "unitId": 5,
+      "order": 3,
+      "title": "عنوان الدرس غير واضح في الفهرس",
+      "sourcePage": 90,
+      "status": "pending"
+    },
+    {
+      "id": 20,
+      "unitId": 5,
+      "order": 4,
+      "title": "وحدات القياس",
+      "sourcePage": 94,
+      "status": "pending"
+    },
+    {
+      "id": 21,
+      "unitId": 5,
+      "order": 5,
+      "title": "مقياس الرسم",
+      "sourcePage": 98,
+      "status": "pending"
+    },
+    {
+      "id": 22,
+      "unitId": 5,
+      "order": 6,
+      "title": "الطول والحركة المنتظمة",
+      "sourcePage": 101,
+      "status": "pending"
+    },
+    {
+      "id": 23,
+      "unitId": 6,
+      "order": 1,
+      "title": "تصنيف المثلث",
+      "sourcePage": 109,
+      "status": "pending"
+    },
+    {
+      "id": 24,
+      "unitId": 6,
+      "order": 2,
+      "title": "مجموع قياسات زوايا المثلث",
+      "sourcePage": 113,
+      "status": "pending"
+    },
+    {
+      "id": 25,
+      "unitId": 6,
+      "order": 3,
+      "title": "رسم المثلث",
+      "sourcePage": 118,
+      "status": "pending"
+    },
+    {
+      "id": 26,
+      "unitId": 6,
+      "order": 4,
+      "title": "رسم الدائرة المارة برؤوس المثلث",
+      "sourcePage": 124,
+      "status": "pending"
+    },
+    {
+      "id": 27,
+      "unitId": 6,
+      "order": 5,
+      "title": "مساحة المثلث",
+      "sourcePage": 127,
+      "status": "pending"
+    },
+    {
+      "id": 28,
+      "unitId": 6,
+      "order": 6,
+      "title": "مساحة الدائرة",
+      "sourcePage": 130,
+      "status": "pending"
+    },
+    {
+      "id": 29,
+      "unitId": 7,
+      "order": 1,
+      "title": "المنشور القائم",
+      "sourcePage": 137,
+      "status": "pending"
+    },
+    {
+      "id": 30,
+      "unitId": 7,
+      "order": 2,
+      "title": "الأسطوانة الدورانية",
+      "sourcePage": 143,
+      "status": "pending"
+    },
+    {
+      "id": 31,
+      "unitId": 8,
+      "order": 1,
+      "title": "التمثيلات البيانية",
+      "sourcePage": 149,
+      "status": "pending"
+    },
+    {
+      "id": 32,
+      "unitId": 8,
+      "order": 2,
+      "title": "الانتشار والارتباط",
+      "sourcePage": 155,
+      "status": "pending"
+    },
+    {
+      "id": 33,
+      "unitId": 8,
+      "order": 3,
+      "title": "الأحداث واحتمالاتها",
+      "sourcePage": 157,
+      "status": "pending"
+    }
+  ]
+}
