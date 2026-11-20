@@ -111,19 +111,38 @@ test("Lesson 2 interactive IntegersStudio responds accurately across all 4 modes
   await expect(gameStatus).toContainText("0 / 4");
   await expect(gameStatus).not.toContainText("أكبر مجموع");
 
-  // استكشاف المسارات الأربعة خطوة بخطوة
+  // اختيار المرحلة 2 وحدها لا يزيد العداد
   await studio.getByRole("button", { name: "المرحلة 2: -6 (علوي)", exact: true }).click();
-  await studio.getByRole("button", { name: "المرحلة 3: +2 (علوي)", exact: true }).click(); // مسار 1
+  await expect(gameStatus).toContainText("0 / 4");
+  await expect(studio.locator('[role="status"]')).toContainText("اختر الآن محطة متصلة في المرحلة (3)");
+
+  // اختيار المرحلة 3 يكمل المسار 1 ويزيد العداد إلى 1/4
+  await studio.getByRole("button", { name: "المرحلة 3: +2 (علوي)", exact: true }).click();
   await expect(gameStatus).toContainText("1 / 4");
 
-  await studio.getByRole("button", { name: "المرحلة 3: +5 (وسط)", exact: true }).click(); // مسار 2
+  // تغيير المرحلة 2 إلى -4 يلغي اختيار المرحلة 3 ولا يزيد العداد تلقائيًا
+  await studio.getByRole("button", { name: "المرحلة 2: -4 (سفلي)", exact: true }).click();
+  await expect(gameStatus).toContainText("1 / 4");
+  await expect(studio.locator('[role="status"]')).toContainText("اختر الآن محطة متصلة في المرحلة (3)");
+
+  // اختيار المرحلة 3 يكمل المسار 3 ويزيد العداد إلى 2/4
+  await studio.getByRole("button", { name: "المرحلة 3: +5 (وسط)", exact: true }).click();
   await expect(gameStatus).toContainText("2 / 4");
 
-  await studio.getByRole("button", { name: "المرحلة 2: -4 (سفلي)", exact: true }).click();
-  await studio.getByRole("button", { name: "المرحلة 3: +5 (وسط)", exact: true }).click(); // مسار 3
-  await expect(gameStatus).toContainText("3 / 4");
+  // إعادة اختيار مسار سبق اكتشافه (المسار 1: -6 ثم +2) لا يضاعف العداد
+  await studio.getByRole("button", { name: "المرحلة 2: -6 (علوي)", exact: true }).click();
+  await studio.getByRole("button", { name: "المرحلة 3: +2 (علوي)", exact: true }).click();
+  await expect(gameStatus).toContainText("2 / 4");
 
-  await studio.getByRole("button", { name: "المرحلة 3: +2 (سفلي)", exact: true }).click(); // مسار 4
+  // استكشاف المسار 2 (-6 ثم +5) يزيد العداد إلى 3/4
+  await studio.getByRole("button", { name: "المرحلة 3: +5 (وسط)", exact: true }).click();
+  await expect(gameStatus).toContainText("3 / 4");
+  await expect(gameStatus).not.toContainText("أكبر مجموع");
+
+  // استكشاف المسار 4 (-4 ثم +2) يكمل 4/4 ويكشف المسار الفائز صاحب أكبر مجموع
+  await studio.getByRole("button", { name: "المرحلة 2: -4 (سفلي)", exact: true }).click();
+  await expect(gameStatus).toContainText("3 / 4");
+  await studio.getByRole("button", { name: "المرحلة 3: +2 (سفلي)", exact: true }).click();
   await expect(gameStatus).toContainText("4 / 4");
   await expect(gameStatus).toContainText("أكبر مجموع");
 

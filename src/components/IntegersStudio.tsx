@@ -51,19 +51,17 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
     document.getElementById(`${uid}-${TABS[next].id}`)?.focus();
   }
 
-  function pickGame(nextS2: "top" | "bottom", nextS3: "top" | "middle" | "bottom" | null) {
-    let validS3 = nextS3;
-    if (nextS3 !== null) {
-      if (nextS2 === "top" && nextS3 === "bottom") validS3 = null;
-      if (nextS2 === "bottom" && nextS3 === "top") validS3 = null;
-    }
-    setStage2Choice(nextS2);
-    setStage3Choice(validS3);
-    if (validS3 !== null) {
-      const matched = GAME_PATHS.find(p => p.stage2Slot === nextS2 && p.stage3Slot === validS3);
-      if (matched && !discoveredPaths.includes(matched.id)) {
-        setDiscoveredPaths(prev => [...prev, matched.id].sort((x, y) => x - y));
-      }
+  function selectStage2(slot: "top" | "bottom") {
+    setStage2Choice(slot);
+    setStage3Choice(null); // إلغاء اختيار المرحلة 3 لإلزام الطالب باختيار محطة المرحلة 3 لهذا المسار
+  }
+
+  function selectStage3(slot: "top" | "middle" | "bottom") {
+    if (!stage2Choice) return;
+    setStage3Choice(slot);
+    const matched = GAME_PATHS.find(p => p.stage2Slot === stage2Choice && p.stage3Slot === slot);
+    if (matched && !discoveredPaths.includes(matched.id)) {
+      setDiscoveredPaths(prev => [...prev, matched.id].sort((x, y) => x - y));
     }
   }
 
@@ -405,7 +403,7 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                     type="button"
                     aria-label="المرحلة 2: -6 (علوي)"
                     aria-pressed={stage2Choice === "top"}
-                    onClick={() => pickGame("top", stage3Choice)}
+                    onClick={() => selectStage2("top")}
                     className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
                       stage2Choice === "top" ? "border-violet-600 bg-violet-600 text-white" : "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
                     }`}
@@ -416,7 +414,7 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                     type="button"
                     aria-label="المرحلة 2: -4 (سفلي)"
                     aria-pressed={stage2Choice === "bottom"}
-                    onClick={() => pickGame("bottom", stage3Choice)}
+                    onClick={() => selectStage2("bottom")}
                     className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
                       stage2Choice === "bottom" ? "border-violet-600 bg-violet-600 text-white" : "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
                     }`}
@@ -433,7 +431,7 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                         type="button"
                         aria-label="المرحلة 3: +2 (علوي)"
                         aria-pressed={stage3Choice === "top"}
-                        onClick={() => pickGame("top", "top")}
+                        onClick={() => selectStage3("top")}
                         className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
                           stage3Choice === "top" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900 hover:bg-fuchsia-100"
                         }`}
@@ -444,7 +442,7 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                         type="button"
                         aria-label="المرحلة 3: +5 (وسط)"
                         aria-pressed={stage3Choice === "middle"}
-                        onClick={() => pickGame("top", "middle")}
+                        onClick={() => selectStage3("middle")}
                         className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
                           stage3Choice === "middle" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900 hover:bg-fuchsia-100"
                         }`}
@@ -458,7 +456,7 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                         type="button"
                         aria-label="المرحلة 3: +5 (وسط)"
                         aria-pressed={stage3Choice === "middle"}
-                        onClick={() => pickGame("bottom", "middle")}
+                        onClick={() => selectStage3("middle")}
                         className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
                           stage3Choice === "middle" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900 hover:bg-fuchsia-100"
                         }`}
@@ -469,7 +467,7 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                         type="button"
                         aria-label="المرحلة 3: +2 (سفلي)"
                         aria-pressed={stage3Choice === "bottom"}
-                        onClick={() => pickGame("bottom", "bottom")}
+                        onClick={() => selectStage3("bottom")}
                         className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
                           stage3Choice === "bottom" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900 hover:bg-fuchsia-100"
                         }`}
@@ -498,6 +496,10 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                       />
                     </div>
                   </>
+                ) : stage2Choice ? (
+                  <p className="text-sm font-bold text-slate-600">
+                    اختر الآن محطة متصلة في المرحلة (3) لإكمال هذا المسار وحساب مجموع نقاطه.
+                  </p>
                 ) : (
                   <p className="text-sm font-bold text-slate-600">
                     اضغط على محطة في المرحلة (2) ثم محطة في المرحلة (3) لبدء استكشاف أحد المسارات وحساب مجموعه.
