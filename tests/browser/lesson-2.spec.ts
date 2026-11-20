@@ -99,9 +99,52 @@ test("Lesson 2 interactive IntegersStudio responds accurately across all 4 modes
   await expect(studio.locator('[data-studio-result="true"]')).toContainText("نحوّل الطرح إلى جمع المعاكس");
   await expect(studio.locator('[data-studio-result="true"]')).toContainText("الطرح ليس تبديليًا");
 
+  // اختبار التبديل مع القيمة -7 دون قص
+  await studio.getByRole("button", { name: "تبديل العددين", exact: true }).click();
+  await expect(studio.getByRole("slider", { name: "العدد الأول في العملية" })).toHaveValue("-7");
+  await expect(studio.getByRole("slider", { name: "العدد الثاني في العملية" })).toHaveValue("-2");
+  await expect(studio.locator('[data-studio-result="true"]')).toContainText("(-7)");
+
   // 3. Game paths tab
   await studio.getByRole("tab", { name: "لعبة المسارات" }).click();
-  await expect(studio.locator('[role="status"]').first()).toContainText("أكبر مجموع");
+  const gameStatus = studio.locator('[role="status"]');
+  await expect(gameStatus).toContainText("0 / 4");
+  await expect(gameStatus).not.toContainText("أكبر مجموع");
+
+  // اختيار المرحلة 2 وحدها لا يزيد العداد
+  await studio.getByRole("button", { name: "المرحلة 2: -6 (علوي)", exact: true }).click();
+  await expect(gameStatus).toContainText("0 / 4");
+  await expect(studio.locator('[role="status"]')).toContainText("اختر الآن محطة متصلة في المرحلة (3)");
+
+  // اختيار المرحلة 3 يكمل المسار 1 ويزيد العداد إلى 1/4
+  await studio.getByRole("button", { name: "المرحلة 3: +2 (علوي)", exact: true }).click();
+  await expect(gameStatus).toContainText("1 / 4");
+
+  // تغيير المرحلة 2 إلى -4 يلغي اختيار المرحلة 3 ولا يزيد العداد تلقائيًا
+  await studio.getByRole("button", { name: "المرحلة 2: -4 (سفلي)", exact: true }).click();
+  await expect(gameStatus).toContainText("1 / 4");
+  await expect(studio.locator('[role="status"]')).toContainText("اختر الآن محطة متصلة في المرحلة (3)");
+
+  // اختيار المرحلة 3 يكمل المسار 3 ويزيد العداد إلى 2/4
+  await studio.getByRole("button", { name: "المرحلة 3: +5 (وسط)", exact: true }).click();
+  await expect(gameStatus).toContainText("2 / 4");
+
+  // إعادة اختيار مسار سبق اكتشافه (المسار 1: -6 ثم +2) لا يضاعف العداد
+  await studio.getByRole("button", { name: "المرحلة 2: -6 (علوي)", exact: true }).click();
+  await studio.getByRole("button", { name: "المرحلة 3: +2 (علوي)", exact: true }).click();
+  await expect(gameStatus).toContainText("2 / 4");
+
+  // استكشاف المسار 2 (-6 ثم +5) يزيد العداد إلى 3/4
+  await studio.getByRole("button", { name: "المرحلة 3: +5 (وسط)", exact: true }).click();
+  await expect(gameStatus).toContainText("3 / 4");
+  await expect(gameStatus).not.toContainText("أكبر مجموع");
+
+  // استكشاف المسار 4 (-4 ثم +2) يكمل 4/4 ويكشف المسار الفائز صاحب أكبر مجموع
+  await studio.getByRole("button", { name: "المرحلة 2: -4 (سفلي)", exact: true }).click();
+  await expect(gameStatus).toContainText("3 / 4");
+  await studio.getByRole("button", { name: "المرحلة 3: +2 (سفلي)", exact: true }).click();
+  await expect(gameStatus).toContainText("4 / 4");
+  await expect(gameStatus).toContainText("أكبر مجموع");
 
   // 4. Short notation tab
   await studio.getByRole("tab", { name: "الكتابة المختزلة" }).click();
@@ -129,8 +172,12 @@ test("Lesson 2 all 8 interactive textbook missions grade accurately, gate soluti
     await expect(card.locator("[data-practice-feedback]")).toHaveClass(/is-correct/);
   };
 
-  // 1. int-warmup + verify solution gate before/after attempt
+  // 1. int-warmup + verify direct table visibility + solution gate before/after attempt
   let card = page.locator('[data-practice-key="int-warmup"]');
+  const warmupTable = card.locator('table[aria-label="جدول انطلاقة نشطة التفاعلي"]');
+  await expect(warmupTable).toBeVisible();
+  await expect(warmupTable.locator("thead th")).toContainText(["A", "B", "C"]);
+  await expect(warmupTable.locator("tbody tr")).toHaveCount(3);
   await expect(card.getByRole("button", { name: "الحل خطوة بخطوة", exact: true })).toBeDisabled();
   await card.getByRole("button", { name: /تلميح صغير/ }).click();
   await expect(card.locator(".practice-hints")).toBeVisible();
