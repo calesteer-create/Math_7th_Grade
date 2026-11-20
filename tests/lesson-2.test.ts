@@ -53,7 +53,8 @@ test("Lesson 2 math helpers compute integer operations and geometry accurately",
     assert.ok(Math.abs(intLineX(n + 1) - intLineX(n) - step) < 1e-6);
   }
 
-  // مسارات لعبة الحاسوب الأربعة
+  // مسارات لعبة الحاسوب الأربعة وبداية الاستكشاف
+  assert.equal(GAME_PATHS.length, 4);
   assert.deepEqual(
     GAME_PATHS.map(p => [p.id, p.stage1 + p.stage2 + p.stage3, p.total]),
     [
@@ -63,6 +64,10 @@ test("Lesson 2 math helpers compute integer operations and geometry accurately",
       [4, 0, 0],
     ],
   );
+  // المسار رقم 3 هو الأكبر بمجموع +3
+  const maxPath = GAME_PATHS.reduce((best, cur) => (cur.total > best.total ? cur : best), GAME_PATHS[0]);
+  assert.equal(maxPath.id, 3);
+  assert.equal(maxPath.total, 3);
 
   // أمثلة الكتابة المختزلة ص 7
   assert.deepEqual(BOOK_SHORT_EXAMPLES.map(e => e.result), ["+3", "-18", "-2"]);
@@ -78,6 +83,18 @@ test("Lesson 2 math helpers compute integer operations and geometry accurately",
   assert.equal(subNeg.effectiveB, 7);
   assert.equal(subNeg.direction, "right");
   assert.equal(subNeg.asAddTeX, "(-2) + (+7)");
+
+  // اختبار التبديل مع القيم ±7 دون أي قص أو تغيير في القيمة
+  const swappedSubNeg = describeIntegerOp(-7, "-", -2);
+  assert.equal(swappedSubNeg.result, -5);
+  assert.equal(swappedSubNeg.effectiveB, 2);
+  assert.equal(swappedSubNeg.direction, "right");
+  assert.notEqual(subNeg.result, swappedSubNeg.result); // الطرح ليس تبديليًا
+
+  const addSeven = describeIntegerOp(7, "+", -3);
+  const swappedAddSeven = describeIntegerOp(-3, "+", 7);
+  assert.equal(addSeven.result, 4);
+  assert.equal(swappedAddSeven.result, 4); // الجمع تبديلي
 
   const subPos = describeIntegerOp(-4, "-", 2);
   assert.equal(subPos.result, -6);

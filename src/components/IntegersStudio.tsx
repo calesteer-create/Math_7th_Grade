@@ -30,9 +30,9 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
   const swapped = describeIntegerOp(b, op, a);
 
   // أداة 3: استكشاف لعبة المسارات
-  const [stage2Choice, setStage2Choice] = useState<"top" | "bottom">("bottom");
-  const [stage3Choice, setStage3Choice] = useState<"top" | "middle" | "bottom">("middle");
-  const [discoveredPaths, setDiscoveredPaths] = useState<number[]>([3]);
+  const [stage2Choice, setStage2Choice] = useState<"top" | "bottom" | null>(null);
+  const [stage3Choice, setStage3Choice] = useState<"top" | "middle" | "bottom" | null>(null);
+  const [discoveredPaths, setDiscoveredPaths] = useState<number[]>([]);
 
   // أداة 4: الكتابة المختزلة والتجميع
   const [s1, setS1] = useState(-9);
@@ -51,24 +51,23 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
     document.getElementById(`${uid}-${TABS[next].id}`)?.focus();
   }
 
-  function pickGame(nextS2: "top" | "bottom", nextS3: "top" | "middle" | "bottom") {
-    const validS3 =
-      nextS2 === "top"
-        ? nextS3 === "bottom"
-          ? "middle"
-          : nextS3
-        : nextS3 === "top"
-          ? "middle"
-          : nextS3;
+  function pickGame(nextS2: "top" | "bottom", nextS3: "top" | "middle" | "bottom" | null) {
+    let validS3 = nextS3;
+    if (nextS3 !== null) {
+      if (nextS2 === "top" && nextS3 === "bottom") validS3 = null;
+      if (nextS2 === "bottom" && nextS3 === "top") validS3 = null;
+    }
     setStage2Choice(nextS2);
     setStage3Choice(validS3);
-    const matched = GAME_PATHS.find(p => p.stage2Slot === nextS2 && p.stage3Slot === validS3);
-    if (matched && !discoveredPaths.includes(matched.id)) {
-      setDiscoveredPaths(prev => [...prev, matched.id].sort((x, y) => x - y));
+    if (validS3 !== null) {
+      const matched = GAME_PATHS.find(p => p.stage2Slot === nextS2 && p.stage3Slot === validS3);
+      if (matched && !discoveredPaths.includes(matched.id)) {
+        setDiscoveredPaths(prev => [...prev, matched.id].sort((x, y) => x - y));
+      }
     }
   }
 
-  const activePath = GAME_PATHS.find(p => p.stage2Slot === stage2Choice && p.stage3Slot === stage3Choice) ?? GAME_PATHS[2];
+  const activePath = stage2Choice && stage3Choice ? GAME_PATHS.find(p => p.stage2Slot === stage2Choice && p.stage3Slot === stage3Choice) ?? null : null;
   const shortSum = s1 + s2 + s3;
   const positivesSum = [s1, s2, s3].filter(n => n > 0).reduce((acc, n) => acc + n, 0);
   const negativesSum = [s1, s2, s3].filter(n => n < 0).reduce((acc, n) => acc + n, 0);
@@ -256,8 +255,8 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                   </div>
                   <input
                     type="range"
-                    min={-6}
-                    max={6}
+                    min={-7}
+                    max={7}
                     step={1}
                     value={a}
                     onChange={e => setA(Number(e.target.value))}
@@ -317,8 +316,8 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
               {/* مستقيم الأعداد الحي */}
               <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white p-2">
                 <IntegerLineSVG
-                  min={-13}
-                  max={13}
+                  min={-14}
+                  max={14}
                   startPoint={a}
                   endPoint={calc.result}
                   ariaTitle={`تمثيل ${calc.fullTeX} = ${calc.result}`}
@@ -341,7 +340,7 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                   </div>
                   <button
                     type="button"
-                    onClick={() => { const prevA = a; setA(Math.max(-6, Math.min(6, b))); setB(prevA); }}
+                    onClick={() => { const prevA = a; setA(b); setB(prevA); }}
                     className="btn btn-ghost text-xs"
                   >
                     <ArrowLeftRight size={14} /> تبديل العددين
@@ -404,20 +403,22 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                   <span className="text-xs font-extrabold text-slate-600">المرحلة (2):</span>
                   <button
                     type="button"
+                    aria-label="المرحلة 2: -6 (علوي)"
                     aria-pressed={stage2Choice === "top"}
                     onClick={() => pickGame("top", stage3Choice)}
-                    className={`rounded-lg border px-3 py-1.5 text-sm font-black ${
-                      stage2Choice === "top" ? "border-violet-600 bg-violet-600 text-white" : "border-amber-300 bg-amber-50 text-amber-900"
+                    className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
+                      stage2Choice === "top" ? "border-violet-600 bg-violet-600 text-white" : "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
                     }`}
                   >
                     <TeX tex="-6" />
                   </button>
                   <button
                     type="button"
+                    aria-label="المرحلة 2: -4 (سفلي)"
                     aria-pressed={stage2Choice === "bottom"}
                     onClick={() => pickGame("bottom", stage3Choice)}
-                    className={`rounded-lg border px-3 py-1.5 text-sm font-black ${
-                      stage2Choice === "bottom" ? "border-violet-600 bg-violet-600 text-white" : "border-amber-300 bg-amber-50 text-amber-900"
+                    className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
+                      stage2Choice === "bottom" ? "border-violet-600 bg-violet-600 text-white" : "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
                     }`}
                   >
                     <TeX tex="-4" />
@@ -430,69 +431,93 @@ export default function IntegersStudio({ mode = "full" }: { mode?: "full" | Tool
                     <>
                       <button
                         type="button"
+                        aria-label="المرحلة 3: +2 (علوي)"
                         aria-pressed={stage3Choice === "top"}
                         onClick={() => pickGame("top", "top")}
-                        className={`rounded-lg border px-3 py-1.5 text-sm font-black ${
-                          stage3Choice === "top" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900"
+                        className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
+                          stage3Choice === "top" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900 hover:bg-fuchsia-100"
                         }`}
                       >
                         <TeX tex="+2" /> (علوي)
                       </button>
                       <button
                         type="button"
+                        aria-label="المرحلة 3: +5 (وسط)"
                         aria-pressed={stage3Choice === "middle"}
                         onClick={() => pickGame("top", "middle")}
-                        className={`rounded-lg border px-3 py-1.5 text-sm font-black ${
-                          stage3Choice === "middle" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900"
+                        className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
+                          stage3Choice === "middle" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900 hover:bg-fuchsia-100"
                         }`}
                       >
                         <TeX tex="+5" /> (وسط)
                       </button>
                     </>
-                  ) : (
+                  ) : stage2Choice === "bottom" ? (
                     <>
                       <button
                         type="button"
+                        aria-label="المرحلة 3: +5 (وسط)"
                         aria-pressed={stage3Choice === "middle"}
                         onClick={() => pickGame("bottom", "middle")}
-                        className={`rounded-lg border px-3 py-1.5 text-sm font-black ${
-                          stage3Choice === "middle" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900"
+                        className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
+                          stage3Choice === "middle" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900 hover:bg-fuchsia-100"
                         }`}
                       >
                         <TeX tex="+5" /> (وسط)
                       </button>
                       <button
                         type="button"
+                        aria-label="المرحلة 3: +2 (سفلي)"
                         aria-pressed={stage3Choice === "bottom"}
                         onClick={() => pickGame("bottom", "bottom")}
-                        className={`rounded-lg border px-3 py-1.5 text-sm font-black ${
-                          stage3Choice === "bottom" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900"
+                        className={`rounded-lg border px-3 py-1.5 text-sm font-black transition ${
+                          stage3Choice === "bottom" ? "border-violet-600 bg-violet-600 text-white" : "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-900 hover:bg-fuchsia-100"
                         }`}
                       >
                         <TeX tex="+2" /> (سفلي)
                       </button>
                     </>
+                  ) : (
+                    <span className="text-xs font-bold text-slate-400">اختر محطة المرحلة (2) أولًا</span>
                   )}
                 </div>
               </div>
 
-              <GamePathsDiagram highlightPath={activePath.id} />
+              <GamePathsDiagram highlightPath={activePath?.id ?? null} />
 
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4" role="status">
-                <p className="text-xs font-extrabold text-emerald-800">
-                  المسار رقم <bdi dir="ltr">{activePath.id}</bdi> — حساب المجموع خطوة بخطوة:
-                </p>
-                <div className="mt-2">
-                  <TeX
-                    block
-                    tex={`(+2)+(${activePath.stage2})+(+${activePath.stage3}) = (${signedTeX(2 + activePath.stage2)}) + (+${activePath.stage3}) = ${signedTeX(activePath.total)}`}
-                  />
+                {activePath ? (
+                  <>
+                    <p className="text-xs font-extrabold text-emerald-800">
+                      المسار رقم <bdi dir="ltr">{activePath.id}</bdi> — حساب المجموع خطوة بخطوة:
+                    </p>
+                    <div className="mt-2">
+                      <TeX
+                        block
+                        tex={`(+2)+(${activePath.stage2})+(+${activePath.stage3}) = (${signedTeX(2 + activePath.stage2)}) + (+${activePath.stage3}) = ${signedTeX(activePath.total)}`}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-sm font-bold text-slate-600">
+                    اضغط على محطة في المرحلة (2) ثم محطة في المرحلة (3) لبدء استكشاف أحد المسارات وحساب مجموعه.
+                  </p>
+                )}
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-emerald-200/70 pt-3 text-xs font-bold text-emerald-900">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 size={15} className="text-emerald-600" />
+                    اكتشفت <bdi dir="ltr">{discoveredPaths.length} / 4</bdi> مسارات.
+                  </span>
+                  {discoveredPaths.length === 4 ? (
+                    <span className="font-black text-violet-800">
+                      اكتمل استكشاف المسارات الأربعة! المسار رقم 3 (<TeX tex="+2 \to -4 \to +5" />) هو الذي يمنح أكبر مجموع (+3).
+                    </span>
+                  ) : (
+                    <span className="text-slate-500 font-normal">
+                      استمر في استكشاف المسارات الأربعة لتحديد المسار الفائز بأعلى رصيد.
+                    </span>
+                  )}
                 </div>
-                <p className="mt-2 flex items-center gap-2 text-xs font-bold text-emerald-900">
-                  <CheckCircle2 size={15} />
-                  اكتشفت <bdi dir="ltr">{discoveredPaths.length} / 4</bdi> مسارات.{" "}
-                  {activePath.id === 3 && "هذا هو المسار الذي يمنح أكبر مجموع (+3)!"}
-                </p>
               </div>
             </div>
           )}

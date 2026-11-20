@@ -74,47 +74,73 @@ function SignedNumericField({
 function WarmupWidget({ response, onChange, disabled }: Props) {
   return (
     <div className="space-y-4">
-      {INT_WARMUP_ROWS.map((row, idx) => (
-        <div key={row.id} className="rounded-2xl border border-violet-200/80 bg-white p-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="rounded-full bg-violet-100 px-2.5 py-0.5 text-[10px] font-extrabold text-violet-700">
-              السطر <bdi dir="ltr">{idx + 1}</bdi>
-            </span>
-            <p className="flex-1 text-sm font-extrabold text-ink">
-              <MathText text={row.prompt} />
-            </p>
-          </div>
-          {"pointLabel" in row && <MiniWarmupAxis pointLabel={row.pointLabel} pointValue={row.pointValue} />}
-          <div className="mt-3 grid grid-cols-3 gap-2.5" dir="ltr">
-            {row.options.map(opt => {
-              const picked = response[row.id] === opt.key;
-              return (
-                <button
-                  key={opt.key}
-                  type="button"
-                  disabled={disabled}
-                  aria-label={`${row.id}: الخيار ${opt.key} (${opt.label})`}
-                  aria-pressed={picked}
-                  onClick={() => onChange(row.id, opt.key)}
-                  className={`flex flex-col items-center gap-1 rounded-xl border-2 px-3 py-3 transition ${
-                    picked
-                      ? "border-violet-600 bg-violet-50 text-violet-900 shadow-xs"
-                      : "border-slate-200 bg-slate-50/50 text-slate-700 hover:border-violet-300"
-                  }`}
+      <div className="overflow-x-auto rounded-2xl border border-violet-200 bg-white shadow-2xs">
+        <table dir="ltr" className="w-full min-w-[580px] border-collapse text-center" aria-label="جدول انطلاقة نشطة التفاعلي">
+          <thead>
+            <tr>
+              {["A", "B", "C"].map(letter => (
+                <th
+                  key={letter}
+                  scope="col"
+                  className="w-[18%] border-e border-violet-200 bg-violet-100/90 py-3 font-serif text-lg font-bold italic text-violet-900"
                 >
-                  <span className="text-[11px] font-black text-violet-500">
-                    <TeX tex={opt.key} />
-                  </span>
-                  <span className="text-lg font-extrabold">
-                    {opt.tex ? <TeX tex={opt.tex} /> : <span dir="rtl">{opt.label}</span>}
-                  </span>
-                  {picked && <Check size={14} className="text-violet-600" />}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+                  <TeX tex={letter} />
+                </th>
+              ))}
+              <th scope="col" className="bg-emerald-100/90 px-4 text-xs font-extrabold text-emerald-950" dir="rtl">
+                في كل سطر إجابة واحدة صحيحة (اضغط على الخيار الصحيح في الجدول)
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {INT_WARMUP_ROWS.map((row, idx) => (
+              <tr key={row.id} className="border-t border-violet-200">
+                {row.options.map(opt => {
+                  const picked = response[row.id] === opt.key;
+                  return (
+                    <td key={opt.key} className="border-e border-violet-200 p-2 align-middle">
+                      <button
+                        key={opt.key}
+                        type="button"
+                        disabled={disabled}
+                        aria-label={`${row.id}: الخيار ${opt.key} (${opt.label})`}
+                        aria-pressed={picked}
+                        onClick={() => onChange(row.id, opt.key)}
+                        className={`flex w-full flex-col items-center justify-center gap-1 rounded-xl border-2 px-2 py-3 transition ${
+                          picked
+                            ? "border-violet-600 bg-violet-100/90 font-black text-violet-950 shadow-xs ring-2 ring-violet-400/40"
+                            : "border-slate-200 bg-slate-50/60 font-bold text-slate-700 hover:border-violet-300 hover:bg-violet-50/50"
+                        }`}
+                      >
+                        <span className="text-[11px] font-black text-violet-600">
+                          <TeX tex={opt.key} />
+                        </span>
+                        <span className="text-lg font-extrabold">
+                          {opt.tex ? <TeX tex={opt.tex} /> : <span dir="rtl">{opt.label}</span>}
+                        </span>
+                        {picked && <Check size={14} className="text-violet-700" />}
+                      </button>
+                    </td>
+                  );
+                })}
+                <th scope="row" className="bg-emerald-50/60 p-4 text-right text-sm font-bold leading-7 text-emerald-950 align-middle" dir="rtl">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="rounded-full bg-emerald-200/80 px-2.5 py-0.5 text-[10px] font-extrabold text-emerald-900">
+                      السطر <bdi dir="ltr">{idx + 1}</bdi>
+                    </span>
+                    <span className="font-extrabold text-ink"><MathText text={row.prompt} /></span>
+                  </div>
+                  {"pointLabel" in row && (
+                    <div className="mt-2 rounded-xl bg-white/80 p-2 border border-emerald-200/60">
+                      <MiniWarmupAxis pointLabel={row.pointLabel} pointValue={row.pointValue} />
+                    </div>
+                  )}
+                </th>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
