@@ -93,7 +93,11 @@
       "order": 2,
       "title": "الأعداد الصحيحة (الجمع والطرح)",
       "sourcePage": 5,
-      "status": "pending"
+      "status": "published",
+      "key": "integers-add-sub",
+      "contentRef": "lesson-2.json",
+      "assessmentRef": "assessments/integers-add-sub.json",
+      "practiceRef": "practice/integers-add-sub.json"
     },
     {
       "id": 3,

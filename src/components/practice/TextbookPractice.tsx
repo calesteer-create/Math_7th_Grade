@@ -6,12 +6,15 @@ import type { Block } from "@/lib/lesson-content";
 import type { PracticeEntry } from "@/lib/practice-types";
 import { loadPractice, actPractice } from "@/lib/local-practice";
 import MathText from "@/components/MathText";
-import NaturalBookFigure from "@/components/figures/NaturalNumberFigures";
+import BookFigure from "@/components/figures/BookFigure";
 import PracticeWidgets from "@/components/practice/PracticeWidgets";
 import SolutionSteps from "@/components/practice/SolutionSteps";
 
 export type ExerciseBlock = Extract<Block, {kind:"exercise"}>;
-const COLORS: Record<string,[string,string]> = { sets:["#d18b18","#fff8e3"],"digit-choice":["#8750d8","#f5efff"],twins:["#dc638a","#fff0f5"],"number-line":["#0b9b8a","#e7fcf6"],"digit-value":["#dc7c36","#fff4e8"],planet:["#3887cf","#eaf6ff"] };
+const COLORS: Record<string,[string,string]> = {
+  sets:["#d18b18","#fff8e3"],"digit-choice":["#8750d8","#f5efff"],twins:["#dc638a","#fff0f5"],"number-line":["#0b9b8a","#e7fcf6"],"digit-value":["#dc7c36","#fff4e8"],planet:["#3887cf","#eaf6ff"],
+  "int-warmup":["#8750d8","#f5efff"],"int-game":["#d18b18","#fff8e3"],"int-context":["#3887cf","#eaf6ff"],"int-calc-ab":["#0b9b8a","#e7fcf6"],"int-calc-c":["#dc7c36","#fff4e8"],"int-match":["#dc638a","#fff0f5"],"int-lines":["#0b9b8a","#e7fcf6"],"int-reasoning":["#5b50d6","#eef0ff"],
+};
 
 function usePractice(lessonId: number) {
   const [entries, setEntries] = useState<PracticeEntry[]>([]);
@@ -68,7 +71,7 @@ function PracticeSurface({ lessonId, block, entry, onUpdate, reload }: {lessonId
       {feedback && <div data-practice-feedback="true" className={`practice-feedback ${feedback.correct ? "is-correct" : "needs-work"}`} role="status"><div className="flex items-center gap-2 font-extrabold">{feedback.correct?<CheckCircle2 size={20}/>:<Lightbulb size={20}/>} {feedback.correct ? "أحسنت! اكتملت المهمة بتفكيرك." : "فكرة جيدة… لنضبط بعض الخطوات."}</div><ul>{feedback.fields.map(field=><li key={field.key}>{field.correct?<CheckCircle2 size={14}/>:<XCircle size={14}/>}<span><b>{field.label}: </b><MathText text={field.message}/></span></li>)}</ul><p className="mt-2 text-[10px] opacity-70">حُفظت هذه المحاولة. {entry.state.solved && !feedback.correct ? "ومحاولتك الناجحة السابقة محفوظة أيضًا." : "يمكنك الآن مراجعة الحل المتدرّج."}</p></div>}
       <div className="practice-solution-gate"><div><b className="text-sm text-ink">لماذا هذا هو الحل؟</b><p className="mt-1 text-[11px] text-slate-500">{entry.state.attempts ? "نشرح الفكرة والحساب وسبب كل خطوة." : "جرّب جميع أجزاء المهمة ليفتح الحل التعليمي."}</p></div><button type="button" onClick={()=>act("solution")} disabled={!entry.state.attempts || !!busy || stale} className="btn btn-ghost text-xs disabled:opacity-40">{busy==="solution"?<Loader2 size={14} className="animate-spin"/>:entry.state.attempts?<Eye size={15}/>:<Lock size={14}/>} {showSolution && entry.solution ? "إخفاء الحل" : "الحل خطوة بخطوة"}</button></div>
       {showSolution && entry.solution && <SolutionSteps solution={entry.solution}/>}
-      {block.figure && <details className="practice-reference"><summary>الشكل الأصلي للكتاب</summary><div className="pt-4"><NaturalBookFigure figure={block.figure}/></div></details>}
+      {block.figure && <details className="practice-reference"><summary>الشكل الأصلي للكتاب</summary><div className="pt-4"><BookFigure figure={block.figure}/></div></details>}
       <div data-source-citation="true" className="exercise-source"><BookOpen size={13}/><span>المصدر: كتاب الطالب · <MathText text={block.source}/></span></div>
     </div>
   </article>;

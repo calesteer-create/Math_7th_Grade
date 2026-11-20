@@ -1,5 +1,7 @@
 import type { NaturalFigureKind } from "@/lib/natural-numbers";
+import { INTEGER_FIGURE_KINDS, type IntegerFigureKind } from "@/lib/integers";
 
+export type FigureKind = NaturalFigureKind | IntegerFigureKind;
 export type ContentOrigin = "book" | "supplement";
 export const EXTRA_EXPLANATION_LABEL = "شرح إضافي للكتاب";
 
@@ -19,11 +21,12 @@ export type Block = Provenance & (
   | { kind: "check"; question: string; answer: string; hint?: string; options?: string[]; correctOption?: number }
   | { kind: "summary"; title?: string; items: string[] }
   | { kind: "activity"; title?: string; text: string }
-  | { kind: "exercise"; title: string; text: string; source: string; figure?: NaturalFigureKind; practiceId?: string }
+  | { kind: "exercise"; title: string; text: string; source: string; figure?: FigureKind; practiceId?: string }
   | { kind: "guide"; title: string; intro?: string; sections: { title: string; blocks: Block[] }[] }
   | { kind: "labtool"; tool: "fraction" | "numberline" | "equation" | "triangle" | "percent" }
   | { kind: "naturalStudio"; mode?: "full" | "dots" | "line" | "places" }
-  | { kind: "bookFigure"; figure: NaturalFigureKind }
+  | { kind: "integersStudio"; mode?: "full" | "explorer" | "addsub" | "game" | "simplify" }
+  | { kind: "bookFigure"; figure: FigureKind }
 );
 export type NotebookSection = { id: string; title: string; writingTask: string; blocks: Block[] };
 
@@ -31,9 +34,10 @@ export type NotebookSection = { id: string; title: string; writingTask: string; 
 // أثناء التحقق من المحتوى بدل أن يُعرض فراغًا أو يُتجاهل بصمت.
 export const CONTENT_BLOCK_KINDS = [
   "lead", "book", "explain", "def", "law", "example", "steps", "mistake", "note", "math",
-  "check", "summary", "activity", "exercise", "guide", "labtool", "naturalStudio", "bookFigure",
+  "check", "summary", "activity", "exercise", "guide", "labtool", "naturalStudio", "integersStudio", "bookFigure",
 ] as const;
 export type ContentBlockKind = (typeof CONTENT_BLOCK_KINDS)[number];
-export const FIGURE_KINDS = ["warmup", "counting", "numberLine", "placeValue"] as const;
+export const FIGURE_KINDS = ["warmup", "counting", "numberLine", "placeValue", ...INTEGER_FIGURE_KINDS] as const;
 export const LAB_TOOLS = ["fraction", "numberline", "equation", "triangle", "percent"] as const;
 export const STUDIO_MODES = ["full", "dots", "line", "places"] as const;
+export const INTEGER_STUDIO_MODES = ["full", "explorer", "addsub", "game", "simplify"] as const;

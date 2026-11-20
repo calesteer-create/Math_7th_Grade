@@ -8,7 +8,8 @@ import StepGuide from "@/components/StepGuide";
 import PracticeTrail, { SinglePractice, type ExerciseBlock } from "@/components/practice/TextbookPractice";
 import MathLab from "@/components/lab/MathLab";
 import NaturalNumbersStudio from "@/components/NaturalNumbersStudio";
-import NaturalBookFigure from "@/components/figures/NaturalNumberFigures";
+import IntegersStudio from "@/components/IntegersStudio";
+import BookFigure from "@/components/figures/BookFigure";
 import type { Block, ContentOrigin, NotebookSection } from "@/lib/lesson-content";
 export type { Block, NotebookSection } from "@/lib/lesson-content";
 
@@ -46,13 +47,14 @@ export function BlockRenderer({ block, lessonId }: { block: Block; lessonId?: nu
     case "summary": return <Frame tone="mint" title={block.title ?? "احتفظ بهذه الأفكار"} icon={<CheckCircle2 size={20}/>} origin={origin} kind={block.kind}><ul className="space-y-3">{block.items.map((item, i) => <li key={i} className="flex items-start gap-3"><CheckCircle2 className="mt-1.5 shrink-0 text-emerald-500" size={16}/><p className="lesson-prose"><MathText text={item}/></p></li>)}</ul></Frame>;
     case "activity": return <Frame tone="sky" title={block.title ?? "جرّبها بنفسك"} icon={<FlaskConical size={20}/>} origin={origin} kind={block.kind}><Paragraphs text={block.text}/></Frame>;
     case "exercise": return lessonId && block.practiceId ? <SinglePractice lessonId={lessonId} block={block}/> : <div data-exercise="true"><Frame tone="sunshine" title={block.title} icon={<PencilLine size={20}/>} origin={origin} kind={block.kind}>
-      <Paragraphs text={block.text}/>{block.figure && <div className="mt-5"><NaturalBookFigure figure={block.figure}/></div>}
+      <Paragraphs text={block.text}/>{block.figure && <div className="mt-5"><BookFigure figure={block.figure}/></div>}
       <div data-source-citation="true" className="exercise-source"><BookOpen size={13}/><span>المصدر: كتاب الطالب · <MathText text={block.source}/></span></div>
     </Frame></div>;
     case "guide": return <StepGuide title={block.title} intro={block.intro} titles={block.sections.map(s => s.title)} panels={block.sections.map((section, i) => <ContentRenderer key={i} blocks={section.blocks} lessonId={lessonId}/>)}/>;
     case "labtool": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<MathLab tool={block.tool}/></div>;
     case "naturalStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<NaturalNumbersStudio mode={block.mode}/></div>;
-    case "bookFigure": return <NaturalBookFigure figure={block.figure}/>;
+    case "integersStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<IntegersStudio mode={block.mode}/></div>;
+    case "bookFigure": return <BookFigure figure={block.figure}/>;
   }
 }
 
