@@ -44,10 +44,19 @@ export function validatePracticeResponse(definition: PracticeDefinition, raw: un
     const normalized = normalizeAnswer(value);
     if (field.type === "choice") {
       if (!field.choices?.includes(normalized)) throw new Error(`اختر قيمة صالحة لـ${field.label}.`);
+      result[field.key] = normalized;
+    } else if (field.type === "signed-integer") {
+      const signed = normalized.replace(/[\u2212\u2013\u2014]/g, "-");
+      if (!/^[+-]?\d+$/.test(signed)) throw new Error(`اكتب عددًا صحيحًا صالحًا في ${field.label}.`);
+      const magnitude = BigInt(signed.replace(/^[+-]/, ""));
+      if (magnitude > BigInt(field.max ?? 999999999999)) throw new Error(`اكتب عددًا صحيحًا ضمن المدى المسموح في ${field.label}.`);
+      const canonical = BigInt(signed.replace(/^\+/, "")).toString();
+      result[field.key] = canonical;
     } else if (!/^\d+$/.test(normalized) || BigInt(normalized) > BigInt(field.max ?? 999999999999)) {
       throw new Error(`اكتب عددًا طبيعيًا صالحًا في ${field.label}.`);
+    } else {
+      result[field.key] = normalized;
     }
-    result[field.key] = normalized;
   }
   return result;
 }
@@ -59,7 +68,9 @@ export function gradePractice(definition: PracticeDefinition, response: Record<s
     // الأعداد الصحيحة تُقارن نصًا دقيقًا بعد التطبيع؛ لا Number ولا تقريب.
     const correct = field.type === "integer"
       ? /^\d+$/.test(value) && !!parseExactNumber(value) && equalExactText(value, expected)
-      : value === expected;
+      : field.type === "signed-integer"
+        ? /^[+-]?\d+$/.test(value.replace(/[\u2212\u2013\u2014]/g, "-")) && !!parseExactNumber(value.replace(/[\u2212\u2013\u2014]/g, "-")) && equalExactText(value.replace(/[\u2212\u2013\u2014]/g, "-"), expected)
+        : value === expected;
     return { key: field.key, label: field.label, correct, message: correct ? "هذه الخطوة صحيحة." : definition.mistakes[field.key] ?? "راجع هذه الخطوة ثم جرّب مرة أخرى." };
   });
   return { correct: fields.every(field => field.correct), fields };
@@ -90,7 +101,10 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
     if (!/^[a-z][a-z0-9-]{1,63}$/.test(definition.key) || keys.has(definition.key)) throw new Error("معرّف مهمة مكرر أو غير صالح.");
     keys.add(definition.key);
     if (!lesson.solutions.some(s => s.order === definition.sourceOrder)) throw new Error("النشاط لا يرتبط بسؤال موثّق من المصدر.");
-    if (!["sets", "digit-choice", "twins", "number-line", "digit-value", "planet"].includes(definition.view.kind)) throw new Error("طريقة تفاعل غير معروفة.");
+    if (![
+      "sets", "digit-choice", "twins", "number-line", "digit-value", "planet",
+      "int-warmup", "int-game", "int-context", "int-calc-ab", "int-calc-c", "int-match", "int-lines", "int-reasoning",
+    ].includes(definition.view.kind)) throw new Error("طريقة تفاعل غير معروفة.");
     if (!definition.view.title?.trim() || !definition.view.instruction?.trim() || !definition.view.fields?.length) throw new Error("بيانات المهمة ناقصة.");
     if (definition.view.fields.some(field => !/^[a-z][a-zA-Z0-9]{0,39}$/.test(field.key) || ["constructor", "prototype"].includes(field.key) || !field.label.trim())) throw new Error("اسم حقل غير صالح.");
     const fieldKeys = definition.view.fields.map(f => f.key);
@@ -98,9 +112,17 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
     const requiredFields: Record<string, string[]> = {
       sets: ["group"], "digit-choice": ["position", "value"], twins: ["leftValue", "rightValue"],
       "number-line": ["point"], "digit-value": ["position", "value"], planet: ["billions", "millions", "thousands", "units", "number"],
+      "int-warmup": ["temp", "coordM", "distG"],
+      "int-game": ["p1", "p2", "p3", "p4", "best"],
+      "int-context": ["elevator", "submarine"],
+      "int-calc-ab": ["a1", "a2", "a3", "b1", "b2", "b3"],
+      "int-calc-c": ["c1", "c2", "c3"],
+      "int-match": ["m1", "m2", "m3", "m4", "m5"],
+      "int-lines": ["la", "lb", "lc"],
+      "int-reasoning": ["counter", "whyComm", "whyAssoc"],
     };
     if (JSON.stringify(fieldKeys) !== JSON.stringify(requiredFields[definition.view.kind])) throw new Error("حقول المهمة لا تتوافق مع طريقة التفاعل.");
-    if (definition.view.fields.some(field => !["choice", "integer"].includes(field.type))) throw new Error("نوع حقل غير صالح.");
+    if (definition.view.fields.some(field => !["choice", "integer", "signed-integer"].includes(field.type))) throw new Error("نوع حقل غير صالح.");
     if (["digit-choice", "digit-value", "twins"].includes(definition.view.kind)) {
       if (!/^\d{1,12}$/.test(definition.view.number ?? "") || !/^\d$/.test(definition.view.focusDigit ?? "")) throw new Error("رقم النشاط أو الرقم المطلوب غير صالح.");
       if (definition.view.kind === "twins" && definition.view.number!.split("").filter(d => d === definition.view.focusDigit).length !== 2) throw new Error("نشاط المطابقة يحتاج إلى ظهورين للرقم نفسه.");
