@@ -59,6 +59,8 @@ test("Lesson 2 loads cleanly with all 6 explain tabs, zoomable figures, and isol
 
   // stage: discover
   await stage(page, "اكتشف المفهوم");
+  await expect(page.locator('[data-book-figure="intOpposites"]')).toBeVisible();
+  await page.locator('[data-practice-key="game-paths"]').getByText("الشكل الأصلي للكتاب", { exact: true }).click();
   await expect(page.locator('[data-book-figure="intGamePaths"]')).toBeVisible();
 
   // stage: explain (6 guided tabs)
@@ -85,24 +87,25 @@ test("Lesson 2 interactive IntegersStudio responds accurately across all 4 modes
   await expect(page.locator("#lesson-content h2")).toHaveText("المختبر التفاعلي");
 
   // 1. Explorer tab
-  await page.getByRole("tab", { name: "المعاكس والبُعد" }).click();
-  const slider = page.getByRole("slider", { name: "اختيار العدد الصحيح" });
+  const studio = page.locator('[data-integers-studio="true"]');
+  await studio.getByRole("tab", { name: "المعاكس والبُعد" }).click();
+  const slider = studio.getByRole("slider", { name: "اختيار العدد الصحيح" });
   await slider.fill("-4");
-  await expect(page.locator('[role="status"]').first()).toContainText("سالب تمامًا");
+  await expect(studio.locator('[role="status"]').first()).toContainText("سالب تمامًا");
 
   // 2. Add/Sub tab
-  await page.getByRole("tab", { name: "الجمع والطرح على المستقيم" }).click();
-  await page.getByRole("button", { name: "مثال طرح 2", exact: true }).click();
-  await expect(page.locator('[data-studio-result="true"]')).toContainText("نحوّل الطرح إلى جمع المعاكس");
-  await expect(page.locator('[data-studio-result="true"]')).toContainText("الطرح ليس تبديليًا");
+  await studio.getByRole("tab", { name: "الجمع والطرح على المستقيم" }).click();
+  await studio.getByRole("button", { name: "مثال طرح 2", exact: true }).click();
+  await expect(studio.locator('[data-studio-result="true"]')).toContainText("نحوّل الطرح إلى جمع المعاكس");
+  await expect(studio.locator('[data-studio-result="true"]')).toContainText("الطرح ليس تبديليًا");
 
   // 3. Game paths tab
-  await page.getByRole("tab", { name: "لعبة المسارات" }).click();
-  await expect(page.locator('[role="status"]').first()).toContainText("أكبر مجموع");
+  await studio.getByRole("tab", { name: "لعبة المسارات" }).click();
+  await expect(studio.locator('[role="status"]').first()).toContainText("أكبر مجموع");
 
   // 4. Short notation tab
-  await page.getByRole("tab", { name: "الكتابة المختزلة" }).click();
-  await page.getByRole("button", { name: /مثال الكتاب/ }).click();
+  await studio.getByRole("tab", { name: "الكتابة المختزلة" }).click();
+  await studio.getByRole("button", { name: /مثال الكتاب/ }).click();
   await assertMathDirection(page);
   await noPageOverflow(page);
   expect(runtimeErrors).toEqual([]);
@@ -235,7 +238,7 @@ test("Lesson 2 Student Notebook saves notes across reload and prints all 4 sheet
   await expect(page.getByRole("tablist", { name: "أوراق دفتر الطالب" }).getByRole("tab")).toHaveCount(4);
   await expect(page.locator('[data-student-copybook] [data-block-kind="summary"]')).toHaveCount(0);
 
-  const note = page.getByRole("textbox", { name: "ملاحظتي: الأعداد الصحيحة والمستقيم والمتعاكسان", exact: true });
+  const note = page.getByRole("textbox", { name: "ملاحظتي: الأعداد الصحيحة والعددان المتعاكسان", exact: true });
   await note.fill("المسافة عن الصفر موجبة دائمًا، ومجموع المتعاكسين يساوي صفر.");
   await page.locator(".copybook-sheet.is-current").getByRole("checkbox").check();
   await page.reload();
