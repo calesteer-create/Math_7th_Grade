@@ -10,6 +10,7 @@ import MathLab from "@/components/lab/MathLab";
 import NaturalNumbersStudio from "@/components/NaturalNumbersStudio";
 import IntegersStudio from "@/components/IntegersStudio";
 import IntegersMulDivStudio from "@/components/IntegersMulDivStudio";
+import RationalNumbersStudio from "@/components/RationalNumbersStudio";
 import BookFigure from "@/components/figures/BookFigure";
 import type { Block, ContentOrigin, NotebookSection } from "@/lib/lesson-content";
 export type { Block, NotebookSection } from "@/lib/lesson-content";
@@ -56,6 +57,7 @@ export function BlockRenderer({ block, lessonId }: { block: Block; lessonId?: nu
     case "naturalStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<NaturalNumbersStudio mode={block.mode}/></div>;
     case "integersStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<IntegersStudio mode={block.mode}/></div>;
     case "integersMulDivStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<IntegersMulDivStudio mode={block.mode}/></div>;
+    case "rationalStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<RationalNumbersStudio mode={block.mode}/></div>;
     case "bookFigure": return <BookFigure figure={block.figure}/>;
   }
 }

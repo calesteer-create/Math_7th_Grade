@@ -323,7 +323,7 @@ test("Lesson 2 original 10-question quiz grades 10/10 and updates all 5 skill ma
 
   // Verify skill mastery map on /student/
   await page.goto("/Math_7th_Grade/student/");
-  await expect(page.locator("[data-skill]")).toHaveCount(15);
+  await expect(page.locator("[data-skill]")).toHaveCount(20);
   for (const key of Object.keys(bank.skills)) {
     const card = page.locator(`[data-skill="${key}"]`);
     await expect(card).toHaveAttribute("data-status", "mastered");
