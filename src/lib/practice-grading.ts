@@ -62,15 +62,25 @@ export function validatePracticeResponse(definition: PracticeDefinition, raw: un
 }
 
 export function gradePractice(definition: PracticeDefinition, response: Record<string, string>): PracticeFeedback {
+  // في مهمة ملء الفراغات للدرس 3 (تمرين 3.3)، أي زوج صحيح حاصل ضربه +2 يُعد صحيحًا.
+  let fillPairCorrect: boolean | null = null;
+  if (definition.view.kind === "muldiv-fill") {
+    const rawA = normalizeAnswer(response.f3a ?? "").replace(/[\u2212\u2013\u2014]/g, "-");
+    const rawB = normalizeAnswer(response.f3b ?? "").replace(/[\u2212\u2013\u2014]/g, "-");
+    fillPairCorrect = /^[+-]?\d+$/.test(rawA) && /^[+-]?\d+$/.test(rawB)
+      && BigInt(rawA.replace(/^\+/, "")) * BigInt(rawB.replace(/^\+/, "")) === BigInt(2);
+  }
   const fields = definition.view.fields.map(field => {
     const value = normalizeAnswer(response[field.key] ?? "");
     const expected = definition.expected[field.key];
     // الأعداد الصحيحة تُقارن نصًا دقيقًا بعد التطبيع؛ لا Number ولا تقريب.
-    const correct = field.type === "integer"
-      ? /^\d+$/.test(value) && !!parseExactNumber(value) && equalExactText(value, expected)
-      : field.type === "signed-integer"
-        ? /^[+-]?\d+$/.test(value.replace(/[\u2212\u2013\u2014]/g, "-")) && !!parseExactNumber(value.replace(/[\u2212\u2013\u2014]/g, "-")) && equalExactText(value.replace(/[\u2212\u2013\u2014]/g, "-"), expected)
-        : value === expected;
+    const correct = definition.view.kind === "muldiv-fill" && (field.key === "f3a" || field.key === "f3b")
+      ? Boolean(fillPairCorrect)
+      : field.type === "integer"
+        ? /^\d+$/.test(value) && !!parseExactNumber(value) && equalExactText(value, expected)
+        : field.type === "signed-integer"
+          ? /^[+-]?\d+$/.test(value.replace(/[\u2212\u2013\u2014]/g, "-")) && !!parseExactNumber(value.replace(/[\u2212\u2013\u2014]/g, "-")) && equalExactText(value.replace(/[\u2212\u2013\u2014]/g, "-"), expected)
+          : value === expected;
     return { key: field.key, label: field.label, correct, message: correct ? "هذه الخطوة صحيحة." : definition.mistakes[field.key] ?? "راجع هذه الخطوة ثم جرّب مرة أخرى." };
   });
   return { correct: fields.every(field => field.correct), fields };
@@ -104,6 +114,7 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
     if (![
       "sets", "digit-choice", "twins", "number-line", "digit-value", "planet",
       "int-warmup", "int-game", "int-context", "int-calc-ab", "int-calc-c", "int-match", "int-lines", "int-reasoning",
+      "muldiv-warmup", "muldiv-signs", "muldiv-calc-a", "muldiv-calc-b", "muldiv-calc-c", "muldiv-fill", "muldiv-understand",
     ].includes(definition.view.kind)) throw new Error("طريقة تفاعل غير معروفة.");
     if (!definition.view.title?.trim() || !definition.view.instruction?.trim() || !definition.view.fields?.length) throw new Error("بيانات المهمة ناقصة.");
     if (definition.view.fields.some(field => !/^[a-z][a-zA-Z0-9]{0,39}$/.test(field.key) || ["constructor", "prototype"].includes(field.key) || !field.label.trim())) throw new Error("اسم حقل غير صالح.");
@@ -120,6 +131,13 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
       "int-match": ["m1", "m2", "m3", "m4", "m5"],
       "int-lines": ["la", "lb", "lc"],
       "int-reasoning": ["counter", "whyComm", "whyAssoc"],
+      "muldiv-warmup": ["r1", "r2", "r3", "r4", "r5"],
+      "muldiv-signs": ["s1", "s2", "s3", "s4"],
+      "muldiv-calc-a": ["a1", "a2", "a3"],
+      "muldiv-calc-b": ["b1", "b2", "b3"],
+      "muldiv-calc-c": ["c1", "c2", "c3"],
+      "muldiv-fill": ["f1", "f2", "f3a", "f3b", "f4"],
+      "muldiv-understand": ["q1", "q2", "q3"],
     };
     if (JSON.stringify(fieldKeys) !== JSON.stringify(requiredFields[definition.view.kind])) throw new Error("حقول المهمة لا تتوافق مع طريقة التفاعل.");
     if (definition.view.fields.some(field => !["choice", "integer", "signed-integer"].includes(field.type))) throw new Error("نوع حقل غير صالح.");

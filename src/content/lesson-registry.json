@@ -105,7 +105,11 @@
       "order": 3,
       "title": "الأعداد الصحيحة (الضرب والقسمة)",
       "sourcePage": 10,
-      "status": "pending"
+      "status": "published",
+      "key": "integers-mul-div",
+      "contentRef": "lesson-3.json",
+      "assessmentRef": "assessments/integers-mul-div.json",
+      "practiceRef": "practice/integers-mul-div.json"
     },
     {
       "id": 4,
