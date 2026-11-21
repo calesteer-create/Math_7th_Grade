@@ -62,6 +62,8 @@ test("Lesson 4 opens with 9 stages, 4 precise book figures, 5 guided explain tab
   await stage(page, "اكتشف المفهوم");
   const warmupFig = page.locator('[data-book-figure="rationalWarmup"]');
   await expect(warmupFig).toBeVisible();
+  await expect(warmupFig).toContainText("مساواة القيمة");
+  await expect(warmupFig).toContainText("الصورة القياسية");
   const nestingFig = page.locator('[data-book-figure="rationalSetNesting"]');
   await expect(nestingFig).toBeVisible();
   await expect(nestingFig.locator('[data-diagram-math="true"]')).toHaveCount(3);
@@ -165,6 +167,8 @@ test("Lesson 4 all 7 textbook missions grade accurately, guide wrong attempts, g
 
   // 1) Warmup: a deliberate wrong attempt is guided, then C, B, A, B passes.
   let card = await selectMission(/انطلاقة نشطة/, "rat-warmup");
+  await expect(card).toContainText("مساواة القيمة");
+  await expect(card).toContainText("الصورة القياسية");
   await expect(card.getByRole("button", { name: "الحل خطوة بخطوة", exact: true })).toBeDisabled();
   await card.getByRole("button", { name: /تلميح صغير/ }).click();
   await expect(card.locator(".practice-hints li")).toHaveCount(1);

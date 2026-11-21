@@ -18,7 +18,7 @@ export const RATIONAL_FIGURE_SOURCES: Record<RationalFigureKind, { page: number;
   rationalWarmup: {
     page: 13,
     title: "انطلاقة نشطة: العدد الواحد بصور كثيرة",
-    detail: "جدول من أربعة أسطر، في كل سطر ثلاث كتابات مرتّبة في أعمدة، وكتابة واحدة فقط صحيحة للعدد المطلوب. الأعداد والكسور محفوظة كما في المصدر دون كشف الإجابة.",
+    detail: "جدول من أربعة أسطر، في كل سطر ثلاث كتابات مرتّبة في أعمدة، وكتابة واحدة فقط تساوي العدد المطلوب. المقصود هنا مساواة القيمة لا الصورة القياسية؛ فقد تكون الكتابة المكافئة بمقام سالب ولا تحقق شرط التعريف. الأعداد والكسور محفوظة كما في المصدر دون كشف الإجابة.",
   },
   rationalSetNesting: {
     page: 13,
@@ -47,6 +47,11 @@ export function fractionTeX(fraction: Fraction, normalize = true): string {
 
 export function fractionText(fraction: Fraction): string {
   return `${fraction.numerator}/${fraction.denominator}`;
+}
+
+/** الصورة القياسية المذكورة في التعريف: بسط صحيح ومقام طبيعي موجب. */
+export function isStandardRationalForm(fraction: Fraction): boolean {
+  return Number.isSafeInteger(fraction.numerator) && Number.isSafeInteger(fraction.denominator) && fraction.denominator > 0;
 }
 
 /** قيمة عشرية للعرض، مع ≈ عندما يكون النص العشري تقريبًا لا مطابقًا. */
@@ -143,7 +148,7 @@ export const RATIONAL_WARMUP_ROWS: readonly WarmupRow[] = [
     valueTeX: "7",
     options: { A: { numerator: 0, denominator: 7 }, B: { numerator: 1, denominator: 7 }, C: { numerator: -14, denominator: -2 } },
     answer: "C",
-    reason: "لأن \\((-14)\\div(-2)=7\\)؛ فالبسط والمقام سالبان والناتج موجب.",
+    reason: "لأن \\((-14)\\div(-2)=7\\)؛ فالبسط والمقام سالبان والناتج موجب. وهي كتابة مكافئة غير قياسية لأن المقام سالب، والجدول يطلب المساواة في القيمة.",
   },
   {
     value: "-4",

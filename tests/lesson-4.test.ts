@@ -26,6 +26,7 @@ import {
   compareFractions,
   compareRationalText,
   fractionFromText,
+  isStandardRationalForm,
   lcmNumber,
   mixedNumberText,
   sortRationalTexts,
@@ -62,6 +63,30 @@ test("Lesson 4 warmup table keeps every source option and the correct column is 
   assert.deepEqual(RATIONAL_WARMUP_ROWS[1].options.B, { numerator: -24, denominator: 6 });
   assert.deepEqual(RATIONAL_WARMUP_ROWS[2].options.A, { numerator: 7, denominator: 2 });
   assert.deepEqual(RATIONAL_WARMUP_ROWS[3].options.B, { numerator: 425, denominator: 100 });
+});
+
+test("Lesson 4 distinguishes value equality from the standard rational form in the warmup table", () => {
+  const row = RATIONAL_WARMUP_ROWS[0];
+  const chosen = row.options[row.answer];
+
+  // المرجع ص13 يطلب كتابة مساوية للعدد 7، وليس بالضرورة الصورة القياسية.
+  assert.equal(row.answer, "C");
+  assert.deepEqual(chosen, { numerator: -14, denominator: -2 });
+  assert.equal(chosen.numerator / chosen.denominator, 7);
+  assert.equal(isStandardRationalForm(chosen), false);
+  assert.equal(isStandardRationalForm({ numerator: 7, denominator: 1 }), true);
+  assert.equal(isStandardRationalForm({ numerator: 14, denominator: 2 }), true);
+  assert.equal(isStandardRationalForm({ numerator: 7, denominator: 0 }), false);
+
+  // النص التعليمي نفسه يجب أن يفصل بين المفهومين صراحةً.
+  const discoverText = JSON.stringify(draft.content.discover);
+  assert.match(discoverText, /مساواة القيمة/);
+  assert.match(discoverText, /الصورة القياسية/);
+  assert.match(discoverText, /المقام سالب/);
+  const warmupPractice = bank.exercises.find(exercise => exercise.key === "rat-warmup");
+  assert.ok(warmupPractice);
+  assert.match(warmupPractice.view.instruction, /مساواة القيمة/);
+  assert.match(warmupPractice.view.instruction, /الصورة القياسية/);
 });
 
 test("Lesson 4 rational helpers compare and sort exactly, including negatives and fractions", () => {
