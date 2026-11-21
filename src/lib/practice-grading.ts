@@ -115,6 +115,7 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
       "sets", "digit-choice", "twins", "number-line", "digit-value", "planet",
       "int-warmup", "int-game", "int-context", "int-calc-ab", "int-calc-c", "int-match", "int-lines", "int-reasoning",
       "muldiv-warmup", "muldiv-signs", "muldiv-calc-a", "muldiv-calc-b", "muldiv-calc-c", "muldiv-fill", "muldiv-understand",
+      "rat-warmup", "rat-represent", "rat-decimal", "rat-line", "rat-compare", "rat-order-asc", "rat-order-desc",
     ].includes(definition.view.kind)) throw new Error("طريقة تفاعل غير معروفة.");
     if (!definition.view.title?.trim() || !definition.view.instruction?.trim() || !definition.view.fields?.length) throw new Error("بيانات المهمة ناقصة.");
     if (definition.view.fields.some(field => !/^[a-z][a-zA-Z0-9]{0,39}$/.test(field.key) || ["constructor", "prototype"].includes(field.key) || !field.label.trim())) throw new Error("اسم حقل غير صالح.");
@@ -138,6 +139,13 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
       "muldiv-calc-c": ["c1", "c2", "c3"],
       "muldiv-fill": ["f1", "f2", "f3a", "f3b", "f4"],
       "muldiv-understand": ["q1", "q2", "q3"],
+      "rat-warmup": ["r1", "r2", "r3", "r4"],
+      "rat-represent": ["n1", "d1", "n2", "d2"],
+      "rat-decimal": ["n1", "n2", "n3"],
+      "rat-line": ["p1", "p2", "p3", "p4", "p5", "p6"],
+      "rat-compare": ["c1", "c2", "c3", "c4", "c5"],
+      "rat-order-asc": ["o1", "o2", "o3", "o4", "o5"],
+      "rat-order-desc": ["o1", "o2", "o3", "o4"],
     };
     if (JSON.stringify(fieldKeys) !== JSON.stringify(requiredFields[definition.view.kind])) throw new Error("حقول المهمة لا تتوافق مع طريقة التفاعل.");
     if (definition.view.fields.some(field => !["choice", "integer", "signed-integer"].includes(field.type))) throw new Error("نوع حقل غير صالح.");

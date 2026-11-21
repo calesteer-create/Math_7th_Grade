@@ -117,7 +117,11 @@
       "order": 4,
       "title": "الأعداد العادية",
       "sourcePage": 13,
-      "status": "pending"
+      "status": "published",
+      "key": "rational-numbers",
+      "contentRef": "lesson-4.json",
+      "assessmentRef": "assessments/rational-numbers.json",
+      "practiceRef": "practice/rational-numbers.json"
     },
     {
       "id": 5,
