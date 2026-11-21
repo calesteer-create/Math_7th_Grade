@@ -2,7 +2,8 @@
 import { normalizeDigits } from "@/lib/numbers";
 export type PracticeKind =
   | "sets" | "digit-choice" | "twins" | "number-line" | "digit-value" | "planet"
-  | "int-warmup" | "int-game" | "int-context" | "int-calc-ab" | "int-calc-c" | "int-match" | "int-lines" | "int-reasoning";
+  | "int-warmup" | "int-game" | "int-context" | "int-calc-ab" | "int-calc-c" | "int-match" | "int-lines" | "int-reasoning"
+  | "muldiv-warmup" | "muldiv-signs" | "muldiv-calc-a" | "muldiv-calc-b" | "muldiv-calc-c" | "muldiv-fill" | "muldiv-understand";
 export type PracticeField = { key: string; label: string; type: "choice" | "integer" | "signed-integer"; choices?: string[]; max?: number };
 export type PracticeView = {
   title: string;

@@ -14,6 +14,7 @@ export type ExerciseBlock = Extract<Block, {kind:"exercise"}>;
 const COLORS: Record<string,[string,string]> = {
   sets:["#d18b18","#fff8e3"],"digit-choice":["#8750d8","#f5efff"],twins:["#dc638a","#fff0f5"],"number-line":["#0b9b8a","#e7fcf6"],"digit-value":["#dc7c36","#fff4e8"],planet:["#3887cf","#eaf6ff"],
   "int-warmup":["#8750d8","#f5efff"],"int-game":["#d18b18","#fff8e3"],"int-context":["#3887cf","#eaf6ff"],"int-calc-ab":["#0b9b8a","#e7fcf6"],"int-calc-c":["#dc7c36","#fff4e8"],"int-match":["#dc638a","#fff0f5"],"int-lines":["#0b9b8a","#e7fcf6"],"int-reasoning":["#5b50d6","#eef0ff"],
+  "muldiv-warmup":["#8750d8","#f5efff"],"muldiv-signs":["#dc638a","#fff0f5"],"muldiv-calc-a":["#0b9b8a","#e7fcf6"],"muldiv-calc-b":["#3887cf","#eaf6ff"],"muldiv-calc-c":["#dc7c36","#fff4e8"],"muldiv-fill":["#d18b18","#fff8e3"],"muldiv-understand":["#5b50d6","#eef0ff"],
 };
 
 function usePractice(lessonId: number) {
