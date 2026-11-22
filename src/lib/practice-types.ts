@@ -4,7 +4,9 @@ export type PracticeKind =
   | "sets" | "digit-choice" | "twins" | "number-line" | "digit-value" | "planet"
   | "int-warmup" | "int-game" | "int-context" | "int-calc-ab" | "int-calc-c" | "int-match" | "int-lines" | "int-reasoning"
   | "muldiv-warmup" | "muldiv-signs" | "muldiv-calc-a" | "muldiv-calc-b" | "muldiv-calc-c" | "muldiv-fill" | "muldiv-understand"
-  | "rat-warmup" | "rat-represent" | "rat-decimal" | "rat-line" | "rat-compare" | "rat-order-asc" | "rat-order-desc";
+  | "rat-warmup" | "rat-represent" | "rat-decimal" | "rat-line" | "rat-compare" | "rat-order-asc" | "rat-order-desc"
+  | "op-sci-write" | "op-sci-compare" | "op-frac-addsub" | "op-frac-muldiv" | "op-choice" | "op-sign"
+  | "cp-read" | "cp-quadrant" | "cp-signs" | "cp-plot";
 export type PracticeField = { key: string; label: string; type: "choice" | "integer" | "signed-integer"; choices?: string[]; max?: number };
 export type PracticeView = {
   title: string;

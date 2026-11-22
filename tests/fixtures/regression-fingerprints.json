@@ -1,0 +1,24 @@
+{
+  "base": "ca1779c41be61a2dd2dbce96dc552fc6f0b9bfb4",
+  "files": {
+    "src/components/StudentNotebook.tsx": "7cf00c14fc2789f9c3bd7ba0e73c864ec867c3b0e064943c1a22c8998d5f498a",
+    "src/app/learning-activities.css": "1c74dfa4c6514b875ff84b7aadd45b6cefc339da241ce1eb6ba64e3e6abd5c06",
+    "src/content/lesson-1.json": "c2e6542b6765b233cb93b59d00958f705ccef9be2f29782aefb57ca36f613b1d",
+    "src/content/lesson-2.json": "20e9ec642a9e9a52b00ba369cd842dd220eb20ddfcc46534a0cef85d4758a4ea",
+    "src/content/lesson-3.json": "5859e328f7c4b2077f4f179988a144524a66e7eddbf409af79e13a373bb18fdf",
+    "src/content/lesson-4.json": "147912df58f2af3c4e62b3cecea95b4e41193aefa096b2df3c19b38e06199d42",
+    "src/content/practice/natural-numbers.json": "a942f0a7c6e2714fbc803dae9b48cf55da608bdec158a9719c5bee7e28b29d5d",
+    "src/content/practice/integers-add-sub.json": "c66fedcf5c8170395c1e6791c53f56ff926ded9735e0099b8a0fd378e20f91c6",
+    "src/content/practice/integers-mul-div.json": "a3aa2f86cc4a2045d06f4738363265bd737d8d0044fbaac3a16f824574913566",
+    "src/content/practice/rational-numbers.json": "1a21d73839bf6cff54f5a048e526d0d2a2cdf2d603def25ddac09074a9663b12",
+    "src/content/assessments/natural-numbers.json": "c75eb48f63e79fc8f29ae0be294bb7fdf37d00838a1c1968ad25af0c0dde0d62",
+    "src/content/assessments/integers-add-sub.json": "cef2df27a004221e3c4f11703d2ecf796ffc8a66d4df5b072e84307037d75d3e",
+    "src/content/assessments/integers-mul-div.json": "e275268c9fe2d24d1bc0b65fb9482be71b65d746c70d0ea91329dcbd7571db57",
+    "src/content/assessments/rational-numbers.json": "185f820957a15de58c60f3e94da639c429dcdc5e544ca1a95caba2fa0d4fa497",
+    "src/lib/lesson-progress.ts": "d71ed9b8b576c9a5cb1141dd88ac3ee59cfe19df9aae8fc404c02c63822b3139",
+    "src/lib/skill-mastery.ts": "7eb22ddad5b3f4dd6bfffd8ed93395c4b66c6ba1669c2a98addf2cac35707005",
+    "src/lib/local-progress.ts": "685143a8eaa545e295ad340fce6c0b4bc2e7d69ce6c40906fa093b2da7fc452b",
+    "src/components/QuizPlayer.tsx": "d4b7676b0ea482ef370662ea6c0ebddd89d4e3c5adb3aeb71babf9b49647ef7e",
+    "src/components/LessonShell.tsx": "73c4764867b21c94d10ffe6d759d1078e080197c0a8f7b53f9c7623ead525e55"
+  }
+}

@@ -7,6 +7,8 @@ import { EllipticSet, NumberLineDiagram } from "@/components/figures/NaturalNumb
 import IntegerPracticeWidgets from "@/components/practice/IntegerPracticeWidgets";
 import IntegersMulDivPracticeWidgets from "@/components/practice/IntegersMulDivPracticeWidgets";
 import RationalPracticeWidgets from "@/components/practice/RationalPracticeWidgets";
+import OperationsPracticeWidgets from "@/components/practice/OperationsPracticeWidgets";
+import CoordinatePracticeWidgets from "@/components/practice/CoordinatePracticeWidgets";
 import TeX from "@/components/TeX";
 import { latinDigits, type PracticeField, type PracticeView } from "@/lib/practice-types";
 
@@ -47,6 +49,8 @@ export default function PracticeWidgets(props: Props) {
   if (view.kind.startsWith("int-")) return <IntegerPracticeWidgets {...props}/>;
   if (view.kind.startsWith("muldiv-")) return <IntegersMulDivPracticeWidgets {...props}/>;
   if (view.kind.startsWith("rat-")) return <RationalPracticeWidgets {...props}/>;
+  if (view.kind.startsWith("op-")) return <OperationsPracticeWidgets {...props}/>;
+  if (view.kind.startsWith("cp-")) return <CoordinatePracticeWidgets {...props}/>;
   if (view.kind === "sets") return <div className="practice-set-grid" dir="ltr">{BOOK_GROUPS.map(group => <button key={group.label} type="button" disabled={disabled} onClick={() => onChange("group", group.label)} aria-label={`اختر المجموعة ${group.label}`} aria-pressed={response.group === group.label} className={`practice-set-card ${response.group === group.label ? "is-picked" : ""}`}><span className="practice-set-letter"><TeX tex={group.label}/></span><EllipticSet dots={group.dots} label={`المجموعة ${group.label}: ${group.count} نقاط`} warmup/><span className="practice-set-caption" dir="rtl">{response.group === group.label ? "اختياري" : "هذه المجموعة؟"}</span></button>)}</div>;
   if (view.kind === "digit-choice" || view.kind === "digit-value") return <div className="space-y-5">
     <div className="practice-focus-label">ابحث عن الرقم <bdi dir="ltr">{view.focusDigit}</bdi> داخل العدد، واضغط عليه.</div>

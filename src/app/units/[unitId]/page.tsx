@@ -2,9 +2,10 @@ import type { ElementType } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lessons, units } from "@/lib/curriculum";
+import { hasUnitExercises } from "@/content/unit-exercise-index";
 import { STAGES, fmtNum } from "@/lib/site";
 import UnitIcon from "@/components/UnitIcon";
-import { ArrowLeft, ArrowRight, BookOpen, Lock } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, ClipboardList, Lock } from "lucide-react";
 
 export function generateStaticParams() { return units.map(unit => ({ unitId: String(unit.id) })); }
 
@@ -56,6 +57,17 @@ export default async function UnitPage({
           </div>
         </div>
       </header>
+
+      {hasUnitExercises(unit.id) && (
+        <Link href={`/units/${unit.id}/exercises`} className="card mb-6 flex flex-wrap items-center gap-4 border-violet-200 bg-violet-50/40 p-5 transition hover:-translate-y-0.5 hover:shadow-lg">
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-violet-100 text-violet-700"><ClipboardList className="h-6 w-6" /></span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-black text-ink">تمرينات الوحدة الأولى</span>
+            <span className="mt-0.5 block text-xs font-bold leading-6 text-slate-500">قسم مستقل لتغطية تمرينات الكتاب كاملة، بتلميحات وحلول مرجعية، دون تأثير في نقاط الدروس.</span>
+          </span>
+          <span className="chip shrink-0 bg-violet-100 text-violet-700">ابدأ المراجعة <ArrowLeft className="h-3 w-3" /></span>
+        </Link>
+      )}
 
       {/* قائمة الدروس */}
       <ol className="space-y-3">

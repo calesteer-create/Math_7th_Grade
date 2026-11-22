@@ -11,6 +11,8 @@ const registry = JSON.parse(await readFile(resolve("src/content/lesson-registry.
 const unitIds = registry.units.map(unit => unit.id);
 const publishedIds = registry.lessons.filter(lesson => lesson.status === "published").map(lesson => lesson.id);
 const unpublishedIds = registry.lessons.filter(lesson => lesson.status !== "published").map(lesson => lesson.id);
+// صفحات تمرينات الوحدة تُشتق من ملفات تمرينات الوحدة الموجودة فعلًا.
+const unitExerciseIds = (await readdir(resolve("src/content/unit-exercises"))).filter(name => /^unit-\d+\.json$/.test(name)).map(name => name.match(/unit-(\d+)\.json/)[1]);
 const exists = async path => { try { await stat(resolve(root, path)); return true; } catch { return false; } };
 // لا تُصدَّر صفحة اختبار وحدة إلا لبند مدرج في بنوك الوحدات المعتمدة (فارغة الآن).
 const unitQuizIds = [];
@@ -18,12 +20,17 @@ const expected = [
   "index.html", "quizzes/index.html", "units/index.html", "teacher/index.html",
   ...publishedIds.flatMap(id => [`lessons/${id}/index.html`, `quizzes/lesson/${id}/index.html`]),
   ...unitIds.flatMap(id => [`units/${id}/index.html`]),
+  ...unitExerciseIds.map(id => `units/${id}/exercises/index.html`),
   ...unitQuizIds.map(id => `quizzes/unit/${id}/index.html`),
 ];
 for (const path of expected) await stat(resolve(root, path));
 // اختبار الوحدة لا يظهر للطالب قبل اعتماد محتواه: لا صفحة مصدّرة ولا رابط.
 for (const id of unitIds.filter(id => !unitQuizIds.includes(id))) {
   if (await exists(`quizzes/unit/${id}/index.html`)) throw new Error(`Unit quiz page exported without a bank: ${id}`);
+}
+// لا تُصدَّر صفحة تمرينات لوحدة بلا ملف تمرينات معتمد.
+for (const id of unitIds.filter(id => !unitExerciseIds.includes(String(id)))) {
+  if (await exists(`units/${id}/exercises/index.html`)) throw new Error(`Unit exercises page exported without a data file: ${id}`);
 }
 const quizzesIndex = await readFile(resolve(root, "quizzes/index.html"), "utf8");
 if (/quizzes\/unit\//.test(quizzesIndex)) throw new Error("Quizzes index links to an unavailable unit quiz");
@@ -64,3 +71,4 @@ for (const file of all.filter(f => f.endsWith(".css"))) {
 }
 console.log(`Static export verified: ${all.filter(f => f.endsWith('.html')).length} HTML pages, ${links} local references and CSS assets.`);
 console.log(`Published lesson pages: ${publishedIds.length}; unpublished lesson pages absent: ${unpublishedIds.length}.`);
+console.log(`Unit exercise sections: ${unitExerciseIds.length} (units ${unitExerciseIds.join(", ") || "none"}).`);

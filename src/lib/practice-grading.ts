@@ -116,6 +116,8 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
       "int-warmup", "int-game", "int-context", "int-calc-ab", "int-calc-c", "int-match", "int-lines", "int-reasoning",
       "muldiv-warmup", "muldiv-signs", "muldiv-calc-a", "muldiv-calc-b", "muldiv-calc-c", "muldiv-fill", "muldiv-understand",
       "rat-warmup", "rat-represent", "rat-decimal", "rat-line", "rat-compare", "rat-order-asc", "rat-order-desc",
+      "op-sci-write", "op-sci-compare", "op-frac-addsub", "op-frac-muldiv", "op-choice", "op-sign",
+      "cp-read", "cp-quadrant", "cp-signs", "cp-plot",
     ].includes(definition.view.kind)) throw new Error("طريقة تفاعل غير معروفة.");
     if (!definition.view.title?.trim() || !definition.view.instruction?.trim() || !definition.view.fields?.length) throw new Error("بيانات المهمة ناقصة.");
     if (definition.view.fields.some(field => !/^[a-z][a-zA-Z0-9]{0,39}$/.test(field.key) || ["constructor", "prototype"].includes(field.key) || !field.label.trim())) throw new Error("اسم حقل غير صالح.");
@@ -146,6 +148,16 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
       "rat-compare": ["c1", "c2", "c3", "c4", "c5"],
       "rat-order-asc": ["o1", "o2", "o3", "o4", "o5"],
       "rat-order-desc": ["o1", "o2", "o3", "o4"],
+      "op-sci-write": ["coef", "exp"],
+      "op-sci-compare": ["c1", "c2", "c3"],
+      "op-frac-addsub": ["a1", "b1", "a2", "b2"],
+      "op-frac-muldiv": ["a1", "b1", "a2", "b2"],
+      "op-choice": ["c1", "c2", "c3"],
+      "op-sign": ["s1", "s2", "s3", "s4"],
+      "cp-read": ["x1", "y1", "x2", "y2"],
+      "cp-quadrant": ["q1", "q2", "q3", "q4"],
+      "cp-signs": ["g1", "g2", "g3", "g4"],
+      "cp-plot": ["p1", "p2"],
     };
     if (JSON.stringify(fieldKeys) !== JSON.stringify(requiredFields[definition.view.kind])) throw new Error("حقول المهمة لا تتوافق مع طريقة التفاعل.");
     if (definition.view.fields.some(field => !["choice", "integer", "signed-integer"].includes(field.type))) throw new Error("نوع حقل غير صالح.");
