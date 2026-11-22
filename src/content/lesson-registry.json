@@ -129,7 +129,11 @@
       "order": 5,
       "title": "العمليات على الأعداد العادية",
       "sourcePage": 15,
-      "status": "pending"
+      "status": "published",
+      "key": "operations-rational",
+      "contentRef": "lesson-5.json",
+      "assessmentRef": "assessments/operations-rational.json",
+      "practiceRef": "practice/operations-rational.json"
     },
     {
       "id": 6,
@@ -137,7 +141,11 @@
       "order": 6,
       "title": "الأعداد العادية ومعلّم المستوي",
       "sourcePage": 20,
-      "status": "pending"
+      "status": "published",
+      "key": "coordinate-plane",
+      "contentRef": "lesson-6.json",
+      "assessmentRef": "assessments/coordinate-plane.json",
+      "practiceRef": "practice/coordinate-plane.json"
     },
     {
       "id": 7,

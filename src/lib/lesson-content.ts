@@ -2,8 +2,10 @@ import type { NaturalFigureKind } from "@/lib/natural-numbers";
 import { INTEGER_FIGURE_KINDS, type IntegerFigureKind } from "@/lib/integers";
 import { INTEGER_MUL_DIV_FIGURE_KINDS, type IntegersMulDivFigureKind } from "@/lib/integers-mul-div";
 import { RATIONAL_FIGURE_KINDS, type RationalFigureKind } from "@/lib/rational-numbers";
+import { OPERATIONS_FIGURE_KINDS, type OperationsFigureKind } from "@/lib/operations-rational";
+import { COORDINATE_FIGURE_KINDS, type CoordinateFigureKind } from "@/lib/coordinate-plane";
 
-export type FigureKind = NaturalFigureKind | IntegerFigureKind | IntegersMulDivFigureKind | RationalFigureKind;
+export type FigureKind = NaturalFigureKind | IntegerFigureKind | IntegersMulDivFigureKind | RationalFigureKind | OperationsFigureKind | CoordinateFigureKind;
 export type ContentOrigin = "book" | "supplement";
 export const EXTRA_EXPLANATION_LABEL = "شرح إضافي للكتاب";
 
@@ -30,6 +32,8 @@ export type Block = Provenance & (
   | { kind: "integersStudio"; mode?: "full" | "explorer" | "addsub" | "game" | "simplify" }
   | { kind: "integersMulDivStudio"; mode?: "full" | "pattern" | "signcount" | "shorthand" | "division" }
   | { kind: "rationalStudio"; mode?: "full" | "builder" | "line" | "compare" | "order" | "decimal" }
+  | { kind: "operationsStudio"; mode?: "full" | "sci" | "frac" | "decimal" | "power" }
+  | { kind: "coordinateStudio"; mode?: "full" | "explore" | "plot" | "quadrants" }
   | { kind: "bookFigure"; figure: FigureKind }
 );
 export type NotebookSection = { id: string; title: string; writingTask: string; blocks: Block[] };
@@ -38,12 +42,14 @@ export type NotebookSection = { id: string; title: string; writingTask: string; 
 // أثناء التحقق من المحتوى بدل أن يُعرض فراغًا أو يُتجاهل بصمت.
 export const CONTENT_BLOCK_KINDS = [
   "lead", "book", "explain", "def", "law", "example", "steps", "mistake", "note", "math",
-  "check", "summary", "activity", "exercise", "guide", "labtool", "naturalStudio", "integersStudio", "integersMulDivStudio", "rationalStudio", "bookFigure",
+  "check", "summary", "activity", "exercise", "guide", "labtool", "naturalStudio", "integersStudio", "integersMulDivStudio", "rationalStudio", "operationsStudio", "coordinateStudio", "bookFigure",
 ] as const;
 export type ContentBlockKind = (typeof CONTENT_BLOCK_KINDS)[number];
-export const FIGURE_KINDS = ["warmup", "counting", "numberLine", "placeValue", ...INTEGER_FIGURE_KINDS, ...INTEGER_MUL_DIV_FIGURE_KINDS, ...RATIONAL_FIGURE_KINDS] as const;
+export const FIGURE_KINDS = ["warmup", "counting", "numberLine", "placeValue", ...INTEGER_FIGURE_KINDS, ...INTEGER_MUL_DIV_FIGURE_KINDS, ...RATIONAL_FIGURE_KINDS, ...OPERATIONS_FIGURE_KINDS, ...COORDINATE_FIGURE_KINDS] as const;
 export const LAB_TOOLS = ["fraction", "numberline", "equation", "triangle", "percent"] as const;
 export const STUDIO_MODES = ["full", "dots", "line", "places"] as const;
 export const INTEGER_STUDIO_MODES = ["full", "explorer", "addsub", "game", "simplify"] as const;
 export const INTEGER_MUL_DIV_STUDIO_MODES = ["full", "pattern", "signcount", "shorthand", "division"] as const;
 export const RATIONAL_STUDIO_MODES = ["full", "builder", "line", "compare", "order", "decimal"] as const;
+export const OPERATIONS_STUDIO_MODES = ["full", "sci", "frac", "decimal", "power"] as const;
+export const COORDINATE_STUDIO_MODES = ["full", "explore", "plot", "quadrants"] as const;
