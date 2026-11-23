@@ -13,6 +13,8 @@ import IntegersMulDivStudio from "@/components/IntegersMulDivStudio";
 import RationalNumbersStudio from "@/components/RationalNumbersStudio";
 import OperationsStudio from "@/components/OperationsStudio";
 import CoordinateStudio from "@/components/CoordinateStudio";
+import AlgebraStudio from "@/components/AlgebraStudio";
+import EquationsStudio from "@/components/EquationsStudio";
 import BookFigure from "@/components/figures/BookFigure";
 import type { Block, ContentOrigin, NotebookSection } from "@/lib/lesson-content";
 export type { Block, NotebookSection } from "@/lib/lesson-content";
@@ -62,6 +64,8 @@ export function BlockRenderer({ block, lessonId }: { block: Block; lessonId?: nu
     case "rationalStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<RationalNumbersStudio mode={block.mode}/></div>;
     case "operationsStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<OperationsStudio mode={block.mode}/></div>;
     case "coordinateStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<CoordinateStudio mode={block.mode}/></div>;
+    case "algebraStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<AlgebraStudio mode={block.mode}/></div>;
+    case "equationsStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<EquationsStudio mode={block.mode}/></div>;
     case "bookFigure": return <BookFigure figure={block.figure}/>;
   }
 }

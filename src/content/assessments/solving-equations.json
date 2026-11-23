@@ -1,0 +1,128 @@
+{
+  "lessonId": 8,
+  "revision": "lesson-8-assessment-2026-11-23",
+  "source": "أسئلة أصلية من إعداد المنصة تقيس مهارات الدرس الثامن (حلّ المعادلات) بسياقات وأعداد جديدة.",
+  "skills": {
+    "verify_solution": "التحقّق مما إذا كان عدد حلًّا لمعادلة",
+    "order_operations": "تطبيق أولوية العمليات الحسابية",
+    "solve_additive": "حلّ معادلات الجمع والطرح ذهنيًا",
+    "solve_multiplicative": "حلّ معادلات من الشكل \\(ax = c\\) (صحيحة وكسرية)",
+    "apply_equation": "توظيف المعادلات في حلّ المسائل"
+  },
+  "questions": [
+    {
+      "origin": "original",
+      "skill": "verify_solution",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "أيّ عدد من الأعداد الآتية يمثّل حلًّا للمعادلة \\(4t - 7 = 13\\)؟",
+      "options": [
+        "\\(t = 3\\)",
+        "\\(t = 5\\)",
+        "\\(t = -5\\)",
+        "\\(t = 6\\)"
+      ],
+      "answer": "1",
+      "explanation": "عند تعويض \\(t = 5\\) نجد \\(4(5) - 7 = 20 - 7 = 13\\)، فيتساوى الطرفان."
+    },
+    {
+      "origin": "original",
+      "skill": "verify_solution",
+      "type": "truefalse",
+      "difficulty": "medium",
+      "question": "العدد \\(m = -3\\) هو حلّ للمعادلة \\(5m + 8 = -23\\).",
+      "answer": "false",
+      "explanation": "عند التعويض \\(5(-3) + 8 = -15 + 8 = -7\\)، وبما أن \\(-7 \\neq -23\\) فالعدد \\(-3\\) ليس حلًّا."
+    },
+    {
+      "origin": "original",
+      "skill": "order_operations",
+      "type": "fill",
+      "difficulty": "easy",
+      "question": "احسب القيمة الدقيقة للعبارة \\(14 + 6 \\times 3 - 8 \\div 4\\).",
+      "answer": "30",
+      "explanation": "نحسب الضرب والقسمة أولًا: \\(6 \\times 3 = 18\\) و\\(8 \\div 4 = 2\\)، ثم \\(14 + 18 - 2 = 30\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "order_operations",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "ما قيمة العبارة \\(4(9 - 6) - 19\\)؟",
+      "options": [
+        "\\(+7\\)",
+        "\\(11\\)",
+        "\\(-7\\)",
+        "\\(-13\\)"
+      ],
+      "answer": "2",
+      "explanation": "الأقواس أولًا: \\(9 - 6 = 3\\)، ثم الضرب \\(4 \\times 3 = 12\\)، ثم الطرح \\(12 - 19 = -7\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "solve_additive",
+      "type": "fill",
+      "difficulty": "easy",
+      "question": "حلّ المعادلة \\(y + 18 = -6\\) ذهنيًا وأوجد قيمة \\(y\\).",
+      "answer": "-24",
+      "explanation": "نطبّق العملية العكسية: \\(y = -6 - 18 = -24\\). التحقّق: \\(-24 + 18 = -6\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "solve_additive",
+      "type": "fill",
+      "difficulty": "medium",
+      "question": "حلّ المعادلة \\(p - 19 = -7\\) وأوجد قيمة \\(p\\).",
+      "answer": "12",
+      "explanation": "نجمع \\(19\\) إلى الطرف الأيمن: \\(p = -7 + 19 = 12\\). التحقّق: \\(12 - 19 = -7\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "solve_multiplicative",
+      "type": "fill",
+      "difficulty": "medium",
+      "question": "حلّ المعادلة \\(-8k = 56\\) وأوجد قيمة \\(k\\).",
+      "answer": "-7",
+      "explanation": "نقسم الطرف الأيمن على معامل \\(k\\): \\(k = \\frac{56}{-8} = -7\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "solve_multiplicative",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "ما الحلّ الدقيق للمعادلة \\(\\frac{3}{4}n = -9\\)؟",
+      "options": [
+        "\\(n = -12\\)",
+        "\\(n = 12\\)",
+        "\\(n = -\\frac{27}{4}\\)",
+        "\\(n = -\\frac{4}{3}\\)"
+      ],
+      "answer": "0",
+      "explanation": "نقسم \\(-9\\) على \\(\\frac{3}{4}\\) أي نضرب بمقلوبه: \\(n = -9 \\times \\frac{4}{3} = -12\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "apply_equation",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "إذا كان \\(9\\) أضعاف عدد مجهول \\(w\\) يساوي \\(-63\\)، فما المعادلة الصحيحة وما حلّها؟",
+      "options": [
+        "\\(w + 9 = -63\\) والحلّ \\(w = -72\\)",
+        "\\(9w = -63\\) والحلّ \\(w = 7\\)",
+        "\\(\\frac{w}{9} = -63\\) والحلّ \\(w = -567\\)",
+        "\\(9w = -63\\) والحلّ \\(w = -7\\)"
+      ],
+      "answer": "3",
+      "explanation": "تسعة أضعاف \\(w\\) هي \\(9w\\)، فتصبح المعادلة \\(9w = -63\\) وحلّها \\(w = \\frac{-63}{9} = -7\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "apply_equation",
+      "type": "problem",
+      "difficulty": "hard",
+      "question": "حوض مستطيل القاعدة حجمه \\(360\\text{ dm}^3\\) ومساحة قاعدته \\(45\\text{ dm}^2\\). باستعمال العلاقة \\(V = S_b \\cdot h\\)، ما ارتفاع الحوض \\(h\\) بوحدة \\(\\text{dm}\\)؟",
+      "answer": "8",
+      "explanation": "نعوّض المعطيات فنحصل على المعادلة \\(45h = 360\\)، وبقسمة الطرف الأيمن على 45 نجد \\(h = \\frac{360}{45} = 8\\text{ dm}\\)."
+    }
+  ]
+}

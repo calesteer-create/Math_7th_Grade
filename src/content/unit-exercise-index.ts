@@ -1,9 +1,11 @@
 import unitOneExercises from "@/content/unit-exercises/unit-1.json";
+import unitTwoExercises from "@/content/unit-exercises/unit-2.json";
 
 // فهرس تمرينات الوحدات: لكل وحدة ملف مستقل، ولا يُصدَّر قسم تمرينات إلا لوحدة
 // لها ملف مصرّح به هنا. تمرينات الوحدة نشاط مراجعة، لا حزمة درس.
 export const UNIT_EXERCISES_INDEX: Record<number, unknown> = {
   1: unitOneExercises,
+  2: unitTwoExercises,
 };
 
 export function hasUnitExercises(unitId: number): boolean {

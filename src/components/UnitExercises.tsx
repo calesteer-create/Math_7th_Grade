@@ -19,7 +19,7 @@ function FieldInput({ field, value, onChange, disabled }: { field: UnitField; va
     return <div className="flex flex-wrap items-center justify-between gap-2">
       <span className="text-xs font-extrabold text-slate-600"><MathText text={field.label} /></span>
       <div className="flex flex-wrap gap-1.5" role="group" aria-label={field.label}>
-        {(field.choices ?? []).map(choice => <button key={choice} type="button" disabled={disabled} aria-pressed={value === choice} onClick={() => onChange(choice)} className={`rounded-lg border px-2.5 py-1.5 text-xs font-black transition ${value === choice ? "border-violet-600 bg-violet-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-violet-300"}`}>{choice}</button>)}
+        {(field.choices ?? []).map(choice => <button key={choice} type="button" disabled={disabled} aria-pressed={value === choice} data-choice={choice} onClick={() => onChange(choice)} className={`rounded-lg border px-2.5 py-1.5 text-xs font-black transition ${value === choice ? "border-violet-600 bg-violet-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-violet-300"}`}>{choice.includes("\\(") ? <MathText text={choice} /> : choice}</button>)}
       </div>
     </div>;
   }
