@@ -287,7 +287,7 @@ test("Lesson 4 original 10-question quiz scores 10/10 and masters all 5 skills w
   await expect(page.getByTestId("quiz-score")).toHaveText("10 / 10");
 
   await page.goto("/Math_7th_Grade/student/");
-  await expect(page.locator("[data-skill]")).toHaveCount(31);
+  await expect(page.locator("[data-skill]")).toHaveCount(41);
   for (const key of Object.keys(bank.skills)) {
     const card = page.locator(`[data-skill="${key}"]`);
     await expect(card).toHaveAttribute("data-status", "mastered");

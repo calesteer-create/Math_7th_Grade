@@ -118,6 +118,8 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
       "rat-warmup", "rat-represent", "rat-decimal", "rat-line", "rat-compare", "rat-order-asc", "rat-order-desc",
       "op-sci-write", "op-sci-compare", "op-frac-addsub", "op-frac-muldiv", "op-choice", "op-sign",
       "cp-read", "cp-quadrant", "cp-signs", "cp-plot",
+      "alg-warmup", "alg-envelopes", "alg-like-terms", "alg-simplify", "alg-word", "alg-coeffs", "alg-triangle", "alg-reducible",
+      "eq-check", "eq-warmup", "eq-boxes-addsub", "eq-boxes-muldiv", "eq-mental", "eq-axc",
     ].includes(definition.view.kind)) throw new Error("طريقة تفاعل غير معروفة.");
     if (!definition.view.title?.trim() || !definition.view.instruction?.trim() || !definition.view.fields?.length) throw new Error("بيانات المهمة ناقصة.");
     if (definition.view.fields.some(field => !/^[a-z][a-zA-Z0-9]{0,39}$/.test(field.key) || ["constructor", "prototype"].includes(field.key) || !field.label.trim())) throw new Error("اسم حقل غير صالح.");
@@ -158,6 +160,20 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
       "cp-quadrant": ["q1", "q2", "q3", "q4"],
       "cp-signs": ["g1", "g2", "g3", "g4"],
       "cp-plot": ["p1", "p2"],
+      "alg-warmup": ["t1", "t2", "t3", "t4", "d1", "d2", "g1", "g2"],
+      "alg-envelopes": ["s2", "s3", "s4", "c2", "c3", "c5", "e6"],
+      "alg-like-terms": ["p1", "n1", "n2", "n3", "n4", "n5"],
+      "alg-simplify": ["e1", "e2", "e3"],
+      "alg-word": ["expr", "val"],
+      "alg-coeffs": ["m1", "m2", "m3", "m4", "m5", "pairs"],
+      "alg-triangle": ["expr", "perim"],
+      "alg-reducible": ["r1", "r2", "r3", "r4"],
+      "eq-check": ["lhs1", "isSol1", "lhs2", "isSol2"],
+      "eq-warmup": ["r1", "r2", "r3", "r4", "r5"],
+      "eq-boxes-addsub": ["b1", "b2", "b3", "b5"],
+      "eq-boxes-muldiv": ["b4", "b6", "b7", "b8"],
+      "eq-mental": ["m1", "m2", "m3", "m4"],
+      "eq-axc": ["e1", "e2", "e3", "e4", "e5"],
     };
     if (JSON.stringify(fieldKeys) !== JSON.stringify(requiredFields[definition.view.kind])) throw new Error("حقول المهمة لا تتوافق مع طريقة التفاعل.");
     if (definition.view.fields.some(field => !["choice", "integer", "signed-integer"].includes(field.type))) throw new Error("نوع حقل غير صالح.");

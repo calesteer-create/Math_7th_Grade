@@ -152,16 +152,24 @@
       "unitId": 2,
       "order": 1,
       "title": "العبارات الجبرية",
-      "sourcePage": 25,
-      "status": "pending"
+      "sourcePage": 28,
+      "status": "published",
+      "key": "algebraic-expressions",
+      "contentRef": "lesson-7.json",
+      "assessmentRef": "assessments/algebraic-expressions.json",
+      "practiceRef": "practice/algebraic-expressions.json"
     },
     {
       "id": 8,
       "unitId": 2,
       "order": 2,
       "title": "حل المعادلات",
-      "sourcePage": 28,
-      "status": "pending"
+      "sourcePage": 36,
+      "status": "published",
+      "key": "solving-equations",
+      "contentRef": "lesson-8.json",
+      "assessmentRef": "assessments/solving-equations.json",
+      "practiceRef": "practice/solving-equations.json"
     },
     {
       "id": 9,

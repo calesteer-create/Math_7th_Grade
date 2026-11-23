@@ -4,6 +4,8 @@ import integersMulDivPractice from "@/content/practice/integers-mul-div.json";
 import rationalNumbersPractice from "@/content/practice/rational-numbers.json";
 import operationsRationalPractice from "@/content/practice/operations-rational.json";
 import coordinatePlanePractice from "@/content/practice/coordinate-plane.json";
+import algebraicExpressionsPractice from "@/content/practice/algebraic-expressions.json";
+import solvingEquationsPractice from "@/content/practice/solving-equations.json";
 
 // فهرس بنوك التمارين مفهرسة بمسار الـRef المعلن في السجل.
 export const PRACTICE_INDEX: Record<string, unknown> = {
@@ -13,4 +15,6 @@ export const PRACTICE_INDEX: Record<string, unknown> = {
   "practice/rational-numbers.json": rationalNumbersPractice,
   "practice/operations-rational.json": operationsRationalPractice,
   "practice/coordinate-plane.json": coordinatePlanePractice,
+  "practice/algebraic-expressions.json": algebraicExpressionsPractice,
+  "practice/solving-equations.json": solvingEquationsPractice,
 };
