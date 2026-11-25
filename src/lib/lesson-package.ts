@@ -1,7 +1,7 @@
 // مدقق حزم المحتوى: يربط كل درس منشور بحزمته (المحتوى + بنك الأسئلة + بنك التمارين)
 // ويوقف البناء عند أي مرجع مفقود أو ربط خاطئ أو نوع كتلة مجهول.
 import type { OriginalAssessment } from "@/lib/assessment";
-import { ALGEBRA_STUDIO_MODES, CONTENT_BLOCK_KINDS, COORDINATE_STUDIO_MODES, EQUATIONS_STUDIO_MODES, FIGURE_KINDS, INTEGER_MUL_DIV_STUDIO_MODES, INTEGER_STUDIO_MODES, LAB_TOOLS, OPERATIONS_STUDIO_MODES, RATIONAL_STUDIO_MODES, STUDIO_MODES, type Block, type NotebookSection } from "@/lib/lesson-content";
+import { ALGEBRA_STUDIO_MODES, AREA_STUDIO_MODES, CONTENT_BLOCK_KINDS, COORDINATE_STUDIO_MODES, EQUATIONS_STUDIO_MODES, FIGURE_KINDS, INTEGER_MUL_DIV_STUDIO_MODES, INTEGER_STUDIO_MODES, LAB_TOOLS, OPERATIONS_STUDIO_MODES, PARALLEL_STUDIO_MODES, PARALLELOGRAM_STUDIO_MODES, RATIONAL_STUDIO_MODES, STUDIO_MODES, type Block, type NotebookSection } from "@/lib/lesson-content";
 import { validateLessonPublication, type LessonDraft } from "@/lib/lesson-publication";
 import { validatePracticeBank, type PracticeBank } from "@/lib/practice-grading";
 import { findUnit, publishedLessons, validateLessonRegistry, type LessonRegistry, type PublishedLessonRecord } from "@/lib/lesson-registry";
@@ -17,7 +17,7 @@ export type ResolvedLessonPackage = { entry: PublishedLessonRecord; content: Les
 const REQUIRED: Record<string, string[]> = {
   lead: ["text"], book: ["text"], explain: ["text"], def: ["term", "text"], law: [], example: ["steps"], steps: ["steps"],
   mistake: ["text"], note: ["text"], math: ["tex"], check: ["question", "answer"], summary: ["items"], activity: ["text"],
-  exercise: ["title", "text", "source"], guide: ["title", "sections"], labtool: ["tool"], naturalStudio: [], integersStudio: [], integersMulDivStudio: [], rationalStudio: [], operationsStudio: [], coordinateStudio: [], algebraStudio: [], equationsStudio: [], bookFigure: ["figure"],
+  exercise: ["title", "text", "source"], guide: ["title", "sections"], labtool: ["tool"], naturalStudio: [], integersStudio: [], integersMulDivStudio: [], rationalStudio: [], operationsStudio: [], coordinateStudio: [], algebraStudio: [], equationsStudio: [], parallelogramStudio: [], parallelogramAreaStudio: [], parallelLinesStudio: [], bookFigure: ["figure"],
 };
 const ALLOWED: Record<string, string[]> = {
   lead: ["title", "text"], book: ["title", "text"], explain: ["title", "text"], def: ["term", "text"],
@@ -25,7 +25,7 @@ const ALLOWED: Record<string, string[]> = {
   mistake: ["title", "text"], note: ["title", "text"], math: ["tex", "caption"],
   check: ["question", "answer", "hint", "options", "correctOption"], summary: ["title", "items"], activity: ["title", "text"],
   exercise: ["title", "text", "source", "figure", "practiceId"], guide: ["title", "intro", "sections"],
-  labtool: ["tool"], naturalStudio: ["mode"], integersStudio: ["mode"], integersMulDivStudio: ["mode"], rationalStudio: ["mode"], operationsStudio: ["mode"], coordinateStudio: ["mode"], algebraStudio: ["mode"], equationsStudio: ["mode"], bookFigure: ["figure"],
+  labtool: ["tool"], naturalStudio: ["mode"], integersStudio: ["mode"], integersMulDivStudio: ["mode"], rationalStudio: ["mode"], operationsStudio: ["mode"], coordinateStudio: ["mode"], algebraStudio: ["mode"], equationsStudio: ["mode"], parallelogramStudio: ["mode"], parallelogramAreaStudio: ["mode"], parallelLinesStudio: ["mode"], bookFigure: ["figure"],
 };
 const STRING_FIELDS = ["title", "text", "term", "note", "caption", "question", "answer", "hint", "result", "intro", "source", "tex", "formula"];
 const LIST_FIELDS = ["steps", "items", "options"];
@@ -98,6 +98,15 @@ export function validateBlockKinds(blocks: unknown, source: string, path: string
       fail(source, `${at}.mode`, `وضع مختبر غير معروف: ${JSON.stringify(block.mode)}.`);
     }
     if (kind === "equationsStudio" && block.mode !== undefined && !(EQUATIONS_STUDIO_MODES as readonly unknown[]).includes(block.mode)) {
+      fail(source, `${at}.mode`, `وضع مختبر غير معروف: ${JSON.stringify(block.mode)}.`);
+    }
+    if (kind === "parallelogramStudio" && block.mode !== undefined && !(PARALLELOGRAM_STUDIO_MODES as readonly unknown[]).includes(block.mode)) {
+      fail(source, `${at}.mode`, `وضع مختبر غير معروف: ${JSON.stringify(block.mode)}.`);
+    }
+    if (kind === "parallelogramAreaStudio" && block.mode !== undefined && !(AREA_STUDIO_MODES as readonly unknown[]).includes(block.mode)) {
+      fail(source, `${at}.mode`, `وضع مختبر غير معروف: ${JSON.stringify(block.mode)}.`);
+    }
+    if (kind === "parallelLinesStudio" && block.mode !== undefined && !(PARALLEL_STUDIO_MODES as readonly unknown[]).includes(block.mode)) {
       fail(source, `${at}.mode`, `وضع مختبر غير معروف: ${JSON.stringify(block.mode)}.`);
     }
     if (kind === "check") {

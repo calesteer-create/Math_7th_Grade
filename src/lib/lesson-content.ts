@@ -6,8 +6,11 @@ import { OPERATIONS_FIGURE_KINDS, type OperationsFigureKind } from "@/lib/operat
 import { COORDINATE_FIGURE_KINDS, type CoordinateFigureKind } from "@/lib/coordinate-plane";
 import { ALGEBRA_FIGURE_KINDS, ALGEBRA_STUDIO_MODES, type AlgebraFigureKind, type AlgebraStudioMode } from "@/lib/algebraic-expressions";
 import { EQUATIONS_FIGURE_KINDS, EQUATIONS_STUDIO_MODES, type EquationsFigureKind, type EquationsStudioMode } from "@/lib/solving-equations";
+import { PARALLELOGRAM_FIGURE_KINDS, PARALLELOGRAM_STUDIO_MODES, type ParallelogramFigureKind, type ParallelogramStudioMode } from "@/lib/parallelogram-symmetry";
+import { AREA_FIGURE_KINDS, AREA_STUDIO_MODES, type AreaFigureKind, type AreaStudioMode } from "@/lib/parallelogram-area";
+import { PARALLEL_FIGURE_KINDS, PARALLEL_STUDIO_MODES, type ParallelFigureKind, type ParallelStudioMode } from "@/lib/parallel-lines-transversal";
 
-export type FigureKind = NaturalFigureKind | IntegerFigureKind | IntegersMulDivFigureKind | RationalFigureKind | OperationsFigureKind | CoordinateFigureKind | AlgebraFigureKind | EquationsFigureKind;
+export type FigureKind = NaturalFigureKind | IntegerFigureKind | IntegersMulDivFigureKind | RationalFigureKind | OperationsFigureKind | CoordinateFigureKind | AlgebraFigureKind | EquationsFigureKind | ParallelogramFigureKind | AreaFigureKind | ParallelFigureKind;
 export type ContentOrigin = "book" | "supplement";
 export const EXTRA_EXPLANATION_LABEL = "شرح إضافي للكتاب";
 
@@ -38,6 +41,9 @@ export type Block = Provenance & (
   | { kind: "coordinateStudio"; mode?: "full" | "explore" | "plot" | "quadrants" }
   | { kind: "algebraStudio"; mode?: AlgebraStudioMode }
   | { kind: "equationsStudio"; mode?: EquationsStudioMode }
+  | { kind: "parallelogramStudio"; mode?: ParallelogramStudioMode }
+  | { kind: "parallelogramAreaStudio"; mode?: AreaStudioMode }
+  | { kind: "parallelLinesStudio"; mode?: ParallelStudioMode }
   | { kind: "bookFigure"; figure: FigureKind }
 );
 export type NotebookSection = { id: string; title: string; writingTask: string; blocks: Block[] };
@@ -46,10 +52,10 @@ export type NotebookSection = { id: string; title: string; writingTask: string; 
 // أثناء التحقق من المحتوى بدل أن يُعرض فراغًا أو يُتجاهل بصمت.
 export const CONTENT_BLOCK_KINDS = [
   "lead", "book", "explain", "def", "law", "example", "steps", "mistake", "note", "math",
-  "check", "summary", "activity", "exercise", "guide", "labtool", "naturalStudio", "integersStudio", "integersMulDivStudio", "rationalStudio", "operationsStudio", "coordinateStudio", "algebraStudio", "equationsStudio", "bookFigure",
+  "check", "summary", "activity", "exercise", "guide", "labtool", "naturalStudio", "integersStudio", "integersMulDivStudio", "rationalStudio", "operationsStudio", "coordinateStudio", "algebraStudio", "equationsStudio", "parallelogramStudio", "parallelogramAreaStudio", "parallelLinesStudio", "bookFigure",
 ] as const;
 export type ContentBlockKind = (typeof CONTENT_BLOCK_KINDS)[number];
-export const FIGURE_KINDS = ["warmup", "counting", "numberLine", "placeValue", ...INTEGER_FIGURE_KINDS, ...INTEGER_MUL_DIV_FIGURE_KINDS, ...RATIONAL_FIGURE_KINDS, ...OPERATIONS_FIGURE_KINDS, ...COORDINATE_FIGURE_KINDS, ...ALGEBRA_FIGURE_KINDS, ...EQUATIONS_FIGURE_KINDS] as const;
+export const FIGURE_KINDS = ["warmup", "counting", "numberLine", "placeValue", ...INTEGER_FIGURE_KINDS, ...INTEGER_MUL_DIV_FIGURE_KINDS, ...RATIONAL_FIGURE_KINDS, ...OPERATIONS_FIGURE_KINDS, ...COORDINATE_FIGURE_KINDS, ...ALGEBRA_FIGURE_KINDS, ...EQUATIONS_FIGURE_KINDS, ...PARALLELOGRAM_FIGURE_KINDS, ...AREA_FIGURE_KINDS, ...PARALLEL_FIGURE_KINDS] as const;
 export const LAB_TOOLS = ["fraction", "numberline", "equation", "triangle", "percent"] as const;
 export const STUDIO_MODES = ["full", "dots", "line", "places"] as const;
 export const INTEGER_STUDIO_MODES = ["full", "explorer", "addsub", "game", "simplify"] as const;
@@ -57,4 +63,4 @@ export const INTEGER_MUL_DIV_STUDIO_MODES = ["full", "pattern", "signcount", "sh
 export const RATIONAL_STUDIO_MODES = ["full", "builder", "line", "compare", "order", "decimal"] as const;
 export const OPERATIONS_STUDIO_MODES = ["full", "sci", "frac", "decimal", "power"] as const;
 export const COORDINATE_STUDIO_MODES = ["full", "explore", "plot", "quadrants"] as const;
-export { ALGEBRA_STUDIO_MODES, EQUATIONS_STUDIO_MODES };
+export { ALGEBRA_STUDIO_MODES, EQUATIONS_STUDIO_MODES, PARALLELOGRAM_STUDIO_MODES, AREA_STUDIO_MODES, PARALLEL_STUDIO_MODES };

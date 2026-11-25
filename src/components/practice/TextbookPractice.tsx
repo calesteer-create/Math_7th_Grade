@@ -16,6 +16,9 @@ const COLORS: Record<string,[string,string]> = {
   "int-warmup":["#8750d8","#f5efff"],"int-game":["#d18b18","#fff8e3"],"int-context":["#3887cf","#eaf6ff"],"int-calc-ab":["#0b9b8a","#e7fcf6"],"int-calc-c":["#dc7c36","#fff4e8"],"int-match":["#dc638a","#fff0f5"],"int-lines":["#0b9b8a","#e7fcf6"],"int-reasoning":["#5b50d6","#eef0ff"],
   "muldiv-warmup":["#8750d8","#f5efff"],"muldiv-signs":["#dc638a","#fff0f5"],"muldiv-calc-a":["#0b9b8a","#e7fcf6"],"muldiv-calc-b":["#3887cf","#eaf6ff"],"muldiv-calc-c":["#dc7c36","#fff4e8"],"muldiv-fill":["#d18b18","#fff8e3"],"muldiv-understand":["#5b50d6","#eef0ff"],
   "rat-warmup":["#8750d8","#f5efff"],"rat-represent":["#0b9b8a","#e7fcf6"],"rat-decimal":["#3887cf","#eaf6ff"],"rat-line":["#d18b18","#fff8e3"],"rat-compare":["#dc638a","#fff0f5"],"rat-order-asc":["#dc7c36","#fff4e8"],"rat-order-desc":["#5b50d6","#eef0ff"],
+  "pg-unit-launch":["#5b50d6","#eef0ff"],"pg-identify":["#3887cf","#eaf6ff"],"pg-sym-proof":["#8750d8","#f5efff"],"pg-check-props":["#0b9b8a","#e7fcf6"],"pg-center-g":["#dc638a","#fff0f5"],"pg-coord":["#d18b18","#fff8e3"],
+  "area-cutpaste":["#0b9b8a","#e7fcf6"],"area-units":["#dc7c36","#fff4e8"],"area-heights":["#3887cf","#eaf6ff"],"area-worked":["#5b50d6","#eef0ff"],"area-ratios":["#8750d8","#f5efff"],"area-train":["#d18b18","#fff8e3"],
+  "pl-warmup":["#8750d8","#f5efff"],"pl-angle-types":["#3887cf","#eaf6ff"],"pl-transversal":["#5b50d6","#eef0ff"],"pl-angle-a":["#0b9b8a","#e7fcf6"],"pl-train-1":["#dc638a","#fff0f5"],"pl-train-2":["#dc7c36","#fff4e8"],"pl-train-3":["#d18b18","#fff8e3"],
 };
 
 function usePractice(lessonId: number) {
