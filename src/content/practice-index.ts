@@ -6,6 +6,9 @@ import operationsRationalPractice from "@/content/practice/operations-rational.j
 import coordinatePlanePractice from "@/content/practice/coordinate-plane.json";
 import algebraicExpressionsPractice from "@/content/practice/algebraic-expressions.json";
 import solvingEquationsPractice from "@/content/practice/solving-equations.json";
+import parallelogramSymmetryPractice from "@/content/practice/parallelogram-symmetry.json";
+import parallelogramAreaPractice from "@/content/practice/parallelogram-area.json";
+import parallelLinesTransversalPractice from "@/content/practice/parallel-lines-transversal.json";
 
 // فهرس بنوك التمارين مفهرسة بمسار الـRef المعلن في السجل.
 export const PRACTICE_INDEX: Record<string, unknown> = {
@@ -17,4 +20,7 @@ export const PRACTICE_INDEX: Record<string, unknown> = {
   "practice/coordinate-plane.json": coordinatePlanePractice,
   "practice/algebraic-expressions.json": algebraicExpressionsPractice,
   "practice/solving-equations.json": solvingEquationsPractice,
+  "practice/parallelogram-symmetry.json": parallelogramSymmetryPractice,
+  "practice/parallelogram-area.json": parallelogramAreaPractice,
+  "practice/parallel-lines-transversal.json": parallelLinesTransversalPractice,
 };

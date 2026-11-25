@@ -15,6 +15,9 @@ import OperationsStudio from "@/components/OperationsStudio";
 import CoordinateStudio from "@/components/CoordinateStudio";
 import AlgebraStudio from "@/components/AlgebraStudio";
 import EquationsStudio from "@/components/EquationsStudio";
+import ParallelogramStudio from "@/components/ParallelogramStudio";
+import ParallelogramAreaStudio from "@/components/ParallelogramAreaStudio";
+import ParallelLinesStudio from "@/components/ParallelLinesStudio";
 import BookFigure from "@/components/figures/BookFigure";
 import type { Block, ContentOrigin, NotebookSection } from "@/lib/lesson-content";
 export type { Block, NotebookSection } from "@/lib/lesson-content";
@@ -66,6 +69,9 @@ export function BlockRenderer({ block, lessonId }: { block: Block; lessonId?: nu
     case "coordinateStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<CoordinateStudio mode={block.mode}/></div>;
     case "algebraStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<AlgebraStudio mode={block.mode}/></div>;
     case "equationsStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<EquationsStudio mode={block.mode}/></div>;
+    case "parallelogramStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<ParallelogramStudio mode={block.mode}/></div>;
+    case "parallelogramAreaStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<ParallelogramAreaStudio mode={block.mode}/></div>;
+    case "parallelLinesStudio": return <div className="space-y-3">{origin === "supplement" && <ExtraExplanationLabel/>}<ParallelLinesStudio mode={block.mode}/></div>;
     case "bookFigure": return <BookFigure figure={block.figure}/>;
   }
 }

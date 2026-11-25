@@ -1,0 +1,128 @@
+{
+  "lessonId": 10,
+  "revision": "2026-11-25-u3l2-assess-v1",
+  "source": "أسئلة أصلية تقييمية لدرس مساحة متوازي الأضلاع — الصف السابع",
+  "skills": {
+    "identify_base_height": "تمييز القاعدة والارتفاع العمودي المتعلّق بها",
+    "compute_area_direct": "حساب مساحة متوازي الأضلاع مباشرة من القاعدة والارتفاع",
+    "unit_conversion_area": "توحيد واحدات القياس قبل حساب المساحة",
+    "find_missing_dimension": "استخدام طريقتَي المساحة لحساب قاعدة أو ارتفاع مجهول",
+    "area_ratios_compare": "مقارنة مساحات متوازيات أضلاع مشتركة بالارتفاع وحساب نسبتها"
+  },
+  "questions": [
+    {
+      "origin": "original",
+      "skill": "identify_base_height",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "في متوازي الأضلاع \\(PQRS\\)، الضلع \\(QR=10\\text{ cm}\\) والضلع \\(PQ=7\\text{ cm}\\)، ورُسمت القطعة \\([PT]\\) عمودية على \\([QR]\\) طولها \\(6\\text{ cm}\\). أي جداء يعطي مساحة \\(PQRS\\)؟",
+      "options": [
+        "\\(10\\times 6\\)",
+        "\\(10\\times 7\\)",
+        "\\(7\\times 6\\)",
+        "\\(2\\times(10+7)\\)"
+      ],
+      "answer": "0",
+      "explanation": "القطعة \\([PT]\\) عمودية على القاعدة \\([QR]\\)، لذا فهي الارتفاع المتعلّق بالقاعدة \\(QR=10\\text{ cm}\\)؛ وتكون المساحة \\(10\\times 6=60\\text{ cm}^2\\)، ولا نضرب الضلعين المتجاورين."
+    },
+    {
+      "origin": "original",
+      "skill": "identify_base_height",
+      "type": "truefalse",
+      "difficulty": "easy",
+      "question": "في متوازي الأضلاع غير المستطيل، يكون طول الارتفاع المتعلّق بالضلع الأطول أصغر من طول الارتفاع المتعلّق بالضلع الأقصر.",
+      "answer": "true",
+      "explanation": "العبارة صحيحة؛ لأن \\(\\mathcal{B}\\times h=\\mathcal{B}'\\times h'=\\mathcal{S}\\) مقدار ثابت، فكلما كبرت القاعدة صغر الارتفاع العمودي الموافق لها ليظل حاصل الضرب متساويًا."
+    },
+    {
+      "origin": "original",
+      "skill": "compute_area_direct",
+      "type": "fill",
+      "difficulty": "easy",
+      "question": "لوحة إرشادية على شكل متوازي أضلاع طول قاعدتها \\(14\\text{ cm}\\) وطول الارتفاع المتعلّق بها \\(9\\text{ cm}\\). احسب مساحتها بالسنتيمتر المربّع (اكتب العدد فقط).",
+      "answer": "126",
+      "explanation": "القاعدة والارتفاع بالواحدة نفسها (\\(\\text{cm}\\))، إذن نطبّق القانون مباشرة: \\(\\mathcal{S}=14\\times 9=126\\text{ cm}^2\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "compute_area_direct",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "متوازي أضلاع قاعدته \\(4.5\\text{ m}\\) وارتفاعه المتعلّق بها \\(6\\text{ m}\\). ما مساحته؟",
+      "options": [
+        "\\(27\\text{ m}^2\\)",
+        "\\(24.5\\text{ m}^2\\)",
+        "\\(10.5\\text{ m}^2\\)",
+        "\\(21\\text{ m}^2\\)"
+      ],
+      "answer": "0",
+      "explanation": "نحسب جداء القاعدة في الارتفاع: \\(4.5\\times 6=(4\\times 6)+(0.5\\times 6)=24+3=27\\text{ m}^2\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "unit_conversion_area",
+      "type": "problem",
+      "difficulty": "medium",
+      "question": "موقف سيّارة على شكل متوازي أضلاع طول قاعدته \\(450\\text{ cm}\\) وطول الارتفاع العمودي عليها \\(2\\text{ m}\\). ما مساحته بالمتر المربّع؟ (اكتب العدد فقط).",
+      "answer": "9",
+      "explanation": "نوحّد الواحدة أولاً إلى المتر: \\(450\\text{ cm}=\\frac{450}{100}=4.5\\text{ m}\\). ثم نحسب المساحة: \\(\\mathcal{S}=4.5\\times 2=9\\text{ m}^2\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "unit_conversion_area",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "قطعة زجاج على شكل متوازي أضلاع قاعدتها \\(8\\text{ cm}\\) والارتفاع العمودي عليها \\(50\\text{ mm}\\). ما مساحتها بالسنتيمتر المربّع؟",
+      "options": [
+        "\\(40\\text{ cm}^2\\)",
+        "\\(400\\text{ cm}^2\\)",
+        "\\(4\\text{ cm}^2\\)",
+        "\\(13\\text{ cm}^2\\)"
+      ],
+      "answer": "0",
+      "explanation": "نحوّل الارتفاع من المليمتر إلى السنتيمتر: \\(50\\text{ mm}=\\frac{50}{10}=5\\text{ cm}\\). إذن المساحة تساوي \\(8\\times 5=40\\text{ cm}^2\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "find_missing_dimension",
+      "type": "problem",
+      "difficulty": "hard",
+      "question": "في متوازي الأضلاع \\(KLMN\\)، طول القاعدة \\(LM=12\\text{ cm}\\) وارتفاعها المتعلّق بها \\(5\\text{ cm}\\). إذا كان طول الضلع \\(MN=10\\text{ cm}\\)، فما طول الارتفاع المتعلّق بـ \\([MN]\\) بالسنتيمتر؟ (اكتب العدد فقط).",
+      "answer": "6",
+      "explanation": "نحسب المساحة أولاً: \\(\\mathcal{S}=12\\times 5=60\\text{ cm}^2\\). وبما أن \\(\\mathcal{S}=MN\\times h'=10\\times h'\\)، نجد \\(h'=\\frac{60}{10}=6\\text{ cm}\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "find_missing_dimension",
+      "type": "fill",
+      "difficulty": "medium",
+      "question": "متوازي أضلاع مساحته \\(84\\text{ cm}^2\\) وطول أحد ارتفاعيه \\(7\\text{ cm}\\). ما طول القاعدة المتعلّقة بهذا الارتفاع بالسنتيمتر؟ (اكتب العدد فقط).",
+      "answer": "12",
+      "explanation": "من القانون \\(\\mathcal{S}=\\mathcal{B}\\times h\\) نقسم المساحة على الارتفاع: \\(\\mathcal{B}=\\frac{84}{7}=12\\text{ cm}\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "area_ratios_compare",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "متوازي أضلاع \\(EFGH\\) مساحته \\(72\\text{ cm}^2\\). قُسّم ضلعه \\([FG]\\) بنقاط إلى \\(6\\) أجزاء متساوية ورُسم داخله متوازي أضلاع مظلّل له الارتفاع نفسه وقاعدته تساوي جزءين من هذه الأجزاء. ما مساحة المنطقة المظلّلة؟",
+      "options": [
+        "\\(24\\text{ cm}^2\\)",
+        "\\(12\\text{ cm}^2\\)",
+        "\\(36\\text{ cm}^2\\)",
+        "\\(18\\text{ cm}^2\\)"
+      ],
+      "answer": "0",
+      "explanation": "بما أن للشكليْن الارتفاع نفسه، فإن نسبة المساحة المظلّلة تساوي نسبة قاعدتها وهي \\(\\frac{2}{6}=\\frac{1}{3}\\). إذن المساحة المظلّلة تساوي \\(\\frac{1}{3}\\times 72=24\\text{ cm}^2\\)."
+    },
+    {
+      "origin": "original",
+      "skill": "area_ratios_compare",
+      "type": "truefalse",
+      "difficulty": "medium",
+      "question": "إذا كان لمتوازيَي أضلاع القاعدة نفسها والارتفاع نفسه، ولكن أحدهما أكثر ميلاً من الآخر، فإن مساحتيهما تظلّان متساويتين تمامًا.",
+      "answer": "true",
+      "explanation": "العبارة صحيحة؛ لأن المساحة تعتمد فقط على طول القاعدة والارتفاع العمودي عليها (\\(\\mathcal{S}=\\mathcal{B}\\times h\\)) ولا تتأثّر بدرجة ميل الضلعين الجانبيين ما دام الارتفاع ثابتًا."
+    }
+  ]
+}

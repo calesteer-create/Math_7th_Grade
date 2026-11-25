@@ -120,6 +120,9 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
       "cp-read", "cp-quadrant", "cp-signs", "cp-plot",
       "alg-warmup", "alg-envelopes", "alg-like-terms", "alg-simplify", "alg-word", "alg-coeffs", "alg-triangle", "alg-reducible",
       "eq-check", "eq-warmup", "eq-boxes-addsub", "eq-boxes-muldiv", "eq-mental", "eq-axc",
+      "pg-unit-launch", "pg-identify", "pg-sym-proof", "pg-check-props", "pg-center-g", "pg-coord",
+      "area-cutpaste", "area-units", "area-heights", "area-worked", "area-ratios", "area-train",
+      "pl-warmup", "pl-angle-types", "pl-transversal", "pl-angle-a", "pl-train-1", "pl-train-2", "pl-train-3",
     ].includes(definition.view.kind)) throw new Error("طريقة تفاعل غير معروفة.");
     if (!definition.view.title?.trim() || !definition.view.instruction?.trim() || !definition.view.fields?.length) throw new Error("بيانات المهمة ناقصة.");
     if (definition.view.fields.some(field => !/^[a-z][a-zA-Z0-9]{0,39}$/.test(field.key) || ["constructor", "prototype"].includes(field.key) || !field.label.trim())) throw new Error("اسم حقل غير صالح.");
@@ -174,6 +177,25 @@ export function validatePracticeBank(lesson: { content: Record<string, Block[]>;
       "eq-boxes-muldiv": ["b4", "b6", "b7", "b8"],
       "eq-mental": ["m1", "m2", "m3", "m4"],
       "eq-axc": ["e1", "e2", "e3", "e4", "e5"],
+      "pg-unit-launch": ["q1", "q2", "q3", "q4", "q5"],
+      "pg-identify": ["s1", "s2", "s3", "s4", "s5"],
+      "pg-sym-proof": ["symDelta", "symDeltaP", "symC", "eqSide", "eqAngle"],
+      "pg-check-props": ["par1", "par2", "eq1", "eq2", "eq3", "ang1", "ang2"],
+      "pg-center-g": ["symA", "symB", "midAC", "midBD"],
+      "pg-coord": ["cx", "cy", "gx", "gy", "relC", "relSum"],
+      "area-cutpaste": ["reemArea", "ammarBase", "formula"],
+      "area-units": ["baseM", "areaM2", "areaCm2"],
+      "area-heights": ["h1", "s1", "h2", "s2"],
+      "area-worked": ["area", "formula2", "cd"],
+      "area-ratios": ["r1", "r2", "r3"],
+      "area-train": ["a", "b", "c", "d"],
+      "pl-warmup": ["sum1", "collinear", "sum2", "perp"],
+      "pl-angle-types": ["comp58", "supp120", "vertPair", "adjRay"],
+      "pl-transversal": ["altInt", "altExt", "corr", "converseRule"],
+      "pl-angle-a": ["aLeft", "aRight", "aTotal"],
+      "pl-train-1": ["angleRel", "linePos", "quadType"],
+      "pl-train-2": ["m1Top", "m1Total", "m2Acute", "m2Total"],
+      "pl-train-3": ["relType", "xVal"],
     };
     if (JSON.stringify(fieldKeys) !== JSON.stringify(requiredFields[definition.view.kind])) throw new Error("حقول المهمة لا تتوافق مع طريقة التفاعل.");
     if (definition.view.fields.some(field => !["choice", "integer", "signed-integer"].includes(field.type))) throw new Error("نوع حقل غير صالح.");

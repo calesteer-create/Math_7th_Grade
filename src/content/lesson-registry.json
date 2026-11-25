@@ -176,24 +176,36 @@
       "unitId": 3,
       "order": 1,
       "title": "متوازي الأضلاع ومركز التناظر",
-      "sourcePage": 36,
-      "status": "pending"
+      "sourcePage": 41,
+      "status": "published",
+      "key": "parallelogram-symmetry",
+      "contentRef": "lesson-9.json",
+      "assessmentRef": "assessments/parallelogram-symmetry.json",
+      "practiceRef": "practice/parallelogram-symmetry.json"
     },
     {
       "id": 10,
       "unitId": 3,
       "order": 2,
       "title": "مساحة متوازي الأضلاع",
-      "sourcePage": 42,
-      "status": "pending"
+      "sourcePage": 46,
+      "status": "published",
+      "key": "parallelogram-area",
+      "contentRef": "lesson-10.json",
+      "assessmentRef": "assessments/parallelogram-area.json",
+      "practiceRef": "practice/parallelogram-area.json"
     },
     {
       "id": 11,
       "unitId": 3,
       "order": 3,
-      "title": "مستقيمات متوازية والقاطع",
-      "sourcePage": 46,
-      "status": "pending"
+      "title": "مستقيمان متوازيان وثالث قاطع",
+      "sourcePage": 49,
+      "status": "published",
+      "key": "parallel-lines-transversal",
+      "contentRef": "lesson-11.json",
+      "assessmentRef": "assessments/parallel-lines-transversal.json",
+      "practiceRef": "practice/parallel-lines-transversal.json"
     },
     {
       "id": 12,

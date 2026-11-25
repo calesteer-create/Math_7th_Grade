@@ -8,7 +8,10 @@ export type PracticeKind =
   | "op-sci-write" | "op-sci-compare" | "op-frac-addsub" | "op-frac-muldiv" | "op-choice" | "op-sign"
   | "cp-read" | "cp-quadrant" | "cp-signs" | "cp-plot"
   | "alg-warmup" | "alg-envelopes" | "alg-like-terms" | "alg-simplify" | "alg-word" | "alg-coeffs" | "alg-triangle" | "alg-reducible"
-  | "eq-check" | "eq-warmup" | "eq-boxes-addsub" | "eq-boxes-muldiv" | "eq-mental" | "eq-axc";
+  | "eq-check" | "eq-warmup" | "eq-boxes-addsub" | "eq-boxes-muldiv" | "eq-mental" | "eq-axc"
+  | "pg-unit-launch" | "pg-identify" | "pg-sym-proof" | "pg-check-props" | "pg-center-g" | "pg-coord"
+  | "area-cutpaste" | "area-units" | "area-heights" | "area-worked" | "area-ratios" | "area-train"
+  | "pl-warmup" | "pl-angle-types" | "pl-transversal" | "pl-angle-a" | "pl-train-1" | "pl-train-2" | "pl-train-3";
 export type PracticeField = { key: string; label: string; type: "choice" | "integer" | "signed-integer"; choices?: string[]; max?: number };
 export type PracticeView = {
   title: string;

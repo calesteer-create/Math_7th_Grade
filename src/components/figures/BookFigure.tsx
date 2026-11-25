@@ -6,6 +6,9 @@ import OperationsBookFigure from "@/components/figures/OperationsFigures";
 import CoordinateBookFigure from "@/components/figures/CoordinatePlaneFigures";
 import AlgebraBookFigure from "@/components/figures/AlgebraFigures";
 import EquationsBookFigure from "@/components/figures/EquationsFigures";
+import ParallelogramBookFigure from "@/components/figures/ParallelogramFigures";
+import ParallelogramAreaBookFigure from "@/components/figures/ParallelogramAreaFigures";
+import ParallelLinesBookFigure from "@/components/figures/ParallelLinesFigures";
 import type { NaturalFigureKind } from "@/lib/natural-numbers";
 import { INTEGER_FIGURE_KINDS, type IntegerFigureKind } from "@/lib/integers";
 import { INTEGER_MUL_DIV_FIGURE_KINDS, type IntegersMulDivFigureKind } from "@/lib/integers-mul-div";
@@ -14,10 +17,22 @@ import { OPERATIONS_FIGURE_KINDS, type OperationsFigureKind } from "@/lib/operat
 import { COORDINATE_FIGURE_KINDS, type CoordinateFigureKind } from "@/lib/coordinate-plane";
 import { ALGEBRA_FIGURE_KINDS, type AlgebraFigureKind } from "@/lib/algebraic-expressions";
 import { EQUATIONS_FIGURE_KINDS, type EquationsFigureKind } from "@/lib/solving-equations";
+import { PARALLELOGRAM_FIGURE_KINDS, type ParallelogramFigureKind } from "@/lib/parallelogram-symmetry";
+import { AREA_FIGURE_KINDS, type AreaFigureKind } from "@/lib/parallelogram-area";
+import { PARALLEL_FIGURE_KINDS, type ParallelFigureKind } from "@/lib/parallel-lines-transversal";
 
-export type BookFigureKind = NaturalFigureKind | IntegerFigureKind | IntegersMulDivFigureKind | RationalFigureKind | OperationsFigureKind | CoordinateFigureKind | AlgebraFigureKind | EquationsFigureKind;
+export type BookFigureKind = NaturalFigureKind | IntegerFigureKind | IntegersMulDivFigureKind | RationalFigureKind | OperationsFigureKind | CoordinateFigureKind | AlgebraFigureKind | EquationsFigureKind | ParallelogramFigureKind | AreaFigureKind | ParallelFigureKind;
 
 export default function BookFigure({ figure }: { figure: BookFigureKind }) {
+  if ((PARALLELOGRAM_FIGURE_KINDS as readonly string[]).includes(figure)) {
+    return <ParallelogramBookFigure kind={figure as ParallelogramFigureKind} />;
+  }
+  if ((AREA_FIGURE_KINDS as readonly string[]).includes(figure)) {
+    return <ParallelogramAreaBookFigure kind={figure as AreaFigureKind} />;
+  }
+  if ((PARALLEL_FIGURE_KINDS as readonly string[]).includes(figure)) {
+    return <ParallelLinesBookFigure kind={figure as ParallelFigureKind} />;
+  }
   if ((ALGEBRA_FIGURE_KINDS as readonly string[]).includes(figure)) {
     return <AlgebraBookFigure figure={figure as AlgebraFigureKind} />;
   }

@@ -36,7 +36,7 @@ test("بطاقة لكل مهارة معلنة بعدد إجاباتها الحق
   page.on("pageerror", error => errors.push(error.message));
   await seed(page, { "math7-quiz-attempts": [attempt(1, { "place-value": [true, true, true], writing: [true, true], counting: [true], "number-line": [false], reading: [true] })] });
 
-  await expect(page.locator("[data-skill]")).toHaveCount(41);
+  await expect(page.locator("[data-skill]")).toHaveCount(56);
   await expect(skill(page, "place-value")).toHaveAttribute("data-evidence", "3/3");
   await expect(skill(page, "writing")).toHaveAttribute("data-evidence", "2/2");
   await expect(skill(page, "counting")).toHaveAttribute("data-evidence", "1/1");
@@ -91,7 +91,7 @@ test("المحاولة القديمة بلا تفصيل لا تُخترع منه
   await seed(page, {
     "math7-quiz-attempts": [{ title: "اختبار قديم", score: 8, total: 8, date: "2025-09-01T08:00:00.000Z" }],
   });
-  await expect(page.locator("[data-skill]")).toHaveCount(41);
+  await expect(page.locator("[data-skill]")).toHaveCount(56);
   const statuses = await page.locator("[data-skill]").evaluateAll(nodes => nodes.map(node => node.getAttribute("data-status")));
   expect(statuses.every(status => status === "no-evidence")).toBe(true);
   await expect(page.locator("[data-legacy-attempts]")).toBeVisible();
@@ -106,7 +106,7 @@ test("تفصيل تالف لا يُسقط الصفحة ولا ينتحل أدل�
       { title: "ناقص", score: 8, total: 8, date, lessonId: 1, items: [{ id: 1, skill: "place-value", correct: true }] },
     ],
   });
-  await expect(page.locator("[data-skill]")).toHaveCount(41);
+  await expect(page.locator("[data-skill]")).toHaveCount(56);
   await expect(skill(page, "place-value")).toHaveAttribute("data-status", "no-evidence");
   expect(errors).toEqual([]);
 });
@@ -165,7 +165,7 @@ test("مسار حقيقي: اختبار مُسلَّم من الواجهة يُ�
 
   // الخريطة تُبنى من نفس المحاولة: الأدلة والحالات تطابق قواعد القياس.
   await page.goto(BASE + "/student/");
-  await expect(page.locator("[data-skill]")).toHaveCount(41);
+  await expect(page.locator("[data-skill]")).toHaveCount(56);
   const shown = await page.locator("[data-skill]").evaluateAll(nodes => nodes.map(node => ({
     key: node.getAttribute("data-skill"), status: node.getAttribute("data-status"), evidence: node.getAttribute("data-evidence"),
   })));

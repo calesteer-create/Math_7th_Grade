@@ -6,6 +6,9 @@ import lessonFive from "@/content/lesson-5.json";
 import lessonSix from "@/content/lesson-6.json";
 import lessonSeven from "@/content/lesson-7.json";
 import lessonEight from "@/content/lesson-8.json";
+import lessonNine from "@/content/lesson-9.json";
+import lessonTen from "@/content/lesson-10.json";
+import lessonEleven from "@/content/lesson-11.json";
 
 // فهرس ملفات المحتوى كما هي في مواقعها المعتمدة. لا يُنقل محتوى قائم ولا يُعاد كتابته؛
 // السجل يعلن اسم الملف، وهذا الفهرس يثبت وجوده فعلًا وقت التصدير.
@@ -18,4 +21,7 @@ export const LESSON_CONTENT_INDEX: Record<string, unknown> = {
   "lesson-6.json": lessonSix,
   "lesson-7.json": lessonSeven,
   "lesson-8.json": lessonEight,
+  "lesson-9.json": lessonNine,
+  "lesson-10.json": lessonTen,
+  "lesson-11.json": lessonEleven,
 };

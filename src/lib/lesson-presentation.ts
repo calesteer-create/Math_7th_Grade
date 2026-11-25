@@ -54,7 +54,7 @@ export function validateLessonPresentation(lesson: {
   for (const section of lesson.notebook) {
     assertMathText(section.title);
     assertMathText(section.writingTask);
-    if (section.blocks.some(b => ["summary", "exercise", "guide", "check", "labtool", "naturalStudio", "integersStudio", "integersMulDivStudio", "rationalStudio", "operationsStudio", "coordinateStudio", "algebraStudio", "equationsStudio"].includes(b.kind))) throw new Error("دفتر الطالب أوراق كتابة وقواعد وأمثلة، لا ملخصًا أو اختبارًا آخر.");
+    if (section.blocks.some(b => ["summary", "exercise", "guide", "check", "labtool", "naturalStudio", "integersStudio", "integersMulDivStudio", "rationalStudio", "operationsStudio", "coordinateStudio", "algebraStudio", "equationsStudio", "parallelogramStudio", "parallelogramAreaStudio", "parallelLinesStudio"].includes(b.kind))) throw new Error("دفتر الطالب أوراق كتابة وقواعد وأمثلة، لا ملخصًا أو اختبارًا آخر.");
     if (hasSourcePage(section.writingTask)) throw new Error("لا تظهر صفحة المصدر في دفتر الطالب.");
     if (hasSourcePage(section.title)) throw new Error("لا تظهر صفحة المصدر في دفتر الطالب.");
     section.blocks.forEach(block => validateBlockPresentation(block));

@@ -35,6 +35,15 @@ const practiceSeven = readJson("src/content/practice/algebraic-expressions.json"
 const lessonEight = readJson("src/content/lesson-8.json") as LessonDraft & { lessonId: number; assessmentRef: string; practiceRef?: string };
 const assessmentEight = readJson("src/content/assessments/solving-equations.json") as OriginalAssessment & { lessonId: number };
 const practiceEight = readJson("src/content/practice/solving-equations.json") as PracticeBank & { lessonId: number };
+const lessonNine = readJson("src/content/lesson-9.json") as LessonDraft & { lessonId: number; assessmentRef: string; practiceRef?: string };
+const assessmentNine = readJson("src/content/assessments/parallelogram-symmetry.json") as OriginalAssessment & { lessonId: number };
+const practiceNine = readJson("src/content/practice/parallelogram-symmetry.json") as PracticeBank & { lessonId: number };
+const lessonTen = readJson("src/content/lesson-10.json") as LessonDraft & { lessonId: number; assessmentRef: string; practiceRef?: string };
+const assessmentTen = readJson("src/content/assessments/parallelogram-area.json") as OriginalAssessment & { lessonId: number };
+const practiceTen = readJson("src/content/practice/parallelogram-area.json") as PracticeBank & { lessonId: number };
+const lessonEleven = readJson("src/content/lesson-11.json") as LessonDraft & { lessonId: number; assessmentRef: string; practiceRef?: string };
+const assessmentEleven = readJson("src/content/assessments/parallel-lines-transversal.json") as OriginalAssessment & { lessonId: number };
+const practiceEleven = readJson("src/content/practice/parallel-lines-transversal.json") as PracticeBank & { lessonId: number };
 
 const indexes = (): LessonPackageIndexes => ({
   lessons: {
@@ -46,6 +55,9 @@ const indexes = (): LessonPackageIndexes => ({
     "lesson-6.json": structuredClone(lessonSix),
     "lesson-7.json": structuredClone(lessonSeven),
     "lesson-8.json": structuredClone(lessonEight),
+    "lesson-9.json": structuredClone(lessonNine),
+    "lesson-10.json": structuredClone(lessonTen),
+    "lesson-11.json": structuredClone(lessonEleven),
   },
   assessments: {
     "assessments/natural-numbers.json": structuredClone(assessmentOne),
@@ -56,6 +68,9 @@ const indexes = (): LessonPackageIndexes => ({
     "assessments/coordinate-plane.json": structuredClone(assessmentSix),
     "assessments/algebraic-expressions.json": structuredClone(assessmentSeven),
     "assessments/solving-equations.json": structuredClone(assessmentEight),
+    "assessments/parallelogram-symmetry.json": structuredClone(assessmentNine),
+    "assessments/parallelogram-area.json": structuredClone(assessmentTen),
+    "assessments/parallel-lines-transversal.json": structuredClone(assessmentEleven),
   },
   practices: {
     "practice/natural-numbers.json": structuredClone(practiceOne),
@@ -66,6 +81,9 @@ const indexes = (): LessonPackageIndexes => ({
     "practice/coordinate-plane.json": structuredClone(practiceSix),
     "practice/algebraic-expressions.json": structuredClone(practiceSeven),
     "practice/solving-equations.json": structuredClone(practiceEight),
+    "practice/parallelogram-symmetry.json": structuredClone(practiceNine),
+    "practice/parallelogram-area.json": structuredClone(practiceTen),
+    "practice/parallel-lines-transversal.json": structuredClone(practiceEleven),
   },
 });
 const registry = (): LessonRegistry => structuredClone(LESSON_REGISTRY) as LessonRegistry;
@@ -91,12 +109,12 @@ function expectValidatorFailure(mutate: (indexesValue: LessonPackageIndexes) => 
 
 const byId = (source: LessonRegistry) => Object.fromEntries(source.lessons.map(lesson => [lesson.id, [lesson.unitId, lesson.order, lesson.title, lesson.status === "published" ? lesson.key : null]]));
 
-test("السجل الحالي: 8 وحدات و33 درسًا، والدروس الثمانية الأولى منشورة", () => {
+test("السجل الحالي: 8 وحدات و33 درسًا، والدروس الأحد عشر الأولى منشورة", () => {
   assert.equal(LESSON_REGISTRY.units.length, 8);
   assert.equal(LESSON_REGISTRY.lessons.length, 33);
   assert.deepEqual(LESSON_REGISTRY.lessons.map(lesson => lesson.id), Array.from({ length: 33 }, (_, i) => i + 1));
-  assert.deepEqual(publishedLessons(LESSON_REGISTRY).map(lesson => lesson.id), [1, 2, 3, 4, 5, 6, 7, 8]);
-  const [firstPublished, secondPublished, thirdPublished, fourthPublished, fifthPublished, sixthPublished, seventhPublished, eighthPublished] = publishedLessons(LESSON_REGISTRY);
+  assert.deepEqual(publishedLessons(LESSON_REGISTRY).map(lesson => lesson.id), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+  const [firstPublished, secondPublished, thirdPublished, fourthPublished, fifthPublished, sixthPublished, seventhPublished, eighthPublished, ninthPublished, tenthPublished, eleventhPublished] = publishedLessons(LESSON_REGISTRY);
   assert.equal(firstPublished.key, "natural-numbers");
   assert.equal(firstPublished.contentRef, "lesson-1.json");
   assert.equal(firstPublished.assessmentRef, "assessments/natural-numbers.json");
@@ -137,12 +155,30 @@ test("السجل الحالي: 8 وحدات و33 درسًا، والدروس ا�
   assert.equal(eighthPublished.assessmentRef, "assessments/solving-equations.json");
   assert.equal(eighthPublished.practiceRef, "practice/solving-equations.json");
   assert.equal(findLesson(LESSON_REGISTRY, 8)?.title, "حل المعادلات");
+  assert.equal(ninthPublished.key, "parallelogram-symmetry");
+  assert.equal(ninthPublished.contentRef, "lesson-9.json");
+  assert.equal(ninthPublished.assessmentRef, "assessments/parallelogram-symmetry.json");
+  assert.equal(ninthPublished.practiceRef, "practice/parallelogram-symmetry.json");
+  assert.equal(findLesson(LESSON_REGISTRY, 9)?.title, "متوازي الأضلاع ومركز التناظر");
+  assert.equal(findLesson(LESSON_REGISTRY, 9)?.sourcePage, 41);
+  assert.equal(tenthPublished.key, "parallelogram-area");
+  assert.equal(tenthPublished.contentRef, "lesson-10.json");
+  assert.equal(tenthPublished.assessmentRef, "assessments/parallelogram-area.json");
+  assert.equal(tenthPublished.practiceRef, "practice/parallelogram-area.json");
+  assert.equal(findLesson(LESSON_REGISTRY, 10)?.title, "مساحة متوازي الأضلاع");
+  assert.equal(findLesson(LESSON_REGISTRY, 10)?.sourcePage, 46);
+  assert.equal(eleventhPublished.key, "parallel-lines-transversal");
+  assert.equal(eleventhPublished.contentRef, "lesson-11.json");
+  assert.equal(eleventhPublished.assessmentRef, "assessments/parallel-lines-transversal.json");
+  assert.equal(eleventhPublished.practiceRef, "practice/parallel-lines-transversal.json");
+  assert.equal(findLesson(LESSON_REGISTRY, 11)?.title, "مستقيمان متوازيان وثالث قاطع");
+  assert.equal(findLesson(LESSON_REGISTRY, 11)?.sourcePage, 49);
 });
 
 test("معرّفات الدروس الحالية وروابطها ثابتة ومطابقة لحزمها", () => {
   const packages = validateLessonPackages(LESSON_REGISTRY, indexes());
-  assert.equal(packages.length, 8);
-  const [first, second, third, fourth, fifth, sixth, seventh, eighth] = packages;
+  assert.equal(packages.length, 11);
+  const [first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh] = packages;
   assert.equal(first.entry.id, 1);
   assert.equal(first.content.lessonId, 1);
   assert.equal(first.assessment.lessonId, 1);
@@ -223,6 +259,36 @@ test("معرّفات الدروس الحالية وروابطها ثابتة و�
   assert.equal(eighth.content.notebook.length, 4);
   assert.equal(new Set(eighth.content.notebook.map(section => section.id)).size, 4);
 
+  assert.equal(ninth.entry.id, 9);
+  assert.equal(ninth.content.lessonId, 9);
+  assert.equal(ninth.assessment.lessonId, 9);
+  assert.equal(ninth.practice?.lessonId, 9);
+  assert.equal(ninth.content.title, "متوازي الأضلاع ومركز التناظر");
+  assert.equal(ninth.assessment.questions.length, 10);
+  assert.equal(ninth.practice?.exercises.length, 6);
+  assert.equal(ninth.content.notebook.length, 4);
+  assert.equal(new Set(ninth.content.notebook.map(section => section.id)).size, 4);
+
+  assert.equal(tenth.entry.id, 10);
+  assert.equal(tenth.content.lessonId, 10);
+  assert.equal(tenth.assessment.lessonId, 10);
+  assert.equal(tenth.practice?.lessonId, 10);
+  assert.equal(tenth.content.title, "مساحة متوازي الأضلاع");
+  assert.equal(tenth.assessment.questions.length, 10);
+  assert.equal(tenth.practice?.exercises.length, 6);
+  assert.equal(tenth.content.notebook.length, 4);
+  assert.equal(new Set(tenth.content.notebook.map(section => section.id)).size, 4);
+
+  assert.equal(eleventh.entry.id, 11);
+  assert.equal(eleventh.content.lessonId, 11);
+  assert.equal(eleventh.assessment.lessonId, 11);
+  assert.equal(eleventh.practice?.lessonId, 11);
+  assert.equal(eleventh.content.title, "مستقيمان متوازيان وثالث قاطع");
+  assert.equal(eleventh.assessment.questions.length, 10);
+  assert.equal(eleventh.practice?.exercises.length, 7);
+  assert.equal(eleventh.content.notebook.length, 4);
+  assert.equal(new Set(eleventh.content.notebook.map(section => section.id)).size, 4);
+
   // الروابط المنشورة هي أرقام المعرّفات نفسها، لا مواضع في قائمة.
   assert.equal(`/lessons/${first.entry.id}`, "/lessons/1");
   assert.equal(`/lessons/${second.entry.id}`, "/lessons/2");
@@ -232,8 +298,12 @@ test("معرّفات الدروس الحالية وروابطها ثابتة و�
   assert.equal(`/lessons/${sixth.entry.id}`, "/lessons/6");
   assert.equal(`/lessons/${seventh.entry.id}`, "/lessons/7");
   assert.equal(`/lessons/${eighth.entry.id}`, "/lessons/8");
+  assert.equal(`/lessons/${ninth.entry.id}`, "/lessons/9");
+  assert.equal(`/lessons/${tenth.entry.id}`, "/lessons/10");
+  assert.equal(`/lessons/${eleventh.entry.id}`, "/lessons/11");
   assert.deepEqual(lessonsOfUnit(LESSON_REGISTRY, 1).map(lesson => lesson.id), [1, 2, 3, 4, 5, 6]);
   assert.deepEqual(lessonsOfUnit(LESSON_REGISTRY, 2).map(lesson => lesson.id), [7, 8]);
+  assert.deepEqual(lessonsOfUnit(LESSON_REGISTRY, 3).map(lesson => lesson.id), [9, 10, 11, 12, 13]);
 });
 
 test("إضافة درس تجريبي اصطناعي لا تغيّر معرّفات الدروس الموجودة", () => {
@@ -250,7 +320,7 @@ test("إضافة درس تجريبي اصطناعي لا تغيّر معرّفا
   assert.equal(findLesson(after, 8)?.title, "حل المعادلات");
   assert.equal(findLesson(after, 34)?.status, "pending");
   // الصفحات المنشورة لا تتغير من وجود درس إضافي.
-  assert.deepEqual(publishedLessons(after).map(lesson => lesson.id), [1, 2, 3, 4, 5, 6, 7, 8]);
+  assert.deepEqual(publishedLessons(after).map(lesson => lesson.id), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
 });
 
 test("تغيير ترتيب الدروس أو قائمتها لا يغيّر هوية أي درس", () => {
@@ -259,7 +329,7 @@ test("تغيير ترتيب الدروس أو قائمتها لا يغيّر ه�
   shuffled.lessons.reverse();
   assert.doesNotThrow(() => validateLessonRegistry(shuffled));
   assert.deepEqual(byId(shuffled), byId(before));
-  assert.deepEqual(publishedLessons(shuffled).map(lesson => lesson.id).sort((a, b) => a - b), [1, 2, 3, 4, 5, 6, 7, 8]);
+  assert.deepEqual(publishedLessons(shuffled).map(lesson => lesson.id).sort((a, b) => a - b), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
 
   const swapped = registry();
   const first = swapped.lessons.find(lesson => lesson.id === 2)!;
@@ -329,6 +399,9 @@ test("نوع كتلة أو قيمة تعداد مجهولة تُرفض ولا ت
   assert.throws(() => validateBlockKinds([{ kind: "rationalStudio", origin: "supplement", mode: "planets" }], "x.json", "content.lab"), /وضع مختبر غير معروف/);
   assert.throws(() => validateBlockKinds([{ kind: "algebraStudio", origin: "supplement", mode: "planets" }], "x.json", "content.lab"), /وضع مختبر غير معروف/);
   assert.throws(() => validateBlockKinds([{ kind: "equationsStudio", origin: "supplement", mode: "planets" }], "x.json", "content.lab"), /وضع مختبر غير معروف/);
+  assert.throws(() => validateBlockKinds([{ kind: "parallelogramStudio", origin: "supplement", mode: "planets" }], "x.json", "content.lab"), /وضع مختبر غير معروف/);
+  assert.throws(() => validateBlockKinds([{ kind: "parallelogramAreaStudio", origin: "supplement", mode: "planets" }], "x.json", "content.lab"), /وضع مختبر غير معروف/);
+  assert.throws(() => validateBlockKinds([{ kind: "parallelLinesStudio", origin: "supplement", mode: "planets" }], "x.json", "content.lab"), /وضع مختبر غير معروف/);
   assert.throws(() => validateBlockKinds([{ kind: "explain", origin: "book", text: "نص", extra: 1 }], "x.json", "content.explain"), /حقل غير معروف/);
   assert.throws(() => validateBlockKinds([{ kind: "check", origin: "book", question: "س؟", answer: "ج", options: ["أ", "ب"], correctOption: 5 }], "x.json", "content.check"), /مفتاح السؤال/);
   assert.throws(() => validateBlockKinds([{ kind: "guide", origin: "book", title: "د", sections: [{ title: "ق", blocks: [{ kind: "ghost", origin: "book" }] }] }], "x.json", "content.explain"), /نوع كتلة غير معروف: "ghost"/);
@@ -357,12 +430,21 @@ test("نوع كتلة أو قيمة تعداد مجهولة تُرفض ولا ت
   const stagesEight = (lessonEight as unknown as { content: Record<string, unknown[]> }).content;
   for (const [key, blocks] of Object.entries(stagesEight)) assert.doesNotThrow(() => validateBlockKinds(blocks, "lesson-8.json", `content.${key}`));
   assert.doesNotThrow(() => validateBlockKinds(structuredClone((lessonEight as unknown as { notebook: { blocks: unknown[] }[] }).notebook)[0].blocks, "lesson-8.json", "notebook[0].blocks"));
+  const stagesNine = (lessonNine as unknown as { content: Record<string, unknown[]> }).content;
+  for (const [key, blocks] of Object.entries(stagesNine)) assert.doesNotThrow(() => validateBlockKinds(blocks, "lesson-9.json", `content.${key}`));
+  assert.doesNotThrow(() => validateBlockKinds(structuredClone((lessonNine as unknown as { notebook: { blocks: unknown[] }[] }).notebook)[0].blocks, "lesson-9.json", "notebook[0].blocks"));
+  const stagesTen = (lessonTen as unknown as { content: Record<string, unknown[]> }).content;
+  for (const [key, blocks] of Object.entries(stagesTen)) assert.doesNotThrow(() => validateBlockKinds(blocks, "lesson-10.json", `content.${key}`));
+  assert.doesNotThrow(() => validateBlockKinds(structuredClone((lessonTen as unknown as { notebook: { blocks: unknown[] }[] }).notebook)[0].blocks, "lesson-10.json", "notebook[0].blocks"));
+  const stagesEleven = (lessonEleven as unknown as { content: Record<string, unknown[]> }).content;
+  for (const [key, blocks] of Object.entries(stagesEleven)) assert.doesNotThrow(() => validateBlockKinds(blocks, "lesson-11.json", `content.${key}`));
+  assert.doesNotThrow(() => validateBlockKinds(structuredClone((lessonEleven as unknown as { notebook: { blocks: unknown[] }[] }).notebook)[0].blocks, "lesson-11.json", "notebook[0].blocks"));
 });
 
 test("درس ناقص أو غير مكتمل لا يُنشر ولا يُفهرس", () => {
   // درس يحمل مراجع محتوى لكن حالته «قيد الإعداد» يُرفض في السجل نفسه.
   const premature = registry();
-  const pending = premature.lessons.find(lesson => lesson.id === 9)! as unknown as Record<string, unknown>;
+  const pending = premature.lessons.find(lesson => lesson.id === 12)! as unknown as Record<string, unknown>;
   pending.key = "half-built";
   pending.contentRef = "lesson-1.json";
   pending.assessmentRef = "assessments/natural-numbers.json";
@@ -387,9 +469,12 @@ test("درس ناقص أو غير مكتمل لا يُنشر ولا يُفهرس
     "lessons/6/index.html", "quizzes/lesson/6/index.html",
     "lessons/7/index.html", "quizzes/lesson/7/index.html",
     "lessons/8/index.html", "quizzes/lesson/8/index.html",
+    "lessons/9/index.html", "quizzes/lesson/9/index.html",
+    "lessons/10/index.html", "quizzes/lesson/10/index.html",
+    "lessons/11/index.html", "quizzes/lesson/11/index.html",
   ]);
   const unpublished = LESSON_REGISTRY.lessons.filter(lesson => lesson.status !== "published");
-  assert.equal(unpublished.length, 25);
+  assert.equal(unpublished.length, 22);
   for (const lesson of unpublished) {
     assert.equal("key" in lesson, false);
     assert.equal("assessmentRef" in lesson, false);
@@ -418,7 +503,7 @@ test("لا توجد افتراضات غير مبررة تربط النظام ب�
 });
 
 test("الدروس المنشورة تعمل عبر حزمها، والمعرّف المجهول لا يسقط إلى درس آخر", () => {
-  const [pkg1, pkg2, pkg3, pkg4, pkg5, pkg6, pkg7, pkg8] = validateLessonPackages(LESSON_REGISTRY, indexes());
+  const [pkg1, pkg2, pkg3, pkg4, pkg5, pkg6, pkg7, pkg8, pkg9, pkg10, pkg11] = validateLessonPackages(LESSON_REGISTRY, indexes());
   assert.equal(pkg1.entry.id, 1);
   assert.equal(pkg2.entry.id, 2);
   assert.equal(pkg3.entry.id, 3);
@@ -451,6 +536,18 @@ test("الدروس المنشورة تعمل عبر حزمها، والمعرّ�
   assert.equal(practiceForLesson(7)?.exercises.length, 8);
   assert.equal(assessmentForLesson(8)?.questions.length, 10);
   assert.equal(practiceForLesson(8)?.exercises.length, 6);
+  assert.equal(pkg9.entry.id, 9);
+  assert.deepEqual(Object.keys(pkg9.content.content).sort(), ["apply", "check", "discover", "explain", "intro", "lab", "summary"].sort());
+  assert.equal(pkg10.entry.id, 10);
+  assert.deepEqual(Object.keys(pkg10.content.content).sort(), ["apply", "check", "discover", "explain", "intro", "lab", "summary"].sort());
+  assert.equal(pkg11.entry.id, 11);
+  assert.deepEqual(Object.keys(pkg11.content.content).sort(), ["apply", "check", "discover", "explain", "intro", "lab", "summary"].sort());
+  assert.equal(assessmentForLesson(9)?.questions.length, 10);
+  assert.equal(practiceForLesson(9)?.exercises.length, 6);
+  assert.equal(assessmentForLesson(10)?.questions.length, 10);
+  assert.equal(practiceForLesson(10)?.exercises.length, 6);
+  assert.equal(assessmentForLesson(11)?.questions.length, 10);
+  assert.equal(practiceForLesson(11)?.exercises.length, 7);
   assert.equal(assessmentForLesson(999), null);
   assert.equal(practiceForLesson(999), null);
   assert.equal(findLesson(LESSON_REGISTRY, 999), undefined);

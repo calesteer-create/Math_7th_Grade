@@ -6,6 +6,9 @@ import operationsRationalAssessment from "@/content/assessments/operations-ratio
 import coordinatePlaneAssessment from "@/content/assessments/coordinate-plane.json";
 import algebraicExpressionsAssessment from "@/content/assessments/algebraic-expressions.json";
 import solvingEquationsAssessment from "@/content/assessments/solving-equations.json";
+import parallelogramSymmetryAssessment from "@/content/assessments/parallelogram-symmetry.json";
+import parallelogramAreaAssessment from "@/content/assessments/parallelogram-area.json";
+import parallelLinesTransversalAssessment from "@/content/assessments/parallel-lines-transversal.json";
 
 // فهرس بنوك الاختبارات مفهرسة بمسار الـRef المعلن في السجل. الوحدة صغيرة
 // (بيانات فقط) ليستطيع مكوّن العميل إيجاد بنك الدرس دون سحب محتوى الدروس معه.
@@ -18,4 +21,7 @@ export const ASSESSMENT_INDEX: Record<string, unknown> = {
   "assessments/coordinate-plane.json": coordinatePlaneAssessment,
   "assessments/algebraic-expressions.json": algebraicExpressionsAssessment,
   "assessments/solving-equations.json": solvingEquationsAssessment,
+  "assessments/parallelogram-symmetry.json": parallelogramSymmetryAssessment,
+  "assessments/parallelogram-area.json": parallelogramAreaAssessment,
+  "assessments/parallel-lines-transversal.json": parallelLinesTransversalAssessment,
 };
